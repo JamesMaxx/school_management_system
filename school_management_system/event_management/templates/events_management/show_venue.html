@@ -1,0 +1,18 @@
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <strong>Venue</strong>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title"> {{ venue }}</h5>
+            <ul>
+                <li><strong>Address: </strong>{{ venue.address }}</li>
+                <li><strong>Website: </strong><a href="{{ venue.web }}">{{ venue.web }}</a></li>
+                <li><strong>Phone: </strong>{{ venue.phone }}</li>
+            </ul>
+        </div>
+        <br>
+    </div>
+{% endblock %}

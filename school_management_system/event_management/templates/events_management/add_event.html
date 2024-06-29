@@ -1,0 +1,49 @@
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+    <h1>Add Event</h1>
+    <br><br>
+    {% if submitted %}
+        Your Event was submitted successfully!
+    {% else %}
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <strong><label for="{{ form.title.id_for_label }}">Event Title</label></strong>
+                {{ form.title }}
+            </div>
+            <br>
+            <div class="form-group">
+                <strong><label for="{{ form.description.id_for_label }}" strong>Event Description</label></strong>
+                {{ form.description }}
+            </div>
+            <br>
+            <div class="form-group">
+                <strong><label for="{{ form.event_type.id_for_label }}">Event Type</label></strong>
+                {{ form.event_type }}
+            </div>
+            <br>
+            <div class="form-group">
+                <strong><label for="{{ form.date.id_for_label }}">Event Date</label></strong>
+                {{ form.date }}
+            </div>
+            <br>
+            <div class="form-group">
+                <strong><label for="{{ form.start_time.id_for_label }}">Start Time</label></strong>
+                {{ form.start_time }}
+            </div>
+            <br>
+            <div class="form-group">
+                <strong><label for="{{ form.end_time.id_for_label }}">End Time</label></strong>
+                {{ form.end_time }}
+            </div>
+            <br>
+            <div class="form-group">
+                <strong><label for="{{ form.venue.id_for_label }}">Event Venue</label></strong>
+                {{ form.venue }}
+            </div>
+            <br>
+            <input type="submit" value="Submit" class="btn btn-secondary">
+        </form>
+    {% endif %}
+{% endblock %}
