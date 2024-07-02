@@ -83,7 +83,7 @@ def all_events(request):
 
 
 
-def landing(request):
+def landingpage(request):
     return render(request, 'events_management/landingpage.html', {})
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime("%B")):
