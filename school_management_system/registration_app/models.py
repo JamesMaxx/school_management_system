@@ -9,6 +9,21 @@ class User(AbstractUser):
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='auth_user_set',  # Rename related_name to avoid clashes
+        blank=True,
+        verbose_name='groups',
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='auth_user_set',  # Rename related_name to avoid clashes
+        blank=True,
+        verbose_name='user permissions',
+        help_text='Specific permissions for this user.',
+    )
+
 """ Student Profile Regisration """
 class StudentProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
