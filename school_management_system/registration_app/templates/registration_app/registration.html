@@ -1,0 +1,16 @@
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2>User Registration</h2>
+            <ul>
+                <li><a href="{% url 'admin-registration' %}">Register Admin</a></li>
+                <li><a href="{% url 'student-registration' %}">Register Student</a></li>
+                <li><a href="{% url 'staff-registration' %}">Register Staff</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

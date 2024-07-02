@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
 
+def registration_view(request):
+    return render(request, 'registration_app/registration.html', {})
+
 def student_registration_view(request):
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST, request.FILES)
