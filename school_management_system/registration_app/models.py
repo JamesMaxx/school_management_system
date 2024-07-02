@@ -31,6 +31,7 @@ class StudentProfile(models.Model):
     emergency_contact2_name = models.CharField(max_length=50)
     emergency_contact2_phone = models.CharField(max_length=15)
     emergency_contact2_relationship = models.CharField(max_length=30)
+    photo = models.ImageField(upload_to='student_photos/', blank=True, null=True)
 
     """ Academic Information """
     admission_date = models.DateField()
@@ -53,8 +54,8 @@ class StudentProfile(models.Model):
 
 
     """ Staff Profile Registration """
-    class StaffProifile(models.Model):
-        """ Personal Information """
+class StaffProifile(models.Model):
+    """ Personal Information """
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -77,6 +78,7 @@ class StudentProfile(models.Model):
     emergency_contact2_name = models.CharField(max_length=50)
     emergency_contact2_phone = models.CharField(max_length=15)
     emergency_contact2_relationship = models.CharField(max_length=30)
+    photo = models.ImageField(upload_to='staff_photos/', blank=True, null=True)
 
     """ Professional Information """
     hire_date = models.DateField()
@@ -120,6 +122,7 @@ class AdminProfile(models.Model):
     emergency_contact2_name = models.CharField(max_length=50)
     emergency_contact2_phone = models.CharField(max_length=15)
     emergency_contact2_relationship = models.CharField(max_length=30)
+    photo = models.ImageField(upload_to='admin_photos/', blank=True, null=True)
 
     """ Professional Information """
     hire_date = models.DateField()
