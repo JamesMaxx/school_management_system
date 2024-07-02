@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 """ User Model - To determine the type of user """
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
-    is_staff = models.BooleanFiled(default=False)
+    is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
 """ Student Profile Regisration """
@@ -54,7 +54,7 @@ class StudentProfile(models.Model):
 
 
     """ Staff Profile Registration """
-class StaffProifile(models.Model):
+class StaffProfile(models.Model):
     """ Personal Information """
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
