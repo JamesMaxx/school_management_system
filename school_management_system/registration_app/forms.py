@@ -24,6 +24,7 @@ class StudentRegistrationForm(UserRegistrationForm):
     grade_level = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Grade Level'}))
 
     class Meta(UserRegistrationForm.Meta):
+        model = User
         fields = UserRegistrationForm.Meta.fields + ['admission_date', 'grade_level']
         labels = {
             'admission_date': 'Admission Date',
@@ -57,6 +58,7 @@ class StaffRegistrationForm(UserRegistrationForm):
     department = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}))
 
     class Meta(UserRegistrationForm.Meta):
+        model = User
         fields = UserRegistrationForm.Meta.fields + ['hire_date', 'position', 'department']
         labels = {
             'hire_date': 'Hire Date',
@@ -93,6 +95,7 @@ class AdminRegistrationForm(UserRegistrationForm):
     department = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}))
 
     class Meta(UserRegistrationForm.Meta):
+        model = User
         fields = UserRegistrationForm.Meta.fields + ['hire_date', 'position', 'department']
         labels = {
             'hire_date': 'Hire Date',

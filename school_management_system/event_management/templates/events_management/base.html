@@ -12,6 +12,13 @@
     {% include 'events_management/navbar.html' %}
     <br/>
     <div class="container">
+      {% if messages %}
+        <div>
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
     {% block content %}
     {% endblock %}
     </div>
