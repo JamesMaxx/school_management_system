@@ -6,8 +6,23 @@ from django.contrib.auth.models import AbstractUser
 """ User Model - To determine the type of user """
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
-    is_staff = models.BooleanFiled(default=False)
+    is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='auth_user_set',  # Rename related_name to avoid clashes
+        blank=True,
+        verbose_name='groups',
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='auth_user_set',  # Rename related_name to avoid clashes
+        blank=True,
+        verbose_name='user permissions',
+        help_text='Specific permissions for this user.',
+    )
 
 """ Student Profile Regisration """
 class StudentProfile(models.Model):
@@ -54,7 +69,7 @@ class StudentProfile(models.Model):
 
 
     """ Staff Profile Registration """
-class StaffProifile(models.Model):
+class StaffProfile(models.Model):
     """ Personal Information """
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
