@@ -7,6 +7,5 @@ urlpatterns = [
     path('register_staff', views.staff_registration_view, name='staff-registration'),
     path('register_admin', views.admin_registration_view, name='admin-registration'),
     path('registration', views.registration_view, name = 'registration'),
-    path('users', views.user_list_view, name='user_list'),
 
 ]

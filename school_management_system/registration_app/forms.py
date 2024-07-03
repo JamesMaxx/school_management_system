@@ -7,12 +7,11 @@ class UserRegistrationForm(UserCreationForm):
     last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
-    photo = forms.ImageField(required=False, widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}))
+    gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female'),], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'date_of_birth', 'gender', 'password1', 'password2', 'photo']
+        fields = ['username', 'first_name', 'last_name', 'email', 'date_of_birth', 'gender', 'password1', 'password2']
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
@@ -46,8 +45,7 @@ class StudentRegistrationForm(UserRegistrationForm):
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
                 admission_date=self.cleaned_data['admission_date'],
-                grade_level=self.cleaned_data['grade_level'],
-                photo=self.cleaned_data.get('photo')
+                grade_level=self.cleaned_data['grade_level']
             )
         return user
 
@@ -82,8 +80,7 @@ class StaffRegistrationForm(UserRegistrationForm):
                 gender=self.cleaned_data['gender'],
                 hire_date=self.cleaned_data['hire_date'],
                 position=self.cleaned_data['position'],
-                department=self.cleaned_data['department'],
-                photo=self.cleaned_data.get('photo')
+                department=self.cleaned_data['department']
             )
         return user
 
@@ -118,7 +115,6 @@ class AdminRegistrationForm(UserRegistrationForm):
                 gender=self.cleaned_data['gender'],
                 hire_date=self.cleaned_data['hire_date'],
                 position=self.cleaned_data['position'],
-                department=self.cleaned_data['department'],
-                photo=self.cleaned_data.get('photo')
+                department=self.cleaned_data['department']
             )
         return user
