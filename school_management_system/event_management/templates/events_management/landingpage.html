@@ -1,5 +1,3 @@
-<!-- landing_page.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,10 +16,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
             padding: 100px 0;
         }
-        .feature-event {
-            background-color: #f8f9fa;
-            padding: 50px 0;
-        }
         .about-section {
             padding: 50px 0;
         }
@@ -32,65 +26,15 @@
     </style>
 </head>
 <body>
-    <!-- Navigation bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}">School Management</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'home' '2023' 'March' %}">School Calendar</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'list-events' %}"></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'add-event' %}">Registration Form</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'list-venues' %}">Courses Offered</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'add-venue' %}">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
     <!-- Jumbotron / Hero section -->
     <div class="jumbotron text-center">
         <h1 class="display-4" style="color: #333;">Welcome to School Name</h1>
-
-        <p class="lead" style="color: #333;">Knwoledge, like a tree, grows</p>
+        <p class="lead" style="color: #333;">Preparing Future Leaders</p>
         <hr class="my-4">
-        <p>Bringing up Smart future generations</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'list-events' %}" role="button">View </a>
+        <p>Empowering students through education and innovation</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'registration' %}" role="button">Click Here</a>
     </div>
-
-    <!-- Featured Event Section -->
-    <section class="feature-event">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>Featured Event</h2>
-                    <p class="lead">Check out our featured event of the month.</p>
-                    <!-- Replace with dynamic content or featured event details -->
-                    <h3>Event Title</h3>
-                    <p>Date: March 20, 2023</p>
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget suscipit est.</p>
-                    <a class="btn btn-outline-primary" href="#" role="button">Learn More</a>
-                </div>
-                <div class="col-md-6">
-                    <!-- Replace with featured event image -->
-                    <img src="path/to/featured-event-image.jpg" class="img-fluid" alt="Featured Event">
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- About Section -->
     <section class="about-section">
@@ -104,6 +48,45 @@
                 </div>
                 <div class="col-md-6">
                     <img src="path/to/about-image.jpg" class="img-fluid" alt="About Us">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs-section">
+        <div class="container">
+            <h2>Our Programs</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program1-image.jpg" class="card-img-top" alt="Program 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 1</h5>
+                            <p class="card-text">Description of Program 1.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program2-image.jpg" class="card-img-top" alt="Program 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 2</h5>
+                            <p class="card-text">Description of Program 2.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program3-image.jpg" class="card-img-top" alt="Program 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 3</h5>
+                            <p class="card-text">Description of Program 3.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -133,7 +116,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2023 School Events Management System. All rights reserved.</p>
+        <p>&copy; ABC Group of Schools. All rights reserved.</p>
     </footer>
 
     <!-- Bootstrap JS and dependencies -->
