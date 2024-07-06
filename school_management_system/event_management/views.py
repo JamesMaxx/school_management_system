@@ -4,8 +4,38 @@ from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 
+
+def venue_text(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="venues.txt"'
+
+    # Designate the model
+    venues = Venue.objects.all()
+
+    lines = ["VENUES\n\n"]  # Start with a header
+
+    for venue in venues:
+        lines.append(f'Name: {venue.name}\n')
+        lines.append(f'Address: {venue.address}\n')
+        lines.append(f'Phone: {venue.phone}\n')
+        lines.append(f'Website: {venue.web}\n')
+        lines.append(f'Email: {venue.email_address}\n\n')
+
+    response.writelines(lines)
+    return response
+
+def delete_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    venue.delete()
+    return redirect('lists-venues')
+
+
+def delete_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    event.delete()
+    return redirect('lists-events')
 
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
@@ -76,11 +106,9 @@ def add_venue(request):
     return render(request, 'events_management/add_venue.html', {'form': form, 'submitted': submitted})
 
 def all_events(request):
-    event_list = Event.objects.all()
-    venue_list = Venue.objects.all()
+    event_list = Event.objects.all().order_by('date')
+    venue_list = Venue.objects.all().order_by('name')
     return render(request, 'events_management/events_list.html', {'event_list': event_list, 'venue_list': venue_list})
-
-
 
 
 def landingpage(request):
