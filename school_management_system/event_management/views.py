@@ -5,7 +5,28 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
 from django.http import HttpResponse, HttpResponseRedirect
+import csv
 
+""" Generate csv file"""
+def venue_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="venues.csv"'
+
+    # Create csv writer
+    writer = csv.writer(response)
+
+    # Designate the model
+    venues = Venue.objects.all()
+
+    # Add column headings to csv
+    writer.writerow(['Name', 'Address', 'Phone', 'Website', 'Email'])
+
+
+    # Loop through data and write to csv
+    for venue in venues:
+        writer.writerow([venue.name, venue.address, venue.phone, venue.web, venue.email_address])
+
+    return response
 
 """ Generate Text Files"""
 def venue_text(request):
