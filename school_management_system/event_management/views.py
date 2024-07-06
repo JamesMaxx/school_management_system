@@ -14,7 +14,7 @@ def venue_text(request):
     # Designate the model
     venues = Venue.objects.all()
 
-    lines = ["VENUES\n\n"]  # Start with a header
+    lines = ["VENUES\n\n"]
 
     for venue in venues:
         lines.append(f'Name: {venue.name}\n')
