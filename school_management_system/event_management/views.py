@@ -7,6 +7,7 @@ from .forms import VenueForm, EventForm
 from django.http import HttpResponse, HttpResponseRedirect
 
 
+""" Generate Text Files"""
 def venue_text(request):
     response = HttpResponse(content_type='text/plain')
     response['Content-Disposition'] = 'attachment; filename="venues.txt"'
