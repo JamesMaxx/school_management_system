@@ -7,7 +7,55 @@ from .forms import VenueForm, EventForm
 from django.http import HttpResponse, HttpResponseRedirect
 import csv
 
-""" Generate csv file"""
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
+
+
+""" Generate pdf file venue list"""
+def venue_pdf(request):
+    # Create a file-like buffer to receive PDF data.
+    buf = io.BytesIO()
+    # Create the PDF object, using the buffer as its "file."
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+
+    # Set up the text object
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont('Helvetica', 14)
+
+    # Add header
+    textob.textLine("VENUES")
+    textob.textLine("")
+
+    # Fetch venues from the database
+    venues = Venue.objects.all()
+
+    # Add each venue's details
+    for venue in venues:
+        textob.textLine(f'Name: {venue.name}')
+        textob.textLine(f'Address: {venue.address}')
+        textob.textLine(f'Phone: {venue.phone}')
+        textob.textLine(f'Website: {venue.web}')
+        textob.textLine(f'Email: {venue.email_address}')
+        textob.textLine("")  # Add a blank line for spacing
+
+    # Draw the text on the PDF
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+
+    # Move to the beginning of the StringIO buffer
+    buf.seek(0)
+
+    # Return the PDF response
+    return FileResponse(buf, as_attachment=True, filename='venues.pdf')
+
+
+""" Generate csv file venue list"""
 def venue_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="venues.csv"'
