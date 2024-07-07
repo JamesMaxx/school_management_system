@@ -9,3 +9,7 @@ urlpatterns = [
     path('', include('registration_app.urls')),
 
 ]
+
+admin.site.site_header = "ABC Group of Schools"
+admin.site.site_title = "ABC Group of Schools"
+admin.site.index_title = "Welcome to ABC Group of Schools Admin Portal"
