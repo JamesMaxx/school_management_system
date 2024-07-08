@@ -9,7 +9,7 @@ from registration_app.models import User, StudentProfile, StaffProfile, AdminPro
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].help_text = None  # Disable help text for username
+        self.fields['username'].help_text = "Enter your username"  # Disable help text for username
         self.fields['password1'].help_text = None  # Remove help text for password
         self.fields['password2'].help_text = None  # Remove help text for password
 

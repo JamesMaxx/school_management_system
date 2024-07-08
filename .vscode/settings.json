@@ -14,9 +14,9 @@
             "username": "root"
         },
         {
-            "previewLimit": 50000000000000000000,
+            "previewLimit": 50000000,
             "driver": "SQLite",
-            "name": "School management system",
+            "name": "School Management System",
             "database": "${workspaceFolder:school_management_system}/school_management_system/db.sqlite3"
         }
     ]

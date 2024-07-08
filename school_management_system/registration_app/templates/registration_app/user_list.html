@@ -20,7 +20,10 @@
             <td>{{ user.last_name }}</td>
             <td>{{ user.email }}</td>
             <td>
-                {% if user.is_student %}Student{% elif user.is_staff %}Staff{% elif user.is_admin %}Admin{% endif %}
+                {% if user.is_student %}Student
+                {% elif user.is_staff %}Staff
+                {% elif user.is_admin %}Admin
+                {% endif %}
             </td>
         </tr>
         {% endfor %}
