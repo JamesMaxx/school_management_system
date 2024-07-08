@@ -1,21 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
-from .forms import UserRegistrationForm, StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm, CustomUserCreationForm
+from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
+from .models import User
+from django.views.decorators.csrf import csrf_protect
 
-def logout_view(request):
-    logout(request)
-    messages.success(request, 'Logged out successfully!')
-    return redirect('event_management:home')
 
-def user_list_view(request):
-    return render(request, 'registration_app/user_list.html', {
-        'users': User.objects.all()
-    })
-
-def login_view(request):
+@csrf_protect
+def login_user(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -25,7 +18,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, 'Logged in successfully!')
-                return redirect('event_management:user_list')  # Redirect to appropriate page after login
+                return redirect('registration_app:user_list')
             else:
                 messages.error(request, 'Invalid username or password!')
         else:
@@ -34,8 +27,19 @@ def login_view(request):
         form = AuthenticationForm()
     return render(request, 'registration_app/login.html', {'form': form})
 
+
+def logout_user(request):
+    logout(request)
+    messages.success(request, 'Logged out successfully!')
+    return redirect('event_management:home')
+
+
+def user_list_view(request):
+    return render(request, 'registration_app/user_list.html', {'users': User.objects.all()})
+
 def registration_view(request):
-    return render(request, 'registration_app/registration.html', {})
+    return render(request, 'registration_app/registration.html')
+
 
 def student_registration_view(request):
     if request.method == 'POST':
@@ -48,6 +52,7 @@ def student_registration_view(request):
         form = StudentRegistrationForm()
     return render(request, 'registration_app/student_registration.html', {'form': form})
 
+
 def staff_registration_view(request):
     if request.method == 'POST':
         form = StaffRegistrationForm(request.POST)
@@ -58,6 +63,7 @@ def staff_registration_view(request):
     else:
         form = StaffRegistrationForm()
     return render(request, 'registration_app/staff_registration.html', {'form': form})
+
 
 def admin_registration_view(request):
     if request.method == 'POST':

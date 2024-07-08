@@ -1,17 +1,19 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
-from registration_app.models import User, StudentProfile, StaffProfile, AdminProfile
+
+from .models import User, StudentProfile, StaffProfile, AdminProfile
 
 
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].help_text = "Enter your username"  # Disable help text for username
-        self.fields['password1'].help_text = None  # Remove help text for password
-        self.fields['password2'].help_text = None  # Remove help text for password
+        self.fields['username'].help_text = "Enter your username"
+        self.fields['password1'].help_text = None
+        self.fields['password2'].help_text = None
 
 
 class UserRegistrationForm(CustomUserCreationForm):
@@ -20,7 +22,6 @@ class UserRegistrationForm(CustomUserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
-    username = forms.CharField(max_length=150, help_text="Enter the username you received from administration via email.\nThe username format you're generating (first_name + last_name+_user-id)", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
@@ -74,6 +75,9 @@ class StudentRegistrationForm(UserRegistrationForm):
 
         if commit:
             user.save()
+            student_group, _ = Group.objects.get_or_create(name='Student')  # Ensure 'Student' group exists
+            student_group.user_set.add(user)  # Assign user to 'Student' group
+
             StudentProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
@@ -111,6 +115,9 @@ class StaffRegistrationForm(UserRegistrationForm):
 
         if commit:
             user.save()
+            staff_group, _ = Group.objects.get_or_create(name='Staff')  # Ensure 'Staff' group exists
+            staff_group.user_set.add(user)  # Assign user to 'Staff' group
+
             StaffProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
@@ -148,6 +155,9 @@ class AdminRegistrationForm(UserRegistrationForm):
 
         if commit:
             user.save()
+            admin_group, _ = Group.objects.get_or_create(name='Admin')  # Ensure 'Admin' group exists
+            admin_group.user_set.add(user)  # Assign user to 'Admin' group
+
             AdminProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
