@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-""" Models for Registration App """
-
-""" User Model - To determine the type of user """
+# User Model to determine the type of user
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -24,10 +22,11 @@ class User(AbstractUser):
         help_text='Specific permissions for this user.',
     )
 
-""" Student Profile Regisration """
+# Student Profile Registration
 class StudentProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    """ Personal Information """
+
+    # Personal Information
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -37,7 +36,7 @@ class StudentProfile(models.Model):
     address = models.TextField()
     city = models.CharField(max_length=50)
 
-    """ Contact Information """
+    # Contact Information
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
     emergency_contact1_name = models.CharField(max_length=50)
@@ -48,29 +47,30 @@ class StudentProfile(models.Model):
     emergency_contact2_relationship = models.CharField(max_length=30)
     photo = models.ImageField(upload_to='student_photos/', blank=True, null=True)
 
-    """ Academic Information """
+    # Academic Information
     admission_date = models.DateField()
     grade_level = models.CharField(max_length=10)
     previous_school = models.CharField(max_length=100, blank=True, null=True)
     student_id = models.CharField(max_length=20, unique=True)
 
-    """ Health Information """
+    # Health Information
     allergies = models.TextField(blank=True, null=True)
     medical_conditions = models.TextField(blank=True, null=True)
     family_doctor_name = models.CharField(max_length=50, blank=True, null=True)
     family_doctor_phone = models.CharField(max_length=15, blank=True, null=True)
 
-    """ Additional Information """
+    # Additional Information
     hobbies = models.TextField(blank=True, null=True)
     extra_curricular_activities = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f'{self.user.username} - {self.first_name} {self.last_name} {self.student_id}'
 
-
-    """ Staff Profile Registration """
+# Staff Profile Registration
 class StaffProfile(models.Model):
-    """ Personal Information """
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    # Personal Information
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -83,7 +83,7 @@ class StaffProfile(models.Model):
     post_code = models.CharField(max_length=10)
     country = models.CharField(max_length=50)
 
-    """ Contact Information """
+    # Contact Information
     phone_number = models.CharField(max_length=15)
     phone_number2 = models.CharField(max_length=15)
     email = models.EmailField()
@@ -95,7 +95,7 @@ class StaffProfile(models.Model):
     emergency_contact2_relationship = models.CharField(max_length=30)
     photo = models.ImageField(upload_to='staff_photos/', blank=True, null=True)
 
-    """ Professional Information """
+    # Professional Information
     hire_date = models.DateField()
     position = models.CharField(max_length=50)
     department = models.CharField(max_length=50)
@@ -103,7 +103,7 @@ class StaffProfile(models.Model):
     qualifications = models.TextField()
     previous_employment = models.TextField(blank=True, null=True)
 
-    """ Additional Information """
+    # Additional Information
     skills = models.TextField(blank=True, null=True)
     hobbies = models.TextField(blank=True, null=True)
     extra_curricular_involvement = models.TextField(blank=True, null=True)
@@ -111,11 +111,11 @@ class StaffProfile(models.Model):
     def __str__(self):
         return f'{self.user.username} - {self.first_name} {self.last_name} {self.staff_id}'
 
-
+# Admin Profile Registration
 class AdminProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
-    """ Personal Information """
+    # Personal Information
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -128,7 +128,7 @@ class AdminProfile(models.Model):
     post_code = models.CharField(max_length=10)
     country = models.CharField(max_length=50)
 
-    """ Contact Information """
+    # Contact Information
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
     emergency_contact1_name = models.CharField(max_length=50)
@@ -139,7 +139,7 @@ class AdminProfile(models.Model):
     emergency_contact2_relationship = models.CharField(max_length=30)
     photo = models.ImageField(upload_to='admin_photos/', blank=True, null=True)
 
-    """ Professional Information """
+    # Professional Information
     hire_date = models.DateField()
     position = models.CharField(max_length=50)
     department = models.CharField(max_length=50)
@@ -147,7 +147,7 @@ class AdminProfile(models.Model):
     qualifications = models.TextField()
     previous_employment = models.TextField(blank=True, null=True)
 
-    """ Additional Information """
+    # Additional Information
     skills = models.TextField(blank=True, null=True)
     hobbies = models.TextField(blank=True, null=True)
 

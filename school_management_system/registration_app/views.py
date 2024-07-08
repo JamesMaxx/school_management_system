@@ -1,8 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib import messages
-from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
+from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
+
+def user_list_view(request):
+    return render(request, 'registration_app/user_list.html', {
+        'users': User.objects.all()
+    })
 
 def login_view(request):
     if request.method == 'POST':
@@ -10,7 +16,9 @@ def login_view(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            return render(request, 'registration_app/login.html')
+            return render(request, 'registration_app/user_list.html', {
+                'users': User.objects.all()
+            })
     else:
         form = AuthenticationForm()
     return render(request, 'registration_app/login.html', {'form': form})
