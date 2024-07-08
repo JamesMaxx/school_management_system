@@ -65,7 +65,7 @@ class StudentProfile(models.Model):
     extra_curricular_activities = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} {self.middle_name}'
+        return f'{self.user.username} - {self.first_name} {self.last_name} {self.student_id}'
 
 
     """ Staff Profile Registration """
@@ -99,7 +99,7 @@ class StaffProfile(models.Model):
     hire_date = models.DateField()
     position = models.CharField(max_length=50)
     department = models.CharField(max_length=50)
-    employee_id = models.CharField(max_length=20, unique=True)
+    staff_id = models.CharField(max_length=20, unique=True)
     qualifications = models.TextField()
     previous_employment = models.TextField(blank=True, null=True)
 
@@ -109,7 +109,7 @@ class StaffProfile(models.Model):
     extra_curricular_involvement = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} {self.middle_name}'
+        return f'{self.user.username} - {self.first_name} {self.last_name} {self.staff_id}'
 
 
 class AdminProfile(models.Model):
@@ -143,7 +143,7 @@ class AdminProfile(models.Model):
     hire_date = models.DateField()
     position = models.CharField(max_length=50)
     department = models.CharField(max_length=50)
-    employee_id = models.CharField(max_length=20, unique=True)
+    admin_id = models.CharField(max_length=20, unique=True)
     qualifications = models.TextField()
     previous_employment = models.TextField(blank=True, null=True)
 
@@ -152,4 +152,4 @@ class AdminProfile(models.Model):
     hobbies = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} {self.middle_name}'
+        return f'{self.user.username} - {self.first_name} {self.last_name} {self.admin_id}'

@@ -24,7 +24,7 @@ def student_registration_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Student account created successfully!')
-            return redirect('registration_app/login.html')
+            return redirect('registration_app:login')
     else:
         form = StudentRegistrationForm()
     return render(request, 'registration_app/student_registration.html', {'form': form})
@@ -35,7 +35,7 @@ def staff_registration_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Staff account created successfully!')
-            return redirect('registration_app/login.html')
+            return redirect('registration_app:login')
     else:
         form = StaffRegistrationForm()
     return render(request, 'registration_app/staff_registration.html', {'form': form})
@@ -46,7 +46,7 @@ def admin_registration_view(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Admin account created successfully!')
-            return redirect('registration_app/login.html')
+            return redirect('registration_app:login')
     else:
         form = AdminRegistrationForm()
     return render(request, 'registration_app/admin_registration.html', {'form': form})
