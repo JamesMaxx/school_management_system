@@ -5,7 +5,13 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from registration_app.models import User, StudentProfile, StaffProfile, AdminProfile
 
-class UserRegistrationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].help_text = None  # Disable help text for username
+        self.fields['password'].help_text = None  # Remove help text for password
+
+class UserRegistrationForm(CustomUserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
     last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
@@ -41,20 +47,17 @@ class UserRegistrationForm(UserCreationForm):
 
 class StudentRegistrationForm(UserRegistrationForm):
     admission_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    grade_level = forms.CharField(max_length=10, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Grade Level'}))
     student_id = forms.CharField(max_length=20, required=True, help_text="Student IDs should start with 'stu' followed by a four-digit number, e.g., stu1234.",widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Student ID'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
-        fields = UserRegistrationForm.Meta.fields + ['admission_date', 'grade_level', 'student_id']
+        fields = UserRegistrationForm.Meta.fields + ['admission_date', 'student_id']
         labels = {
             'admission_date': 'Admission Date',
-            'grade_level': 'Grade Level',
             'student_id': 'Student ID',
         }
         widgets = {
             'admission_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'grade_level': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Grade Level'}),
             'student_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Student ID'}),
         }
 
@@ -71,33 +74,27 @@ class StudentRegistrationForm(UserRegistrationForm):
                 user=user,
                 first_name=self.cleaned_data['first_name'],
                 last_name=self.cleaned_data['last_name'],
+                student_id=self.cleaned_data['student_id'],
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
-                admission_date=self.cleaned_data['admission_date'],
-                grade_level=self.cleaned_data['grade_level'],
-                student_id=self.cleaned_data['student_id']
+                admission_date=self.cleaned_data['admission_date']
+
             )
         return user
 
 class StaffRegistrationForm(UserRegistrationForm):
     hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    position = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Position'}))
-    department = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}))
     staff_id = forms.CharField(max_length=20, required=True, help_text="Staff IDs should start with 'sta' followed by a four-digit number, e.g., sta1234.",widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Staff ID'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
-        fields = UserRegistrationForm.Meta.fields + ['hire_date', 'position', 'department', 'staff_id']
+        fields = UserRegistrationForm.Meta.fields + ['hire_date', 'staff_id']
         labels = {
             'hire_date': 'Hire Date',
-            'position': 'Position',
-            'department': 'Department',
             'staff_id': 'Staff ID',
         }
         widgets = {
             'hire_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'position': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Position'}),
-            'department': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}),
             'staff_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Staff ID'}),
         }
 
@@ -114,34 +111,27 @@ class StaffRegistrationForm(UserRegistrationForm):
                 user=user,
                 first_name=self.cleaned_data['first_name'],
                 last_name=self.cleaned_data['last_name'],
+                staff_id=self.cleaned_data['staff_id'],
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
-                hire_date=self.cleaned_data['hire_date'],
-                position=self.cleaned_data['position'],
-                department=self.cleaned_data['department'],
-                staff_id=self.cleaned_data['staff_id']
+                hire_date=self.cleaned_data['hire_date']
+
             )
         return user
 
 class AdminRegistrationForm(UserRegistrationForm):
     hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    position = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Position'}))
-    department = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}))
     admin_id = forms.CharField(max_length=20, required=True, help_text="Admin IDs should start with 'admin' followed by a four-digit number, e.g., admin1234.",widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Admin ID'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
-        fields = UserRegistrationForm.Meta.fields + ['hire_date', 'position', 'department', 'admin_id']
+        fields = UserRegistrationForm.Meta.fields + ['hire_date', 'admin_id']
         labels = {
             'hire_date': 'Hire Date',
-            'position': 'Position',
-            'department': 'Department',
             'admin_id': 'Admin ID',
         }
         widgets = {
             'hire_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'position': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Position'}),
-            'department': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}),
             'admin_id': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Admin ID'}),
         }
 
@@ -161,8 +151,6 @@ class AdminRegistrationForm(UserRegistrationForm):
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
                 hire_date=self.cleaned_data['hire_date'],
-                position=self.cleaned_data['position'],
-                department=self.cleaned_data['department'],
                 admin_id=self.cleaned_data['admin_id']
             )
         return user

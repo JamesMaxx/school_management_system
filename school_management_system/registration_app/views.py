@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
+from .forms import RegistrationForm
 
 def user_list_view(request):
     return render(request, 'registration_app/user_list.html', {
