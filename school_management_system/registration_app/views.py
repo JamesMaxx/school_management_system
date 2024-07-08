@@ -1,9 +1,14 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
-from .forms import RegistrationForm
+from .forms import UserRegistrationForm, StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm, CustomUserCreationForm
+
+def logout_view(request):
+    logout(request)
+    messages.success(request, 'Logged out successfully!')
+    return redirect('event_management:home')
 
 def user_list_view(request):
     return render(request, 'registration_app/user_list.html', {

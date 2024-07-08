@@ -5,11 +5,14 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.password_validation import validate_password
 from registration_app.models import User, StudentProfile, StaffProfile, AdminProfile
 
+
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].help_text = None  # Disable help text for username
-        self.fields['password'].help_text = None  # Remove help text for password
+        self.fields['password1'].help_text = None  # Remove help text for password
+        self.fields['password2'].help_text = None  # Remove help text for password
+
 
 class UserRegistrationForm(CustomUserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
@@ -45,9 +48,10 @@ class UserRegistrationForm(CustomUserCreationForm):
             self.add_error('password1', error)
         return password1
 
+
 class StudentRegistrationForm(UserRegistrationForm):
     admission_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    student_id = forms.CharField(max_length=20, required=True, help_text="Student IDs should start with 'stu' followed by a four-digit number, e.g., stu1234.",widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Student ID'}))
+    student_id = forms.CharField(max_length=20, required=True, help_text="Student IDs should start with 'stu' followed by a four-digit number, e.g., stu1234.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Student ID'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
@@ -78,13 +82,13 @@ class StudentRegistrationForm(UserRegistrationForm):
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
                 admission_date=self.cleaned_data['admission_date']
-
             )
         return user
 
+
 class StaffRegistrationForm(UserRegistrationForm):
     hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    staff_id = forms.CharField(max_length=20, required=True, help_text="Staff IDs should start with 'sta' followed by a four-digit number, e.g., sta1234.",widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Staff ID'}))
+    staff_id = forms.CharField(max_length=20, required=True, help_text="Staff IDs should start with 'sta' followed by a four-digit number, e.g., sta1234.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Staff ID'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
@@ -115,13 +119,13 @@ class StaffRegistrationForm(UserRegistrationForm):
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
                 hire_date=self.cleaned_data['hire_date']
-
             )
         return user
 
+
 class AdminRegistrationForm(UserRegistrationForm):
     hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    admin_id = forms.CharField(max_length=20, required=True, help_text="Admin IDs should start with 'admin' followed by a four-digit number, e.g., admin1234.",widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Admin ID'}))
+    admin_id = forms.CharField(max_length=20, required=True, help_text="Admin IDs should start with 'admin' followed by a four-digit number, e.g., admin1234.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Admin ID'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User

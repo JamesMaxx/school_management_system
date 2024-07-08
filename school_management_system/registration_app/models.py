@@ -27,6 +27,7 @@ class StudentProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # Personal Information
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -71,6 +72,7 @@ class StaffProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # Personal Information
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
@@ -116,6 +118,7 @@ class AdminProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # Personal Information
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=30)
