@@ -28,10 +28,11 @@ class StudentRegistrationForm(CustomUserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
+    Group = forms.ModelChoiceField(queryset=Group.objects.filter(name='Student'), required=True, widget=forms.Select(attrs={'class': 'form-select'}))
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'gender', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'Group', 'email', 'date_of_birth', 'gender', 'password1', 'password2', 'Group']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
@@ -55,6 +56,7 @@ class StudentRegistrationForm(CustomUserCreationForm):
                 last_name=self.cleaned_data['last_name'],
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
+                initial=Group.objects.get(name='Student').name
             )
 
         return user
@@ -66,10 +68,13 @@ class StaffRegistrationForm(CustomUserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
+    Group = forms.ModelChoiceField(queryset=Group.objects.filter(name='Staff'), required=True, widget=forms.Select(attrs={'class': 'form-select'}))
+
+
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'date_of_birth', 'gender', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'Group', 'email', 'date_of_birth', 'gender', 'password1', 'password2']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
@@ -93,6 +98,7 @@ class StaffRegistrationForm(CustomUserCreationForm):
                 last_name=self.cleaned_data['last_name'],
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
+                initial=Group.objects.get(name='Staff').name
             )
 
         return user
@@ -104,10 +110,12 @@ class AdminRegistrationForm(CustomUserCreationForm):
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
+    Group = forms.ModelChoiceField(queryset=Group.objects.filter(name='Admin'), required=True, widget=forms.Select(attrs={'class': 'form-select'}))
+
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username','email', 'date_of_birth', 'gender', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'username', 'Group','email', 'date_of_birth', 'gender', 'password1', 'password2']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
@@ -131,6 +139,7 @@ class AdminRegistrationForm(CustomUserCreationForm):
                 last_name=self.cleaned_data['last_name'],
                 date_of_birth=self.cleaned_data['date_of_birth'],
                 gender=self.cleaned_data['gender'],
+                initial=Group.objects.get(name='Admin').name
             )
 
         return user

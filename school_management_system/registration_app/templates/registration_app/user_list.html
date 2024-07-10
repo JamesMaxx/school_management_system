@@ -10,7 +10,7 @@
         <th>Last Name</th>
         <th>Email</th>
         <th>Group</th>
-        <th>Role</th>
+        <th>group</th>
       </tr>
     </thead>
     <tbody>
@@ -20,8 +20,8 @@
         <td>{{ user.first_name }}</td>
         <td>{{ user.last_name }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.get_group_display }}</td>
-        <td>{{ user.get_role_display }}</td>
+        <td>{{ user.get_Group_display }}</td>
+        <td>{{ user.get_group }}</td>
       </tr>
       {% endfor %}
     </tbody>

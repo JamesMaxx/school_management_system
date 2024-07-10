@@ -1,5 +1,6 @@
+""""
 from django.contrib.auth.models import Group
-from .models import StudentProfile, StaffProfile, AdminProfile
+from .models import StudentProfile, StaffProfile, AdminProfile, BaseProfile
 
 def create_user_with_profile(user, user_type, profile_data):
     user.save()
@@ -18,3 +19,5 @@ def create_user_with_profile(user, user_type, profile_data):
         AdminProfile.objects.create(user=user, **profile_data)
 
     return user
+
+"""
