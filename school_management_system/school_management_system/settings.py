@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'event_management',
     'registration_app',
-
 ]
 
 MIDDLEWARE = [
@@ -128,3 +127,17 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# URL to redirect to after login (used by Django's built-in login view)
+LOGIN_REDIRECT_URL = '/users/'
+
+# URL to redirect to for login page
+LOGIN_URL = 'registration_app:login'
+
+# Custom user model
+AUTH_USER_MODEL = 'registration_app.User'
+
+# Authentication backends
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
