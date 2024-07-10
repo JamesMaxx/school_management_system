@@ -7,14 +7,12 @@ from django.contrib.auth.password_validation import validate_password
 
 from .models import User, StudentProfile, StaffProfile, AdminProfile
 
-
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].help_text = "Enter your username"
-        self.fields['password1'].help_text = None
-        self.fields['password2'].help_text = None
-
+        self.fields['username'].help_text = "Username format: first_name + last_name + _role_id (e.g., JohnDoe_stu1234 for students)."
+        self.fields['password1'].help_text = "Your password must contain at least 8 characters and should not be too common."
+        self.fields['password2'].help_text = "Enter the same password as before, for verification."
 
 class UserRegistrationForm(CustomUserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
@@ -49,14 +47,16 @@ class UserRegistrationForm(CustomUserCreationForm):
             self.add_error('password1', error)
         return password1
 
-
 class StudentRegistrationForm(UserRegistrationForm):
-    admission_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     student_id = forms.CharField(max_length=20, required=True, help_text="Student IDs should start with 'stu' followed by a four-digit number, e.g., stu1234.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Student ID'}))
+    admission_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+
+    # Added help text to indicate the username format for students
+    username = forms.CharField(max_length=150, required=True, help_text="Username format: first_name + last_name + _student_id", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
-        fields = UserRegistrationForm.Meta.fields + ['admission_date', 'student_id']
+        fields = UserRegistrationForm.Meta.fields + ['student_id', 'admission_date']
         labels = {
             'admission_date': 'Admission Date',
             'student_id': 'Student ID',
@@ -69,15 +69,12 @@ class StudentRegistrationForm(UserRegistrationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_student = True
-
-        # Customize username format
-        user.username = f"{self.cleaned_data['first_name']}-{self.cleaned_data['last_name']}/stu{self.cleaned_data['student_id']}"
+        user.username = f"{self.cleaned_data['first_name']}{self.cleaned_data['last_name']}_{self.cleaned_data['student_id']}"
 
         if commit:
             user.save()
-            student_group, _ = Group.objects.get_or_create(name='Student')  # Ensure 'Student' group exists
-            student_group.user_set.add(user)  # Assign user to 'Student' group
-
+            student_group, _ = Group.objects.get_or_create(name='Student')
+            student_group.user_set.add(user)
             StudentProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
@@ -89,14 +86,16 @@ class StudentRegistrationForm(UserRegistrationForm):
             )
         return user
 
-
 class StaffRegistrationForm(UserRegistrationForm):
-    hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     staff_id = forms.CharField(max_length=20, required=True, help_text="Staff IDs should start with 'sta' followed by a four-digit number, e.g., sta1234.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Staff ID'}))
+    hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+
+    # Added help text to indicate the username format for staff
+    username = forms.CharField(max_length=150, required=True, help_text="Username format: first_name + last_name + _staff_id", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
-        fields = UserRegistrationForm.Meta.fields + ['hire_date', 'staff_id']
+        fields = UserRegistrationForm.Meta.fields + ['staff_id', 'hire_date']
         labels = {
             'hire_date': 'Hire Date',
             'staff_id': 'Staff ID',
@@ -109,15 +108,12 @@ class StaffRegistrationForm(UserRegistrationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_staff = True
-
-        # Customize username format
-        user.username = f"{self.cleaned_data['first_name']}-{self.cleaned_data['last_name']}/sta{self.cleaned_data['staff_id']}"
+        user.username = f"{self.cleaned_data['first_name']}{self.cleaned_data['last_name']}_{self.cleaned_data['staff_id']}"
 
         if commit:
             user.save()
-            staff_group, _ = Group.objects.get_or_create(name='Staff')  # Ensure 'Staff' group exists
-            staff_group.user_set.add(user)  # Assign user to 'Staff' group
-
+            staff_group, _ = Group.objects.get_or_create(name='Staff')
+            staff_group.user_set.add(user)
             StaffProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
@@ -129,14 +125,16 @@ class StaffRegistrationForm(UserRegistrationForm):
             )
         return user
 
-
 class AdminRegistrationForm(UserRegistrationForm):
-    hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     admin_id = forms.CharField(max_length=20, required=True, help_text="Admin IDs should start with 'admin' followed by a four-digit number, e.g., admin1234.", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Admin ID'}))
+    hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+
+    # Added help text to indicate the username format for admins
+    username = forms.CharField(max_length=150, required=True, help_text="Username format: first_name + last_name + _admin_id", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
 
     class Meta(UserRegistrationForm.Meta):
         model = User
-        fields = UserRegistrationForm.Meta.fields + ['hire_date', 'admin_id']
+        fields = UserRegistrationForm.Meta.fields + ['admin_id', 'hire_date']
         labels = {
             'hire_date': 'Hire Date',
             'admin_id': 'Admin ID',
@@ -149,15 +147,12 @@ class AdminRegistrationForm(UserRegistrationForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.is_admin = True
-
-        # Customize username format
-        user.username = f"{self.cleaned_data['first_name']}-{self.cleaned_data['last_name']}/admin{self.cleaned_data['admin_id']}"
+        user.username = f"{self.cleaned_data['first_name']}{self.cleaned_data['last_name']}_{self.cleaned_data['admin_id']}"
 
         if commit:
             user.save()
-            admin_group, _ = Group.objects.get_or_create(name='Admin')  # Ensure 'Admin' group exists
-            admin_group.user_set.add(user)  # Assign user to 'Admin' group
-
+            admin_group, _ = Group.objects.get_or_create(name='Admin')
+            admin_group.user_set.add(user)
             AdminProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
