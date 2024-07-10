@@ -1,34 +1,31 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
+from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm, CustomUserCreationForm
 from .models import User
-
-
-def logout_user(request):
-    """View for user logout."""
-    logout(request)
-    return redirect('event_management:landing_page')
-
+from .forms import CustomUserCreationForm
 
 @csrf_protect
 def login_user(request):
-    """View for user login."""
     if request.method == 'POST':
-        form = AuthenticationForm(request, data=request.POST)
+        form = CustomUserCreationForm(data=request.POST)
         if form.is_valid():
-            email = form.cleaned_data.get('email')
-            password = form.cleaned_data.get('password')
-            user = authenticate(email=email, password=password)
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']  # Assuming you are using password1 field for login
+            user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('registration_app:user_list')  # Redirect to user list
+                # Redirect to a success page or wherever needed
+                return redirect('registration_app:user_list')
+            else:
+                # Handle invalid login attempt
+                # For example, add error message to the form
+                form.add_error(None, _('Invalid username or password'))
     else:
-        form = AuthenticationForm()
-    return render(request, 'registration_app/login.html', {'form': form})
+        form = CustomUserCreationForm()
 
+    return render(request, 'registration_app/login.html', {'form': form})
 
 @login_required
 def user_list_view(request):
@@ -36,11 +33,9 @@ def user_list_view(request):
     users = User.objects.all()
     return render(request, 'registration_app/user_list.html', {'users': users})
 
-
 def registration_view(request):
     """Base view for user registration."""
     return render(request, 'registration_app/registration.html')
-
 
 def student_registration_view(request):
     """View for student registration."""
@@ -53,7 +48,6 @@ def student_registration_view(request):
         form = StudentRegistrationForm()
     return render(request, 'registration_app/student_registration.html', {'form': form})
 
-
 def staff_registration_view(request):
     """View for staff registration."""
     if request.method == 'POST':
@@ -64,7 +58,6 @@ def staff_registration_view(request):
     else:
         form = StaffRegistrationForm()
     return render(request, 'registration_app/staff_registration.html', {'form': form})
-
 
 def admin_registration_view(request):
     """View for admin registration."""
