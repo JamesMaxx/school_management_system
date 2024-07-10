@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+<<<<<<< HEAD
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
@@ -10,6 +11,15 @@ from .models import User
 @csrf_protect
 def login_user(request):
     """View for user login."""
+=======
+from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm
+from .models import User
+from django.views.decorators.csrf import csrf_protect
+
+
+@csrf_protect
+def login_user(request):
+>>>>>>> 1fe54f53ec8cbf5fa848a6377cb6fed89a0f1768
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -28,13 +38,19 @@ def login_user(request):
         form = AuthenticationForm()
     return render(request, 'registration_app/login.html', {'form': form})
 
+<<<<<<< HEAD
 @login_required
 def logout_user(request):
     """View for user logout."""
+=======
+
+def logout_user(request):
+>>>>>>> 1fe54f53ec8cbf5fa848a6377cb6fed89a0f1768
     logout(request)
     messages.success(request, 'Logged out successfully!')
     return redirect('event_management:home')
 
+<<<<<<< HEAD
 @login_required
 def user_list_view(request):
     """View to display list of users."""
@@ -44,6 +60,15 @@ def user_list_view(request):
 def registration_view(request):
     """Base view for user registration."""
     return render(request, 'registration_app/registration.html')
+=======
+
+def user_list_view(request):
+    return render(request, 'registration_app/user_list.html', {'users': User.objects.all()})
+
+def registration_view(request):
+    return render(request, 'registration_app/registration.html')
+
+>>>>>>> 1fe54f53ec8cbf5fa848a6377cb6fed89a0f1768
 
 def student_registration_view(request):
     """View for student registration."""
@@ -57,6 +82,7 @@ def student_registration_view(request):
         form = StudentRegistrationForm()
     return render(request, 'registration_app/student_registration.html', {'form': form})
 
+
 def staff_registration_view(request):
     """View for staff registration."""
     if request.method == 'POST':
@@ -68,6 +94,7 @@ def staff_registration_view(request):
     else:
         form = StaffRegistrationForm()
     return render(request, 'registration_app/staff_registration.html', {'form': form})
+
 
 def admin_registration_view(request):
     """View for admin registration."""
