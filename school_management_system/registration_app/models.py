@@ -62,7 +62,7 @@ class StudentProfile(BaseProfile):
     extra_curricular_activities = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} ({self.student_id})'
+        return f'{self.user.username}'
 
 # Staff Profile Model
 class StaffProfile(BaseProfile):
@@ -77,7 +77,7 @@ class StaffProfile(BaseProfile):
     extra_curricular_involvement = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} ({self.staff_id})'
+        return f'{self.user.username}'
 
 # Admin Profile Model
 class AdminProfile(BaseProfile):
@@ -91,7 +91,7 @@ class AdminProfile(BaseProfile):
     hobbies = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} ({self.admin_id})'
+        return f'{self.user.username}'
 
 # Function to setup default groups and permissions
 @receiver(post_save, sender=User)
