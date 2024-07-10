@@ -140,4 +140,5 @@ AUTH_USER_MODEL = 'registration_app.User'
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
+    'registration_app.backends.EmailBackend',
 ]

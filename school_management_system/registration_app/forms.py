@@ -32,7 +32,7 @@ class StudentRegistrationForm(CustomUserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'Group', 'email', 'date_of_birth', 'gender', 'password1', 'password2', 'Group']
+        fields = ['first_name', 'last_name', 'username', 'Group', 'email', 'date_of_birth', 'gender', 'password1', 'password2']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
