@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="{% url 'landingpage' %}">ABC Group of Schools</a>
@@ -53,60 +52,4 @@
         </form>
       </div>
     </div>
-=======
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'landingpage' %}">ABC Group of Schools</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'home' %}">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration_app:registration' %}">Register</a>
-          </li>
-          {% if user.is_authenticated %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration_app:login' %}">Logout</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'registration_app:login' %}">Login</a>
-          </li>
-          {% endif %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'list-events' %}">Events</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add-event' %}">Add Event</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'list-venues' %}">Venues</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'add-venue' %}">Add Venue</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'venue-text' %}">Download Venue Text</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'venue_csv' %}">Download Venue csv</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'venue_pdf' %}">Download Venue pdf</a>
-          </li>
-            </ul>
-          </li>
-        </ul>
-        <form class="d-flex" role="search" method=POST action="{% url 'search-venues' %}">
-          {% csrf_token %}
-          <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search" name="searched">
-          <button class="btn btn-outline-secondary" type="submit">Search</button>
-        </form>
-      </div>
-    </div>
->>>>>>> 1fe54f53ec8cbf5fa848a6377cb6fed89a0f1768
-  </nav>
+</nav>
