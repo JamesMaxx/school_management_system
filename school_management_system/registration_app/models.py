@@ -77,7 +77,7 @@ class StaffProfile(BaseProfile):
 
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} -{self.email} - { self.group}'
+        return f'{self.user.username} {self.first_name} {self.last_name} {self.email} { self.group}'
 
 # Admin Profile Model
 class AdminProfile(BaseProfile):
@@ -94,7 +94,7 @@ class AdminProfile(BaseProfile):
     group = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} - {self.email} - {self.group}'
+        return f'{self.user.username} {self.first_name} {self.last_name} {self.Group.name}{self.user.is_admin} {self.group}'
 
 # Function to setup default groups and permissions
 @receiver(post_save, sender=User)

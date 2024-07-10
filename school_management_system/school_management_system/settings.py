@@ -129,7 +129,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URL to redirect to after login (used by Django's built-in login view)
-LOGIN_REDIRECT_URL = '/users/'
+LOGIN_REDIRECT_URL = 'registration_app:user_list'
 
 # URL to redirect to for login page
 LOGIN_URL = 'registration_app:login'
