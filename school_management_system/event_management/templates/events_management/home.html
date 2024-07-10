@@ -1,4 +1,149 @@
-{% extends 'events_management/base.html' %}
-{% block content %}
-<h1>My system</h1>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom styles -->
+    <style>
+        /* Custom CSS styles */
+        .jumbotron {
+            background-image: url('path/to/your/background-image.jpg');
+            background-size: cover;
+            color: #fff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            padding: 100px 0;
+        }
+        .about-section {
+            padding: 50px 0;
+        }
+        .contact-section {
+            background-color: #f8f9fa;
+            padding: 50px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">School Name</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'registration_app:registration' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list-events' %}">Events</a>
+                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'registration_app:login' %}">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Jumbotron / Hero section -->
+    <div class="jumbotron text-center" style="background-image: url('https://unsplash.com/photos/9yfJtVcQ9qA');">
+        <h1 class="display-4" style="color: #333;">Welcome to School Name</h1>
+        <p class="lead" style="color: #333;">Preparing Future Leaders</p>
+        <hr class="my-4">
+        <p style="color: #333;">Empowering Students Through Education and Innovation</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'registration_app:login' %}" role="button">Click Here</a>
+    </div>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2>About Us</h2>
+                    <p class="lead">Learn more about ABC Group of Schools.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget suscipit est. Integer id lorem justo.</p>
+                    <p>Aliquam erat volutpat. Proin dapibus pulvinar leo, sed feugiat lorem vestibulum in. Phasellus lacinia ipsum eu velit aliquet, non vehicula nulla eleifend.</p>
+                </div>
+                <div class="col-md-6">
+                    <img src="path/to/about-image.jpg" class="img-fluid" alt="About Us">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs-section">
+        <div class="container">
+            <h2>Our Programs</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program1-image.jpg" class="card-img-top" alt="Program 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 1</h5>
+                            <p class="card-text">Description of Program 1.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program2-image.jpg" class="card-img-top" alt="Program 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 2</h5>
+                            <p class="card-text">Description of Program 2.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program3-image.jpg" class="card-img-top" alt="Program 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 3</h5>
+                            <p class="card-text">Description of Program 3.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <p class="lead">Have questions or need assistance? Contact our support team.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3>Location</h3>
+                    <p>123 School Events Way, City, Country</p>
+                    <h3>Phone</h3>
+                    <p>+123 456 7890</p>
+                </div>
+                <div class="col-md-6">
+                    <h3>Email</h3>
+                    <p>support@schoolevents.com</p>
+                    <h3>Social Media</h3>
+                    <p>Follow us on <a href="#">Facebook</a>, <a href="#">Twitter</a>, and <a href="#">Instagram</a> for updates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; ABC Group of Schools. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

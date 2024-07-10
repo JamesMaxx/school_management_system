@@ -16,10 +16,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
             padding: 100px 0;
         }
-        .feature-event {
-            background-color: #f8f9fa;
-            padding: 50px 0;
-        }
         .about-section {
             padding: 50px 0;
         }
@@ -30,36 +26,37 @@
     </style>
 </head>
 <body>
-
-    <!-- Jumbotron / Hero section -->
-    <div class="jumbotron text-center">
-        <h1 class="display-4" style="color: #333;">ABC Group of Schools</h1>
-        <p class="lead" style="color: #333;">Knowledge, like a tree, grows</p>
-        <hr class="my-4">
-        <p>Bringing up Smart future generations</p>
-        <a class="btn btn-primary btn-lg"  href ='login' role="button">Enter</a>
-    </div>
-
-    <!-- Featured Event Section -->
-    <section class="feature-event">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h2>Featured News</h2>
-                    <p class="lead">Check out our featured news of the month.</p>
-                    <!-- Replace with dynamic content or featured news details -->
-                    <h3>News Title</h3>
-                    <p>Date: March 20, 2023</p>
-                    <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eget suscipit est.</p>
-                    <a class="btn btn-outline-primary" href="#" role="button">Read More</a>
-                </div>
-                <div class="col-md-6">
-                    <!-- Replace with featured news image -->
-                    <img src="path/to/featured-news-image.jpg" class="img-fluid" alt="Featured News">
-                </div>
-            </div>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">School Name</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'registration_app:registration' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'list-events' %}">Events</a>
+                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'registration_app:login' %}">Login</a>
+                </li>
+            </ul>
         </div>
-    </section>
+    </nav>
+    <!-- Jumbotron / Hero section -->
+    <div class="jumbotron text-center" style="background-image: url('https://unsplash.com/photos/9yfJtVcQ9qA');">
+        <h1 class="display-4" style="color: #333;">Welcome to School Name</h1>
+        <p class="lead" style="color: #333;">Preparing Future Leaders</p>
+        <hr class="my-4">
+        <p style="color: #333;">Empowering Students Through Education and Innovation</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'registration_app:login' %}" role="button">Click Here</a>
+    </div>
 
     <!-- About Section -->
     <section class="about-section">
@@ -72,7 +69,46 @@
                     <p>Aliquam erat volutpat. Proin dapibus pulvinar leo, sed feugiat lorem vestibulum in. Phasellus lacinia ipsum eu velit aliquet, non vehicula nulla eleifend.</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="path/to/about-us-image.jpg" class="img-fluid" alt="About Us">
+                    <img src="path/to/about-image.jpg" class="img-fluid" alt="About Us">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section class="programs-section">
+        <div class="container">
+            <h2>Our Programs</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program1-image.jpg" class="card-img-top" alt="Program 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 1</h5>
+                            <p class="card-text">Description of Program 1.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program2-image.jpg" class="card-img-top" alt="Program 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 2</h5>
+                            <p class="card-text">Description of Program 2.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <img src="path/to/program3-image.jpg" class="card-img-top" alt="Program 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Program 3</h5>
+                            <p class="card-text">Description of Program 3.</p>
+                            <a href="#" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,7 +138,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2023 ABC Group of Schools. All rights reserved.</p>
+        <p>&copy; ABC Group of Schools. All rights reserved.</p>
     </footer>
 
     <!-- Bootstrap JS and dependencies -->
