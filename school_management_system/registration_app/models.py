@@ -3,19 +3,26 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# Custom User Model with additional fields for user typeclass User(AbstractUser):
+# Custom User Model with additional fields for user type
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
+    groups = models.ManyToManyField(
+        Group,
+        related_name='user_set',
+        related_query_name='user',
+        verbose_name='groups',
+        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.'
+    )
     user_permissions = models.ManyToManyField(
         Permission,
-        related_name='user_permissions',
+        related_name='user_set',
+        related_query_name='user',
         verbose_name='user permissions',
         help_text='Specific permissions for this user.'
     )
-
 # Base Profile Model with common fields for all profiles
 class BaseProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -53,12 +60,9 @@ class StudentProfile(BaseProfile):
     hobbies = models.TextField(blank=True, null=True)
     extra_curricular_activities = models.TextField(blank=True, null=True)
     Groups = models.ManyToManyField(Group, related_name='students', blank=True)
-    is_student = models.BooleanField(default=True)
-    group = models.CharField(max_length=50, blank=True, null=True)
-
 
     def __str__(self):
-        return f'{self.user.username} - {self.first_name} {self.last_name} - {self.email} - {self.group}'
+        return f'{self.user.username} {self.first_name} {self.last_name} {self.Groups.name}'
 
 # Staff Profile Model
 class StaffProfile(BaseProfile):
@@ -72,12 +76,9 @@ class StaffProfile(BaseProfile):
     hobbies = models.TextField(blank=True, null=True)
     extra_curricular_involvement = models.TextField(blank=True, null=True)
     Groups = models.ManyToManyField(Group, related_name='staff', blank=True)
-    is_staff = models.BooleanField(default=True)
-    group = models.CharField(max_length=50, blank=True, null=True)
-
 
     def __str__(self):
-        return f'{self.user.username} {self.first_name} {self.last_name} {self.email} { self.group}'
+        return f'{self.user.username} {self.first_name} {self.last_name} {self.Groups.name}'
 
 # Admin Profile Model
 class AdminProfile(BaseProfile):
@@ -90,11 +91,9 @@ class AdminProfile(BaseProfile):
     skills = models.TextField(blank=True, null=True)
     hobbies = models.TextField(blank=True, null=True)
     Group = models.ManyToManyField(Group, related_name='admin', blank=True)
-    is_admin = models.BooleanField(default=True)
-    group = models.CharField(max_length=50, blank=True, null=True)
 
     def __str__(self):
-        return f'{self.user.username} {self.first_name} {self.last_name} {self.Group.name}{self.user.is_admin} {self.group}'
+        return f'{self.user.username} {self.first_name} {self.last_name} {self.Group.name}'
 
 # Function to setup default groups and permissions
 @receiver(post_save, sender=User)
