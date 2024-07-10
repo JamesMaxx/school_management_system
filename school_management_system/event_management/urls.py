@@ -21,4 +21,3 @@ urlpatterns = [
     path('venue_pdf', views.venue_pdf, name='venue_pdf'),
 
 ]
-
