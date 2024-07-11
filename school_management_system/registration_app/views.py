@@ -2,32 +2,40 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm, CustomUserCreationForm, CustomUserLoginForm
+from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistrationForm, CustomUserLoginForm
 from .models import User
 from django.utils.translation import gettext_lazy as _
+
+
+@login_required
+def user_list_view(request):
+    users = User.objects.all()
+    return render(request, 'registration_app/user_list.html', {'users': users})
+
+def logout_view(request):
+    logout(request)
+    return redirect('registration_app:login')
+
+def hello_view(request):
+    return render(request, 'registration_app/hello.html')
 
 @csrf_protect
 def login_user(request):
     if request.method == 'POST':
-        form = CustomUserLoginForm(data=request.POST)
+        form = CustomUserLoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('registration_app/login.html')
+                return redirect('registration_app:user_list')  # Redirect to user list page after login
             else:
                 form.add_error(None, _('Invalid email or password'))
     else:
         form = CustomUserLoginForm()
 
-    return render(request, 'registration_app/user_list.html', {'form': form})
-
-@login_required
-def user_list_view(request):
-    users = User.objects.all()
-    return render(request, 'registration_app/user_list.html', {'users': users})
+    return render(request, 'registration_app/login.html', {'form': form})
 
 def registration_view(request):
     return render(request, 'registration_app/registration.html')
