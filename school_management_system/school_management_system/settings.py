@@ -135,6 +135,9 @@ LOGIN_REDIRECT_URL = 'registration_app:user_list'
 # URL to redirect to for login page
 LOGIN_URL = 'registration_app:login'
 
+# URL to redirect to after logout
+LOGOUT_REDIRECT_URL = 'registration_app:login'
+
 # Custom user model
 AUTH_USER_MODEL = 'registration_app.User'
 

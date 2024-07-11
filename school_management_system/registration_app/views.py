@@ -37,6 +37,7 @@ def login_user(request):
 
     return render(request, 'registration_app/login.html', {'form': form})
 
+
 def registration_view(request):
     return render(request, 'registration_app/registration.html')
 
