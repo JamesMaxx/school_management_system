@@ -1,3 +1,4 @@
+""" registration_app views """
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
@@ -8,13 +9,17 @@ from django.utils.translation import gettext_lazy as _
 
 
 @login_required
+def dashboard_view(request):
+    return render(request, 'dashboard.html')
+
+
 def user_list_view(request):
     users = User.objects.all()
     return render(request, 'registration_app/user_list.html', {'users': users})
 
 def logout_view(request):
     logout(request)
-    return redirect('registration_app:login')
+    return redirect('event_management:landingpage')
 
 def hello_view(request):
     return render(request, 'registration_app/hello.html')

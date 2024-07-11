@@ -25,10 +25,10 @@ class CustomUserLoginForm(AuthenticationForm):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
 class StudentRegistrationForm(CustomUserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
     last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
     username = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
     admission_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
@@ -36,7 +36,7 @@ class StudentRegistrationForm(CustomUserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'group', 'email', 'date_of_birth', 'gender', 'admission_date', 'password1', 'password2']
+        fields = ['email', 'first_name', 'last_name', 'username', 'group', 'date_of_birth', 'gender', 'admission_date', 'password1', 'password2']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
@@ -44,6 +44,7 @@ class StudentRegistrationForm(CustomUserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
         user.is_student = True
 
         if commit:
@@ -64,10 +65,10 @@ class StudentRegistrationForm(CustomUserCreationForm):
         return user
 
 class StaffRegistrationForm(CustomUserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
     last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
     username = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
     hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
@@ -75,7 +76,7 @@ class StaffRegistrationForm(CustomUserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'group', 'email', 'date_of_birth', 'gender', 'hire_date', 'password1', 'password2']
+        fields = ['email', 'first_name', 'last_name', 'username', 'group', 'date_of_birth', 'gender', 'hire_date', 'password1', 'password2']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
@@ -83,6 +84,7 @@ class StaffRegistrationForm(CustomUserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
         user.is_staff = True
 
         if commit:
@@ -103,10 +105,10 @@ class StaffRegistrationForm(CustomUserCreationForm):
         return user
 
 class AdminRegistrationForm(CustomUserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Required. Enter a valid email address.', widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
     last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}))
     username = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
     date_of_birth = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     gender = forms.ChoiceField(choices=[('Male', 'Male'), ('Female', 'Female')], required=True, widget=forms.Select(attrs={'class': 'form-select'}))
     hire_date = forms.DateField(required=True, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
@@ -114,7 +116,7 @@ class AdminRegistrationForm(CustomUserCreationForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'group', 'email', 'date_of_birth', 'gender', 'hire_date', 'password1', 'password2']
+        fields = ['email', 'first_name', 'last_name', 'username', 'group', 'date_of_birth', 'gender', 'hire_date', 'password1', 'password2']
         widgets = {
             'password1': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password', 'autocomplete': 'new-password'}),
             'password2': forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'}),
@@ -122,6 +124,7 @@ class AdminRegistrationForm(CustomUserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
         user.is_admin = True
 
         if commit:

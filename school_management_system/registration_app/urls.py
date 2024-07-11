@@ -1,3 +1,4 @@
+""" registration_app URL Configuration """
 from django.urls import path
 from . import views
 
@@ -13,5 +14,6 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('users/', views.user_list_view, name='user_list'),
     path('hello/', views.hello_view, name='hello'),
+    path('dashboard/', views.dashboard_view, name='dashboard'),
 
 ]
