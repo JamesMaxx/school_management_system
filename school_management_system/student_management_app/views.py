@@ -5,7 +5,7 @@ from . models import Student
 
 """view student"""
 def student_dashboard(request):
-    return render(request, 'student_management_app/student_dashboard.html')
+    return render(request, 'studestudent_dashboard.html')
 
 """"
 
