@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
-@csrf_protect
+
 def user_list_view(request):
     users = User.objects.all()
     return render(request, 'registration_app/user_list.html', {'users': users})
