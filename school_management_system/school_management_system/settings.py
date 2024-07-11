@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'event_management',
     'staff_management_app',
+    'student_management_app',
 ]
 
 MIDDLEWARE = [
