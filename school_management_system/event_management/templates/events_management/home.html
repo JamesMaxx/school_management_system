@@ -37,14 +37,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'event_management:home' %}">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'registration_app:registration' %}">Register</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'event_management:events_list' %}">Events</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'registration_app:login' %}">Login</a>
                 </li>
             </ul>
         </div>
@@ -55,7 +50,7 @@
         <p class="lead" style="color: #333;">Preparing Future Leaders</p>
         <hr class="my-4">
         <p style="color: #333;">Empowering Students Through Education and Innovation</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'registration_app:login' %}" role="button">Click Here</a>
+        <a class="btn btn-primary btn-lg" href="{% url 'event_management:home' %}" role="button">Click Here</a>
     </div>
 
     <!-- About Section -->
