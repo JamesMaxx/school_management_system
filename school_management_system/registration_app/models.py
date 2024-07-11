@@ -3,8 +3,11 @@ from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+
+
 # Custom User Model with additional fields for user type
 class User(AbstractUser):
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='custom_user_set')
     is_student = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
