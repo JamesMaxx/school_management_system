@@ -8,11 +8,12 @@ from .models import User
 from django.utils.translation import gettext_lazy as _
 
 
+@csrf_protect
 @login_required
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
-
+@csrf_protect
 def user_list_view(request):
     users = User.objects.all()
     return render(request, 'registration_app/user_list.html', {'users': users})
@@ -34,7 +35,7 @@ def login_user(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('registration_app:user_list')  # Redirect to user list page after login
+                return redirect('registration_app:dashboard')  # Redirect to user list page after login
             else:
                 form.add_error(None, _('Invalid email or password'))
     else:
