@@ -100,7 +100,7 @@ class AdminProfile(BaseProfile):
 def setup_default_groups_and_permissions(sender, instance, created, **kwargs):
     if created:
         if instance.is_student:
-            student_group, _ = Group.objects.get_or_create(name='Students')
+            student_group, _ = Group.objects.get_or_create(name='Student')
             instance.groups.add(student_group)
             # Assign permissions for students if needed
         elif instance.is_staff:
@@ -108,6 +108,6 @@ def setup_default_groups_and_permissions(sender, instance, created, **kwargs):
             instance.groups.add(staff_group)
             # Assign permissions for staff if needed
         elif instance.is_admin:
-            admin_group, _ = Group.objects.get_or_create(name='Admins')
+            admin_group, _ = Group.objects.get_or_create(name='Admin')
             instance.groups.add(admin_group)
             # Assign permissions for admins if needed

@@ -9,7 +9,7 @@
         <th>First Name</th>
         <th>Last Name</th>
         <th>Email</th>
-        <th>Group</th>
+        <th>group</th>
         <th>group</th>
       </tr>
     </thead>
@@ -20,8 +20,8 @@
         <td>{{ user.first_name }}</td>
         <td>{{ user.last_name }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.get_Group_display }}</td>
-        <td>{{ user.get_group }}</td>
+        <td>{{ user.group }}</td>
+        <td>{{ user.get_group_display }}</td>
       </tr>
       {% endfor %}
     </tbody>

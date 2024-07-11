@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +19,10 @@ class CustomUserCreationForm(UserCreationForm):
         except ValidationError as error:
             self.add_error('password1', error)
         return password1
+
+class CustomUserLoginForm(AuthenticationForm):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
 class StudentRegistrationForm(CustomUserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}))
@@ -45,11 +49,9 @@ class StudentRegistrationForm(CustomUserCreationForm):
         if commit:
             user.save()
 
-            # Add user to student group
             student_group, _ = Group.objects.get_or_create(name='Student')
             student_group.user_set.add(user)
 
-            # Create StudentProfile
             StudentProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
@@ -86,11 +88,9 @@ class StaffRegistrationForm(CustomUserCreationForm):
         if commit:
             user.save()
 
-            # Add user to staff group
             staff_group, _ = Group.objects.get_or_create(name='Staff')
             staff_group.user_set.add(user)
 
-            # Create StaffProfile
             StaffProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
@@ -127,11 +127,9 @@ class AdminRegistrationForm(CustomUserCreationForm):
         if commit:
             user.save()
 
-            # Add user to admin group
             admin_group, _ = Group.objects.get_or_create(name='Admin')
             admin_group.user_set.add(user)
 
-            # Create AdminProfile
             AdminProfile.objects.create(
                 user=user,
                 first_name=self.cleaned_data['first_name'],
