@@ -1,32 +1,22 @@
-""" registration_app models """
+# registration_app/models.py
+
 from django.db import models
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser, Group
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.translation import gettext_lazy as _
 
-
-
-# Custom User Model with additional fields for user type
 class User(AbstractUser):
     group = models.ForeignKey(Group, on_delete=models.SET_NULL, null=True, blank=True, related_name='custom_user_set')
     is_student = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
 
-    groups = models.ManyToManyField(
-        Group,
-        related_name='user_set',
-        related_query_name='user',
-        verbose_name='groups',
-        help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.'
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='user_set',
-        related_query_name='user',
-        verbose_name='user permissions',
-        help_text='Specific permissions for this user.'
-    )
+    email = models.EmailField(_('email address'), unique=True)
+
+    def __str__(self):
+        return self.email
+
 # Base Profile Model with common fields for all profiles
 class BaseProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -39,7 +29,6 @@ class BaseProfile(models.Model):
     address = models.TextField()
     city = models.CharField(max_length=50)
     phone_number = models.CharField(max_length=15)
-    email = models.EmailField()
     emergency_contact1_name = models.CharField(max_length=50)
     emergency_contact1_phone = models.CharField(max_length=15)
     emergency_contact1_relationship = models.CharField(max_length=30)
@@ -66,7 +55,7 @@ class StudentProfile(BaseProfile):
     Groups = models.ManyToManyField(Group, related_name='students', blank=True)
 
     def __str__(self):
-        return f'{self.user.username} {self.first_name} {self.last_name} {self.Groups.name}'
+        return f'{self.user.email} {self.first_name} {self.last_name}'
 
 # Staff Profile Model
 class StaffProfile(BaseProfile):
@@ -82,7 +71,7 @@ class StaffProfile(BaseProfile):
     Groups = models.ManyToManyField(Group, related_name='staff', blank=True)
 
     def __str__(self):
-        return f'{self.user.username} {self.first_name} {self.last_name} {self.Groups.name}'
+        return f'{self.user.email} {self.first_name} {self.last_name}'
 
 # Admin Profile Model
 class AdminProfile(BaseProfile):
@@ -97,21 +86,18 @@ class AdminProfile(BaseProfile):
     Group = models.ManyToManyField(Group, related_name='admin', blank=True)
 
     def __str__(self):
-        return f'{self.user.username} {self.first_name} {self.last_name} {self.Group.name}'
+        return f'{self.user.email} {self.first_name} {self.last_name}'
 
-# Function to setup default groups and permissions
+# Function to setup default groups
 @receiver(post_save, sender=User)
-def setup_default_groups_and_permissions(sender, instance, created, **kwargs):
+def setup_default_groups(sender, instance, created, **kwargs):
     if created:
         if instance.is_student:
             student_group, _ = Group.objects.get_or_create(name='Student')
             instance.groups.add(student_group)
-            # Assign permissions for students if needed
         elif instance.is_staff:
             staff_group, _ = Group.objects.get_or_create(name='Staff')
             instance.groups.add(staff_group)
-            # Assign permissions for staff if needed
         elif instance.is_admin:
             admin_group, _ = Group.objects.get_or_create(name='Admin')
             instance.groups.add(admin_group)
-            # Assign permissions for admins if needed
