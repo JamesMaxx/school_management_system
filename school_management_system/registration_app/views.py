@@ -6,6 +6,12 @@ from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistra
 from .models import User
 from django.utils.translation import gettext_lazy as _
 
+
+""" Logout user"""
+def logout_user(request):
+    logout(request)
+    return redirect('registration_app:login')
+
 @csrf_protect
 def login_user(request):
     if request.method == 'POST':
@@ -16,18 +22,19 @@ def login_user(request):
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('registration_app/login.html')
+                return redirect('registration_app:user_list')
             else:
                 form.add_error(None, _('Invalid email or password'))
     else:
         form = CustomUserLoginForm()
 
-    return render(request, 'registration_app/user_list.html', {'form': form})
+    return render(request, 'registration_app/login.html', {'form': form})
 
 @login_required
 def user_list_view(request):
     users = User.objects.all()
     return render(request, 'registration_app/user_list.html', {'users': users})
+
 
 def registration_view(request):
     return render(request, 'registration_app/registration.html')
