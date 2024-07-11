@@ -1,4 +1,3 @@
-""" registration_app views """
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views.decorators.csrf import csrf_protect
@@ -7,12 +6,10 @@ from .forms import StudentRegistrationForm, StaffRegistrationForm, AdminRegistra
 from .models import User
 from django.utils.translation import gettext_lazy as _
 
-
 @csrf_protect
 @login_required
 def dashboard_view(request):
     return render(request, 'dashboard.html')
-
 
 def user_list_view(request):
     users = User.objects.all()
@@ -28,22 +25,14 @@ def hello_view(request):
 @csrf_protect
 def login_user(request):
     if request.method == 'POST':
-        form = CustomUserLoginForm(request.POST)
+        form = CustomUserLoginForm(request, data=request.POST)
         if form.is_valid():
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=email, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('registration_app:dashboard')  # Redirect to user list page after login
-            else:
-                form.add_error(None, _('Invalid email or password'))
+            login(request, form.get_user())
+            return redirect('registration_app:user_list')  # Redirect to user list page after login
     else:
         form = CustomUserLoginForm()
 
     return render(request, 'registration_app/login.html', {'form': form})
-
-
 def registration_view(request):
     return render(request, 'registration_app/registration.html')
 
