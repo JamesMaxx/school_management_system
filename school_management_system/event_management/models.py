@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from registration_app.models import User  # Import your custom User model
+
 
 class Venue(models.Model):
     organizer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

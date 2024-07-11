@@ -2,14 +2,14 @@
 
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
+
+app_name = 'school_management_system'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('event_management.urls')),
-    path('', include('registration_app.urls')),  # Include registration_app URLs
-    path('accounts/', include('django.contrib.auth.urls')),  # Include Django auth URLs
     path('staff/', include('staff_management_app.urls')),
+
 ]
 
 

@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'event_management',
-    'registration_app',
     'staff_management_app',
 ]
 
@@ -130,19 +129,16 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URL to redirect to after login (used by Django's built-in login view)
-LOGIN_REDIRECT_URL = 'registration_app:user_list'
+LOGIN_REDIRECT_URL = '/'
 
-# URL to redirect to for login page
-LOGIN_URL = 'registration_app:login'
+# URL to redirect to after logout (used by Django's built-in logout view)
+LOGOUT_REDIRECT_URL = '/'
 
-# URL to redirect to after logout
-LOGOUT_REDIRECT_URL = 'registration_app:login'
-
-# Custom user model
-AUTH_USER_MODEL = 'registration_app.User'
+# URL to redirect to after registration
+REGISTRATION_REDIRECT_URL = '/'
 
 # Authentication backends
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'registration_app.backends.EmailBackend',
+
 ]
