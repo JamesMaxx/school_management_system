@@ -9,7 +9,9 @@ urlpatterns = [
     path('', include('event_management.urls')),
     path('', include('registration_app.urls')),  # Include registration_app URLs
     path('accounts/', include('django.contrib.auth.urls')),  # Include Django auth URLs
+    path('staff/', include('staff_management_app.urls')),
 ]
+
 
 
 admin.site.site_header = "ABC Group of Schools"

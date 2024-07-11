@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'event_management',
     'registration_app',
+    'staff_management_app',
 ]
 
 MIDDLEWARE = [
