@@ -1,3 +1,4 @@
+""" URLs for the student_management_app app. """
 from django.urls import path
 from . import views
 
@@ -12,4 +13,5 @@ urlpatterns = [
     path('delete_student_profile/<int:student_id>/', views.delete_student_profile, name='delete_student_profile'),
     path('login_links/', views.login_links, name='login_links'),
     path('student_registration/', views.student_registration, name='student_registration'),
+    path('complete_profile/<int:student_id>/', views.complete_profile, name='complete_profile'),
 ]

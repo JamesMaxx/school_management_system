@@ -1,9 +1,12 @@
+""" Models for the student_management_app app. """
 from django.db import models
+from django.contrib.auth.models import User
 
 class Student(models.Model):
     """
     Model to store information about students.
     """
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     date_of_birth = models.DateField()
@@ -21,7 +24,6 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.first_name} {self.last_name} - {self.admission_number}"
 
-
 class Course(models.Model):
     """
     Model to represent courses offered.
@@ -31,7 +33,6 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Enrollment(models.Model):
     """
@@ -45,7 +46,6 @@ class Enrollment(models.Model):
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.course.name}"
 
-
 class Attendance(models.Model):
     """
     Model to record student attendance.
@@ -56,7 +56,6 @@ class Attendance(models.Model):
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.date}"
-
 
 class PerformanceRecord(models.Model):
     """
@@ -69,7 +68,6 @@ class PerformanceRecord(models.Model):
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.course.name}: {self.grade}"
 
-
 class Assignment(models.Model):
     """
     Model to represent assignments given to students.
@@ -81,7 +79,6 @@ class Assignment(models.Model):
 
     def __str__(self):
         return f"{self.title} - {self.course.name}"
-
 
 class Submission(models.Model):
     """
