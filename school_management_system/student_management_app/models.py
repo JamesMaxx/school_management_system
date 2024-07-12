@@ -10,6 +10,7 @@ class Student(models.Model):
     admission_number = models.CharField(max_length=20, unique=True)
     date_admitted = models.DateField()
     address = models.TextField()
+    gender = models.CharField(max_length=1, choices=[('M', 'Male'), ('F', 'Female')])
     guardian_name = models.CharField(max_length=100)
     guardian_contact = models.CharField(max_length=20)
     email = models.EmailField()

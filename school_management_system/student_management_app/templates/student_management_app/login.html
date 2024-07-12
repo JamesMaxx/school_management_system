@@ -1,0 +1,11 @@
+<!-- school_management_system/student_management_app/templates/student_management_app/login.html -->
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+    <h1>Login</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+{% endblock %}

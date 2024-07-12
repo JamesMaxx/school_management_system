@@ -1,12 +1,13 @@
-from . models import Student
-from django.contrib import admin
 from django.urls import path
 from . import views
 
 app_name = 'student_management'
 
 urlpatterns = [
-    path('dashboard/', views.student_dashboard, name='student_dashboard'),
-
-
+    path('', views.home, name='home'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('student_profile/<int:student_id>/', views.student_profile, name='student_profile'),
+    path('update_student_profile/<int:student_id>/', views.update_student_profile, name='update_student_profile'),
+    path('delete_student_profile/<int:student_id>/', views.delete_student_profile, name='delete_student_profile'),
 ]
