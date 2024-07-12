@@ -10,4 +10,5 @@ urlpatterns = [
     path('student_profile/<int:student_id>/', views.student_profile, name='student_profile'),
     path('update_student_profile/<int:student_id>/', views.update_student_profile, name='update_student_profile'),
     path('delete_student_profile/<int:student_id>/', views.delete_student_profile, name='delete_student_profile'),
+    path('login_links/', views.login_links, name='login_links'),
 ]

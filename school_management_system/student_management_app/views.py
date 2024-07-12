@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import StudentRegistrationForm, StudentProfileForm, CustomAuthenticationForm
 from .models import Student
 
+def login_links(request):
+    return render(request, 'student_management_app/login_links.html')
+
 def home(request):
     return render(request, 'student_management_app/student_home.html')
 
