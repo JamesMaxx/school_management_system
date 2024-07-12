@@ -5,7 +5,7 @@ from .forms import StudentRegistrationForm, StudentProfileForm, CustomAuthentica
 from .models import Student
 
 def home(request):
-    return render(request, 'student_management_app/home.html')
+    return render(request, 'student_management_app/student_home.html')
 
 def login_view(request):
     if request.method == 'POST':

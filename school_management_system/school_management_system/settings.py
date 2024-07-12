@@ -119,11 +119,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    'event_management/static',
 ]
 
-# Define the directory where `collectstatic` will gather files for deployment
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
 
 
 # Media files

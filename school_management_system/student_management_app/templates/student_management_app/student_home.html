@@ -1,0 +1,13 @@
+<!-- Student Home Template -->
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+    <h1>Student Home</h1>
+
+    {% if student %}
+        <p>First Name: {{ student.first_name }}</p>
+    {% else %}
+        <p>No student found.</p>
+    {% endif %}
+
+{% endblock %}

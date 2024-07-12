@@ -4,7 +4,7 @@ from . import views
 app_name = 'event_management'
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.home, name='events_home'),
     path('landing_page', views.landingpage, name='landing-page'),
     path('<int:year>/<str:month>/', views.home, name='home'),
     path('events_list', views.all_events, name='events_list'),

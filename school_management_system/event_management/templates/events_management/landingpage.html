@@ -1,7 +1,4 @@
-<!-- school_management_system/templates/event_management/landingpage.html -->
-
-{% load static %}  <!-- Load static files if not already loaded -->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +11,7 @@
     <style>
         /* Custom CSS styles */
         .jumbotron {
-            background-image: url('{% static "static/landingpage_background.jpg" %}');
+            background-image: url('path/to/your/background-image.jpg');
             background-size: cover;
             color: #fff;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
@@ -39,28 +36,29 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:home' %}">Home</a>
+                    <a class="nav-link" href="{% url 'event_management:events_list' %}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'registration_app:registration' %}">Register</a>
+                    <a class="nav-link" href="{% url 'student_management_app:login' %}">login1</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'event_management:events_list' %}">Events</a>
-                </li>
+                    </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'registration_app:login' %}">Login</a>
+                    <a class="nav-link" href="{% url 'student_management_app:login' %}">login2</a>
                 </li>
             </ul>
         </div>
     </nav>
-    <!-- Jumbotron / Hero section -->
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to School Name</h1>
-        <p class="lead">Preparing Future Leaders</p>
-        <hr class="my-4">
-        <p>Empowering Students Through Education and Innovation</p>
-        <a class="btn btn-primary btn-lg" href="{% url 'registration_app:login' %}" role="button">Click Here</a>
-    </div>
+<!-- Jumbotron / Hero section -->
+<div class="jumbotron text-center" style="background-image: url({% static 'landing_page/school_pic.jpg' %});">
+    <h1 class="display-4" style="color: #333;">Welcome to School Name</h1>
+    <p class="lead" style="color: #333;">Preparing Future Leaders</p>
+    <hr class="my-4">
+    <p style="color: #333;">Empowering Students Through Education and Innovation</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'student_management_app:login' %}" role="button">Click Here</a>
+</div>
+
 
     <!-- About Section -->
     <section class="about-section">
@@ -73,7 +71,7 @@
                     <p>Aliquam erat volutpat. Proin dapibus pulvinar leo, sed feugiat lorem vestibulum in. Phasellus lacinia ipsum eu velit aliquet, non vehicula nulla eleifend.</p>
                 </div>
                 <div class="col-md-6">
-                    <img src="{% static 'static/aboutus1.jpg' %}" class="img-fluid" alt="About Us">
+                    <img src="{% static 'landing_page/school_pic.jpg' %}" class="img-fluid" alt="About Us">
                 </div>
             </div>
         </div>
@@ -86,7 +84,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="{% static 'aboutus2.jpg' %}" class="card-img-top" alt="Program 1">
+                        <img src="{% static 'landing_page/school_pic.jpg' %}" class="card-img-top" alt="Program 1">
                         <div class="card-body">
                             <h5 class="card-title">Program 1</h5>
                             <p class="card-text">Description of Program 1.</p>
@@ -96,7 +94,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="{% static 'static/aboutus3.jpg' %}" class="card-img-top" alt="Program 2">
+                        <img src="{% static 'landing_page/school_pic.jpg' %}" class="card-img-top" alt="Program 2">
                         <div class="card-body">
                             <h5 class="card-title">Program 2</h5>
                             <p class="card-text">Description of Program 2.</p>
@@ -106,7 +104,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="{% static 'static/aboutus4.jpg' %}" class="card-img-top" alt="Program 3">
+                        <img src="{% static 'landing_page/school_pic.jpg' %}" class="card-img-top" alt="Program 3">
                         <div class="card-body">
                             <h5 class="card-title">Program 3</h5>
                             <p class="card-text">Description of Program 3.</p>
