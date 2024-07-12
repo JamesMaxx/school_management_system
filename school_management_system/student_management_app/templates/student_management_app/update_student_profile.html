@@ -3,6 +3,7 @@
 
 {% block content %}
     <h1>Update Profile for {{ student.user.first_name }} {{ student.user.last_name }}</h1>
+    <p>User ID: {{ student.user.id }}</p>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

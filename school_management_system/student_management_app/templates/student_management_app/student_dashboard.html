@@ -8,6 +8,7 @@
 
     {% if student %}
         <p>First Name: {{ student.first_name }}</p>
+        <p>User ID: {{ student.user.id }}</p>
     {% else %}
         <p>No student found.</p>
     {% endif %}

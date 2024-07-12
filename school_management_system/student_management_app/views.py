@@ -79,4 +79,3 @@ def complete_profile(request, student_id):
     else:
         form = StudentProfileForm(instance=student)
     return render(request, 'student_management_app/complete_profile.html', {'form': form, 'student': student})
-

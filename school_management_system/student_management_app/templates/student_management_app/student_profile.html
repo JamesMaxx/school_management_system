@@ -5,6 +5,7 @@
     <h1>Welcome, {{ student.user.first_name }} {{ student.user.last_name }}</h1>
     <p>Email: {{ student.user.email }}</p>
     <p>Phone: {{ student.phone }}</p>
+    <p>User ID: {{ student.user.id }}</p>
     <p>Date of Birth: {{ student.date_of_birth }}</p>
     <p>Gender: {{ student.get_gender_display }}</p>
     <img src="{{ student.profile_picture.url }}" alt="Profile Picture">
