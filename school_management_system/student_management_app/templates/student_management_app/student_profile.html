@@ -2,14 +2,29 @@
 {% extends 'events_management/base.html' %}
 
 {% block content %}
-    <h1>Welcome, {{ student.user.first_name }} {{ student.user.last_name }}</h1>
-    <p>Email: {{ student.user.email }}</p>
-    <p>Phone: {{ student.phone }}</p>
-    <p>User ID: {{ student.user.id }}</p>
-    <p>Date of Birth: {{ student.date_of_birth }}</p>
-    <p>Gender: {{ student.get_gender_display }}</p>
-    <p>Admission Number: {{ student.admission_number }}</p>
-    <p><a href="{% url 'student_management_app:logout' %}">Logout</a></p>
-    <p><a href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a></p>
-    <p><a href="{% url 'student_management_app:delete_student_profile' student.id %}">Delete Profile</a></p>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title mb-4">Welcome, {{ student.user.first_name }} {{ student.user.last_name }}</h1>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Email:</strong> {{ student.user.email }}</li>
+                        <li class="list-group-item"><strong>Phone:</strong> {{ student.phone }}</li>
+                        <li class="list-group-item"><strong>User ID:</strong> {{ student.user.id }}</li>
+                        <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.date_of_birth }}</li>
+                        <li class="list-group-item"><strong>Gender:</strong> {{ student.get_gender_display }}</li>
+                        <li class="list-group-item"><strong>Admission Number:</strong> {{ student.admission_number }}</li>
+                        <li class="list-group-item"><strong>Course:</strong> {{ student.course }}</li>
+                    </ul>
+                    <div class="mt-4">
+                        <a class="btn btn-primary mr-2" href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a>
+                        <a class="btn btn-danger" href="{% url 'student_management_app:delete_student_profile' student.id %}">Delete Profile</a>
+                        <a class="btn btn-secondary float-right" href="{% url 'student_management_app:logout' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
