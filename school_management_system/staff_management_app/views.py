@@ -1,3 +1,4 @@
+"""
 from django.shortcuts import render
 
 # Create your views here.
@@ -23,5 +24,7 @@ def staff_create(request):
     else:
         form = StaffForm()
     return render(request, 'staff_management/staff_create.html', {'form': form})
+
+"""
 
 # Add views for updating and deleting staff information
