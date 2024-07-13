@@ -23,7 +23,7 @@ class Student(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} - {self.admission_number}"
+        return f"{self.first_name} {self.last_name} {self.user.username}- {self.admission_number}"
 
 class Course(models.Model):
     """

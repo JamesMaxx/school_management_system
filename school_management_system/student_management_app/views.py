@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .forms import StudentRegistrationForm, StudentProfileForm, CustomAuthenticationForm
-from .models import Student
+from .forms import StudentRegistrationForm, StudentProfileForm
 from django.contrib.auth.forms import UserCreationForm
+from .models import Student
 
 
 
@@ -85,37 +86,35 @@ def complete_profile(request, student_id):
 
 
 
-
+@csrf_protect
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST.get('username')  # Correctly access username from POST data
-        password = request.POST.get('password')  # Correctly access password from POST data
-
-        # Authenticate user
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
+            student = get_object_or_404(Student, user=user)
             messages.success(request, f'Welcome, {user.username}. You have successfully logged in.')
-            return redirect('student_management_app:student_profile', student_id=user.id)
+            return redirect('student_management_app:student_profile', student_id=student.id)
         else:
             messages.error(request, 'Invalid username or password. Please try again.')
             return redirect('student_management_app:login')
     else:
         return render(request, 'student_management_app/login.html')
 
+
 # Handle student registration
+@csrf_protect
 def student_registration(request):
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
+            user = form.save(commit=False)
             form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=password)
-            login(request, user)
-            messages.success(request, f'Welcome, {user.username}. You have successfully registered. Please login to complete your profile.')
-            return redirect('student_management_app:student_profile', student_id=user.id)
+            student = Student.objects.get(user=user)
+            return redirect('student_management_app:login')
     else:
         form = StudentRegistrationForm()
     return render(request, 'student_management_app/student_registration.html', {'form': form})

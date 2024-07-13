@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Student
+from datetime import date
 
 class StudentRegistrationForm(UserCreationForm):
     email = forms.EmailField(
@@ -53,36 +54,46 @@ class StudentRegistrationForm(UserCreationForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'role']
 
-    def save_user(self):
-        user = User.objects.create_user(
-            username=self.cleaned_data['username'],
-            email=self.cleaned_data['email'],
-            password=self.cleaned_data['password1'],
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
-        )
-        user.role = self.cleaned_data['role']
-        user.save()
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+            self.save_student(user)
         return user
 
     def save_student(self, user):
         student = Student.objects.create(
             user=user,
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
             phone=self.cleaned_data['phone'],
             date_of_birth=self.cleaned_data['date_of_birth'],
-            gender=self.cleaned_data['gender']
+            gender=self.cleaned_data['gender'],
+            admission_number=self.generate_admission_number(),
+            date_admitted=date.today(),  # Use date.today() for current date
+            address="",  # Add the actual address if available
+            guardian_name="",  # Add the actual guardian name if available
+            guardian_contact="",  # Add the actual guardian contact if available
+            email=user.email,
+            active=True,
+            profile_picture=None  # Handle file upload if needed
         )
         return student
+
+    def generate_admission_number(self):
+        """
+        Generate a unique admission number for the student.
+        """
+        latest_student = Student.objects.order_by('-id').first()
+        if not latest_student:
+            return 'S001'
+        admission_number = latest_student.admission_number
+        new_admission_int = int(admission_number.split('S')[-1]) + 1
+        new_admission_number = 'S' + str(new_admission_int).zfill(3)
+        return new_admission_number
 
 class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['phone', 'date_of_birth', 'gender']
-
-class CustomAuthenticationForm(forms.Form):
-    username = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'})
-    )
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'})
-    )
