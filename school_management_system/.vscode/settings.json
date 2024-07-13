@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50000000000000000000,
+            "driver": "SQLite",
+            "name": "School Management System",
+            "database": "${workspaceFolder:school_management_system}/db.sqlite3"
+        }
+    ]
+}

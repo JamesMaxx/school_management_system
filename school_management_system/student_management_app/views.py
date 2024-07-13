@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import StudentRegistrationForm, StudentProfileForm, CustomAuthenticationForm
 from .models import Student
+from django.contrib.auth.forms import UserCreationForm
 
 
 
@@ -108,10 +109,13 @@ def student_registration(request):
     if request.method == 'POST':
         form = StudentRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            user = form.save()  # Save both User and Student
-            login(request, user)  # Log in the user after registration
-            messages.success(request, f'Account created for {user.username}. Please login to complete your profile details.')
-            return redirect('student_management_app:login')
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.success(request, f'Welcome, {user.username}. You have successfully registered. Please login to complete your profile.')
+            return redirect('student_management_app:student_profile', student_id=user.id)
     else:
         form = StudentRegistrationForm()
     return render(request, 'student_management_app/student_registration.html', {'form': form})
