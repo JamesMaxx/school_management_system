@@ -16,21 +16,9 @@ def login_links(request):
 def home(request):
     return render(request, 'student_management_app/student_home.html')
 
-# Handle student registration
-def student_registration(request):
-    if request.method == 'POST':
-        form = StudentRegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save_user()  # Save user
-            student = form.save_student(user)  # Save student
-            login(request, user)  # Log in the user after registration
-            messages.success(request, f'Account created for {user.username}. Please complete your profile details.')
-            return redirect('student_management_app:complete_profile', student_id=student.id)
-    else:
-        form = StudentRegistrationForm()
-    return render(request, 'student_management_app/student_registration.html', {'form': form})
 
 # Handle user login
+"""
 def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
@@ -44,6 +32,7 @@ def login_view(request):
     else:
         form = CustomAuthenticationForm()
     return render(request, 'student_management_app/login.html', {'form': form})
+"""
 
 # Handle user logout
 @login_required
@@ -52,7 +41,7 @@ def logout_view(request):
     return redirect('student_management_app:login')
 
 # Render the student profile page
-
+@login_required
 def student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     return render(request, 'student_management_app/student_profile.html', {'student': student})
@@ -96,7 +85,7 @@ def complete_profile(request, student_id):
 
 
 
-def kolin(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')  # Correctly access username from POST data
         password = request.POST.get('password')  # Correctly access password from POST data
@@ -110,6 +99,19 @@ def kolin(request):
             return redirect('student_management_app:student_profile', student_id=user.id)
         else:
             messages.error(request, 'Invalid username or password. Please try again.')
-            return redirect('student_management_app:kolin')
+            return redirect('student_management_app:login')
     else:
-        return render(request, 'student_management_app/kolin.html')
+        return render(request, 'student_management_app/login.html')
+
+# Handle student registration
+def student_registration(request):
+    if request.method == 'POST':
+        form = StudentRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()  # Save both User and Student
+            login(request, user)  # Log in the user after registration
+            messages.success(request, f'Account created for {user.username}. Please login to complete your profile details.')
+            return redirect('student_management_app:login')
+    else:
+        form = StudentRegistrationForm()
+    return render(request, 'student_management_app/student_registration.html', {'form': form})
