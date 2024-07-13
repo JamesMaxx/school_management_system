@@ -10,31 +10,49 @@
                     <a class="nav-link" href="{% url 'event_management:events_home' %}">Home</a>
                 </li>
                 {% if request.user.is_authenticated %}
-                <!-- Add authenticated user links here -->
+                    <!-- Admin specific links -->
+                    {% if request.user.is_superuser %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">replace with Admin Dashboard</a>
+                        </li>
+                    {% endif %}
+                    <!-- Common authenticated user links -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">To fix for Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">To for Update Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:events_list' %}">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:add-event' %}">Add Event</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:list-venues' %}">Venues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:add-venue' %}">Add Venue</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:venue-text' %}">Download Venue Text</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:venue_csv' %}">Download Venue CSV</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'event_management:venue_pdf' %}">Download Venue PDF</a>
+                    </li>
                 {% else %}
-                <!-- Add links for non-authenticated users here -->
+                    <!-- Links for non-authenticated users -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">Register</a>
+                    </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:events_list' %}">Events</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:add-event' %}">Add Event</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:list-venues' %}">Venues</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:add-venue' %}">Add Venue</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:venue-text' %}">Download Venue Text</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:venue_csv' %}">Download Venue CSV</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'event_management:venue_pdf' %}">Download Venue PDF</a>
-                </li>
             </ul>
             <form class="d-flex" role="search" method="POST" action="{% url 'event_management:search-venues' %}">
                 {% csrf_token %}

@@ -125,7 +125,6 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
-
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -136,10 +135,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URL to redirect to after login (used by Django's built-in login view)
-LOGIN_REDIRECT_URL = 'student_management:student_profile'
+LOGIN_REDIRECT_URL = 'student_management_app:student_profile'
 
 # URL to redirect to after logout (used by Django's built-in logout view)
-LOGOUT_REDIRECT_URL = 'student_management:login'
+LOGOUT_REDIRECT_URL = 'student_management_app:login'
 
 # URL to redirect to after registration
 REGISTRATION_REDIRECT_URL = '/'

@@ -1,22 +1,42 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import login as auth_login, logout as auth_logout, authenticate
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import StudentRegistrationForm, StudentProfileForm, CustomAuthenticationForm
 from .models import Student
 
+
+
+# Render the login links page
 def login_links(request):
     return render(request, 'student_management_app/login_links.html')
 
+# Render the home page for students
+@login_required
 def home(request):
     return render(request, 'student_management_app/student_home.html')
 
+# Handle student registration
+def student_registration(request):
+    if request.method == 'POST':
+        form = StudentRegistrationForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save_user()  # Save user
+            student = form.save_student(user)  # Save student
+            login(request, user)  # Log in the user after registration
+            messages.success(request, f'Account created for {user.username}. Please complete your profile details.')
+            return redirect('student_management_app:complete_profile', student_id=student.id)
+    else:
+        form = StudentRegistrationForm()
+    return render(request, 'student_management_app/student_registration.html', {'form': form})
+
+# Handle user login
 def login_view(request):
     if request.method == 'POST':
         form = CustomAuthenticationForm(request, data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            auth_login(request, user)
+            login(request, user)
             student = get_object_or_404(Student, user=user)
             return redirect('student_management_app:student_profile', student_id=student.id)
         else:
@@ -25,15 +45,19 @@ def login_view(request):
         form = CustomAuthenticationForm()
     return render(request, 'student_management_app/login.html', {'form': form})
 
+# Handle user logout
+@login_required
 def logout_view(request):
-    auth_logout(request)
+    logout(request)
     return redirect('student_management_app:login')
 
-@login_required
+# Render the student profile page
+
 def student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     return render(request, 'student_management_app/student_profile.html', {'student': student})
 
+# Update student profile
 @login_required
 def update_student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
@@ -46,6 +70,7 @@ def update_student_profile(request, student_id):
         form = StudentProfileForm(instance=student)
     return render(request, 'student_management_app/update_student_profile.html', {'form': form, 'student': student})
 
+# Delete student profile
 @login_required
 def delete_student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
@@ -54,19 +79,7 @@ def delete_student_profile(request, student_id):
         return redirect('student_management_app:home')
     return render(request, 'student_management_app/delete_student_profile.html', {'student': student})
 
-def student_registration(request):
-    if request.method == 'POST':
-        form = StudentRegistrationForm(request.POST, request.FILES)
-        if form.is_valid():
-            student = form.save(commit=False)
-            student.save()
-            username = form.cleaned_data['username']
-            messages.success(request, f'Account created for {username}. Please complete your profile details.')
-            return redirect('student_management_app:complete_profile', student_id=student.id)
-    else:
-        form = StudentRegistrationForm()
-    return render(request, 'student_management_app/student_registration.html', {'form': form})
-
+# Complete student profile after registration
 @login_required
 def complete_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
@@ -75,7 +88,28 @@ def complete_profile(request, student_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Profile updated successfully.')
-            return redirect('student_management_app:login')
+            return redirect('student_management_app:home')
     else:
         form = StudentProfileForm(instance=student)
     return render(request, 'student_management_app/complete_profile.html', {'form': form, 'student': student})
+
+
+
+
+def kolin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')  # Correctly access username from POST data
+        password = request.POST.get('password')  # Correctly access password from POST data
+
+        # Authenticate user
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            messages.success(request, f'Welcome, {user.username}. You have successfully logged in.')
+            return redirect('student_management_app:student_profile', student_id=user.id)
+        else:
+            messages.error(request, 'Invalid username or password. Please try again.')
+            return redirect('student_management_app:kolin')
+    else:
+        return render(request, 'student_management_app/kolin.html')
