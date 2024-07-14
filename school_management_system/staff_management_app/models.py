@@ -28,7 +28,7 @@ class Staff(models.Model):
         return f"{self.first_name} {self.last_name}"
 
 class Qualification(models.Model):
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='qualifications')
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_qualifications')
     degree = models.CharField(max_length=100)
     institution = models.CharField(max_length=100)
     year_completed = models.IntegerField(null=True, blank=True)
@@ -40,7 +40,7 @@ class Qualification(models.Model):
 class Responsibility(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='responsibilities')
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_responsibilities')
 
     def __str__(self):
         return self.title
