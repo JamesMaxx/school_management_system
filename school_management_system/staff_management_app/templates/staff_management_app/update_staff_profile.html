@@ -1,0 +1,14 @@
+{% extends 'events_management/base.html' %}
+
+{% block title %}Update Profile{% endblock %}
+
+{% block content %}
+    <h1>Update Profile for {{ staff.user.first_name }} {{ staff.user.last_name }}</h1>
+    <p>User ID: {{ staff.user.id }}</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
+    <p><a href="{% url 'staff_management_app:staff_profile' staff.id %}">Cancel</a></p>
+{% endblock %}

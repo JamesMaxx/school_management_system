@@ -1,0 +1,18 @@
+{% extends 'events_management/base.html' %}
+
+{% block title %}Staff Registration{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        {# The container is used to center the form on the page #}
+        <h2 class="mb-4">Staff Registration</h2>
+        {# This is the heading for the form #}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {# This is the form itself. It uses the form object that was passed to the template #}
+            <button type="submit" class="btn btn-primary">Register</button>
+            {# This is the submit button for the form. When clicked, it will send the form data to the server #}
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'events_management/base.html' %}
+
+{% block title %}Staff Profile{% endblock %}
+
+{% block content %}
+    <h1>{{ staff.user.first_name }} {{ staff.user.last_name }}</h1>
+    <p>User ID: {{ staff.user.id }}</p>
+    <p>Email: {{ staff.user.email }}</p>
+    <p>Phone: {{ staff.phone_number }}</p>
+    <p>Department: {{ staff.department }}</p>
+    <p>Role: {{ staff.role }}</p>
+    <p>Join Date: {{ staff.join_date }}</p>
+    <p>Profile Picture:
+        {% if staff.profile_picture %}
+            <img src="{{ staff.profile_picture.url }}" alt="Profile Picture" width="100px" height="100px">
+        {% else %}
+            <img src="https://via.placeholder.com/100" alt="No Profile Picture" width="100px" height="100px">
+        {% endif %}
+    </p>
+    <p><a href="{% url 'staff_management_app:update_staff_profile' staff.id %}">Update Profile</a></p>
+{% endblock %}
