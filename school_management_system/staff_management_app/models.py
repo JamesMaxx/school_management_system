@@ -45,6 +45,7 @@ class Responsibility(models.Model):
     def __str__(self):
         return self.title
 
+
 class StaffProfile(models.Model):
     staff = models.OneToOneField(Staff, on_delete=models.CASCADE, related_name='profile')
     profile_picture = models.ImageField(upload_to='staff/profile_pics/', blank=True, null=True)
