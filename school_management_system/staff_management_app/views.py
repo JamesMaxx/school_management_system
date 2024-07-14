@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Staff, Qualification, Responsibility, Department
 from django.contrib.auth.models import User
-from .forms import StaffRegistrationForm, StaffProfileForm, QualificationForm, ResponsibilityForm
+from .forms import StaffRegistrationForm, QualificationForm, ResponsibilityForm
 
 def home(request):
     return render(request, 'staff_management_app/staff_home.html')

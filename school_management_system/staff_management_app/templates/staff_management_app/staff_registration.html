@@ -9,7 +9,18 @@
                 <h2 class="text-center mb-4">Staff Registration</h2>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Register</button>
                     </div>
@@ -18,4 +29,3 @@
         </div>
     </div>
 {% endblock %}
-

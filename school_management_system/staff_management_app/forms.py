@@ -1,38 +1,44 @@
 from django import forms
-from .models import Staff, Department, Qualification, Responsibility, StaffProfile
+from .models import Staff, Qualification, Responsibility, StaffProfile
 
 class StaffRegistrationForm(forms.ModelForm):
+    ROLE_CHOICES = [
+        ('staff', 'Staff'),
+    ]
+
+    role = forms.ChoiceField(choices=ROLE_CHOICES, initial='staff')
+
     class Meta:
         model = Staff
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'is_active', 'profile_picture', 'department', 'role']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'role']
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'role' :forms.ChoiceField(choices=[('student', 'Student')], widget=forms.Select(attrs={'class': 'form-control'}), initial='student')
         }
 
-class DepartmentForm(forms.ModelForm):
-    class Meta:
-        model = Department
-        fields = ['name', 'description']
+
+
 
 class QualificationForm(forms.ModelForm):
     class Meta:
         model = Qualification
-        fields = ['degree', 'institution', 'year_completed', 'upload_certificate']
+        fields = ['degree', 'institution', 'year_completed']
         widgets = {
-            'year_completed': forms.NumberInput(attrs={'min': 1900, 'max': 9999}),
+            'degree': forms.TextInput(attrs={'class': 'form-control'}),
+            'institution': forms.TextInput(attrs={'class': 'form-control'}),
+            'year_completed': forms.NumberInput(attrs={'class': 'form-control', 'min': 1900, 'max': 9999}),
         }
 
 class ResponsibilityForm(forms.ModelForm):
     class Meta:
         model = Responsibility
         fields = ['title', 'description']
-
-class StaffProfileForm(forms.ModelForm):
-    class Meta:
-        model = StaffProfile
-        fields = ['profile_picture']
-
-class StaffSearchForm(forms.Form):
-    search_query = forms.CharField(required=False, label='Search', widget=forms.TextInput(attrs={'placeholder': 'Search by name or email'}))
-    department = forms.ModelChoiceField(queryset=Department.objects.all(), required=False, empty_label="All Departments")
-    is_active = forms.ChoiceField(choices=[('', 'All'), ('True', 'Active'), ('False', 'Inactive')], required=False)
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        }
