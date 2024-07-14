@@ -42,3 +42,46 @@ class ResponsibilityForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
         }
+
+
+class StaffForm(forms.ModelForm):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
+    )
+
+    class Meta:
+        model = Staff
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'role']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'role' :forms.ChoiceField(choices=[('staff', 'Staff')], widget=forms.Select(attrs={'class': 'form-control'}), initial='staff')
+        }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+            self.save_staff(user)
+        return user
+
+    def save_staff(self, user):
+        staff = Staff.objects.create(
+            user=user,
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            phone=self.cleaned_data['phone'],
+            date_of_birth=self.cleaned_data['date_of_birth'],
+            gender=self.cleaned_data['gender'],
+            address="",  # Add the actual address if available
+            email=user.email,
+            active=True,
+            profile_picture=None  # Handle file upload if needed
+        )
+        return staff
