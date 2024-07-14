@@ -2,6 +2,9 @@
 
 {% block content %}
 <h1>Login Links</h1>
-    <p>Please select your role to login:</p>
-    <p><a href="{% url 'staff_management_app:login' %}">Staff Login</a></p>
+    <p>Please select your role or action:</p>
+    <ul>
+        <li><a href="{% url 'staff_management_app:login' %}">Staff Login</a></li>
+        <li><a href="{% url 'staff_management_app:staff_registration' %}">Staff Registration</a></li>
+    </ul>
 {% endblock %}
