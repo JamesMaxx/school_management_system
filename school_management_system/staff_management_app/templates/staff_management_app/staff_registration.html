@@ -4,15 +4,18 @@
 
 {% block content %}
     <div class="container mt-5">
-        {# The container is used to center the form on the page #}
-        <h2 class="mb-4">Staff Registration</h2>
-        {# This is the heading for the form #}
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {# This is the form itself. It uses the form object that was passed to the template #}
-            <button type="submit" class="btn btn-primary">Register</button>
-            {# This is the submit button for the form. When clicked, it will send the form data to the server #}
-        </form>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Staff Registration</h2>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}
+
