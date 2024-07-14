@@ -8,6 +8,11 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Student
 
 
+def student_dashboard(request):
+    return render(request, 'student_management_app/dashboard.html')
+
+
+
 
 # Render the login links page
 def login_links(request):
