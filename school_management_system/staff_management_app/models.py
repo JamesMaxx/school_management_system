@@ -21,14 +21,14 @@ class Staff(models.Model):
     profile_picture = models.ImageField(upload_to='staff/profile_pics/', blank=True, null=True)
     responsibilities = models.ManyToManyField('Responsibility', blank=True, related_name='staff_members')
     qualifications = models.ManyToManyField('Qualification', blank=True, related_name='staff_members')
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='staff_members')
-    role = models.CharField(max_length=100)
+    departments = models.ManyToManyField(Department, related_name='staff_members')  # Changed to ManyToManyField
+    role = models.TextField(default='staff')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
 class Qualification(models.Model):
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_qualifications')
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_qualifications', default=None)
     degree = models.CharField(max_length=100)
     institution = models.CharField(max_length=100)
     year_completed = models.IntegerField(null=True, blank=True)
@@ -40,11 +40,10 @@ class Qualification(models.Model):
 class Responsibility(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_responsibilities')
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_responsibilities', default=None)
 
     def __str__(self):
         return self.title
-
 
 class StaffProfile(models.Model):
     staff = models.OneToOneField(Staff, on_delete=models.CASCADE, related_name='profile')

@@ -1,37 +1,79 @@
 from django import forms
-from .models import Staff, Qualification, Responsibility, StaffProfile
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from .models import Staff, Department, Qualification, Responsibility
+
+class UserRegistrationForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
+        }
 
 class StaffRegistrationForm(forms.ModelForm):
-    ROLE_CHOICES = [
-        ('staff', 'Staff'),
+    DEPARTMENT_CHOICES = [
+        ('English Department', 'English Department'),
+        ('Mathematics Department', 'Mathematics Department'),
+        ('Science Department', 'Science Department'),
+        ('Social Studies Department', 'Social Studies Department'),
+        ('Foreign Languages Department', 'Foreign Languages Department'),
+        ('Physical Education Department', 'Physical Education Department'),
+        ('Arts Department', 'Arts Department'),
+        ('Administration', 'Administration'),
+        ('Special Education Department', 'Special Education Department'),
+        ('Counseling Department', 'Counseling Department'),
     ]
 
-    role = forms.ChoiceField(choices=ROLE_CHOICES, initial='staff')
+    department = forms.ChoiceField(choices=DEPARTMENT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}), required=True, initial='English Department')
+
+    # Define choices for the role field
+    ROLE_CHOICES = [('staff', 'Staff')]
+
+    role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}), initial='staff', disabled=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['role'].initial = 'staff'  # Set default role here
+        self.fields['role'].disabled = True   # Disable the role field so only 'staff' is displayed
 
     class Meta:
         model = Staff
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'role']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'department', 'role']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'role' :forms.ChoiceField(choices=[('student', 'Student')], widget=forms.Select(attrs={'class': 'form-control'}), initial='student')
+            'role': forms.Select(attrs={'class': 'form-control'}),
         }
 
-
-
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Department
+        fields = ['name', 'description']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+        }
 
 class QualificationForm(forms.ModelForm):
     class Meta:
         model = Qualification
-        fields = ['degree', 'institution', 'year_completed']
+        fields = ['staff', 'degree', 'institution', 'year_completed', 'upload_certificate']
         widgets = {
+            'staff': forms.HiddenInput(),
             'degree': forms.TextInput(attrs={'class': 'form-control'}),
             'institution': forms.TextInput(attrs={'class': 'form-control'}),
             'year_completed': forms.NumberInput(attrs={'class': 'form-control', 'min': 1900, 'max': 9999}),
+            'upload_certificate': forms.FileInput(attrs={'class': 'form-control-file'}),
         }
 
 class ResponsibilityForm(forms.ModelForm):
@@ -40,48 +82,9 @@ class ResponsibilityForm(forms.ModelForm):
         fields = ['title', 'description']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
         }
 
-
-class StaffForm(forms.ModelForm):
-    email = forms.EmailField(
-        required=True,
-        widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'})
-    )
-
-    class Meta:
-        model = Staff
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'role']
-        widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
-            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'role' :forms.ChoiceField(choices=[('staff', 'Staff')], widget=forms.Select(attrs={'class': 'form-control'}), initial='staff')
-        }
-
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.email = self.cleaned_data['email']
-        if commit:
-            user.save()
-            self.save_staff(user)
-        return user
-
-    def save_staff(self, user):
-        staff = Staff.objects.create(
-            user=user,
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
-            phone=self.cleaned_data['phone'],
-            date_of_birth=self.cleaned_data['date_of_birth'],
-            gender=self.cleaned_data['gender'],
-            address="",  # Add the actual address if available
-            email=user.email,
-            active=True,
-            profile_picture=None  # Handle file upload if needed
-        )
-        return staff
+class StaffSearchForm(forms.Form):
+    search_query = forms.CharField(required=False, label='Search', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search by name or email'}))
+    department = forms.ModelChoiceField(queryset=Department.objects.all(), required=False, empty_label="All Departments", widget=forms.Select(attrs={'class': 'form-control'}))
