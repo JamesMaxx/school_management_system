@@ -36,14 +36,7 @@ def update_staff_profile(request, staff_id):
     if request.method == 'POST':
         form = StaffRegistrationForm(request.POST, instance=staff.user)
         if form.is_valid():
-            user = form.save()
-            staff.first_name = form.cleaned_data['first_name']
-            staff.last_name = form.cleaned_data['last_name']
-            staff.phone_number = form.cleaned_data['phone_number']
-            staff.address = form.cleaned_data['address']
-            staff.date_of_birth = form.cleaned_data['date_of_birth']
-            staff.department = form.cleaned_data['department']
-            staff.save()
+            form.save()
             messages.success(request, 'Profile updated successfully')
             return redirect('staff_management_app:staff_profile', staff_id=staff_id)
     else:
@@ -67,19 +60,9 @@ def staff_registration(request):
     if request.method == 'POST':
         form = StaffRegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            staff = Staff.objects.create(
-                user=user,
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
-                phone_number=form.cleaned_data['phone_number'],
-                address=form.cleaned_data['address'],
-                date_of_birth=form.cleaned_data['date_of_birth'],
-                department=form.cleaned_data['department'],
-                role='staff'  # Assuming a default value for role
-            )
+            form.save()
             messages.success(request, 'Staff registered successfully')
-            return redirect('staff_management_app:complete_profile', staff_id=staff.id)
+            return redirect('staff_management_app:home')
     else:
         form = StaffRegistrationForm()
     return render(request, 'staff_management_app/staff_registration.html', {'form': form})

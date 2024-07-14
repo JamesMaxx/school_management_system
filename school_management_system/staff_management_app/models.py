@@ -1,9 +1,25 @@
-# staff_management/models.py
 from django.contrib.auth.models import User
 from django.db import models
 
+DEPARTMENT_CHOICES = [
+    ('English Department', 'English Department'),
+    ('Mathematics Department', 'Mathematics Department'),
+    ('Science Department', 'Science Department'),
+    ('Social Studies Department', 'Social Studies Department'),
+    ('Foreign Languages Department', 'Foreign Languages Department'),
+    ('Physical Education Department', 'Physical Education Department'),
+    ('Arts Department', 'Arts Department'),
+    ('Administration', 'Administration'),
+    ('Special Education Department', 'Special Education Department'),
+    ('Counseling Department', 'Counseling Department'),
+]
+
+ROLE_CHOICES = [
+        ('staff', 'Staff'),
+    ]
+
 class Department(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, choices=DEPARTMENT_CHOICES)
     description = models.TextField()
 
     def __str__(self):
@@ -22,7 +38,9 @@ class Staff(models.Model):
     responsibilities = models.ManyToManyField('Responsibility', blank=True, related_name='staff_members')
     qualifications = models.ManyToManyField('Qualification', blank=True, related_name='staff_members')
     departments = models.ManyToManyField(Department, related_name='staff_members')  # Changed to ManyToManyField
-    role = models.TextField(default='staff')
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='staff')
+
+
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -41,6 +59,7 @@ class Responsibility(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='staff_responsibilities', default=None)
+
 
     def __str__(self):
         return self.title
