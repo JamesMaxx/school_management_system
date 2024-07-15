@@ -1,3 +1,4 @@
+""" urls.py  fir staff_management_app  """
 from django.urls import path
 from . import views
 

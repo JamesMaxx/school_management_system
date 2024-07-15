@@ -1,9 +1,14 @@
+# staff_management_app/views.py
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Staff
+from .models import Staff, Department
 from .forms import StaffRegistrationForm
+
+def login_links(request):
+    return render(request, 'staff_management_app/login_links.html')
 
 def home(request):
     return render(request, 'staff_management_app/staff_home.html')
@@ -34,34 +39,30 @@ def staff_profile(request, staff_id):
 def update_staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     if request.method == 'POST':
-        form = StaffRegistrationForm(request.POST, instance=staff.user)
+        form = StaffRegistrationForm(request.POST, instance=staff)
         if form.is_valid():
-            form.save()
+            form.save()  # Save the form data to update the staff profile
             messages.success(request, 'Profile updated successfully')
             return redirect('staff_management_app:staff_profile', staff_id=staff_id)
     else:
-        form = StaffRegistrationForm(instance=staff.user)
+        form = StaffRegistrationForm(instance=staff)
     return render(request, 'staff_management_app/update_staff_profile.html', {'form': form, 'staff': staff})
 
 @login_required
 def delete_staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     if request.method == 'POST':
-        staff.user.delete()
+        staff.delete()  # Delete the staff profile from the database
         messages.success(request, 'Staff profile deleted successfully')
         return redirect('staff_management_app:home')
     return render(request, 'staff_management_app/delete_staff_profile.html', {'staff': staff})
 
-def login_links(request):
-    return render(request, 'staff_management_app/login_links.html')
-
-@login_required
 def staff_registration(request):
     if request.method == 'POST':
-        form = StaffRegistrationForm(request.POST)
+        form = StaffRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Staff registered successfully')
+            user = form.save()  # Save the new staff user to the database
+            login(request, user)  # Log the user in
             return redirect('staff_management_app:home')
     else:
         form = StaffRegistrationForm()
@@ -71,16 +72,11 @@ def staff_registration(request):
 def complete_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     if request.method == 'POST':
-        profile_form = StaffRegistrationForm(request.POST, instance=staff.user)
-        if profile_form.is_valid():
-            profile_form.save()
+        form = StaffRegistrationForm(request.POST, instance=staff)
+        if form.is_valid():
+            form.save()  # Save the completed profile updates to the database
             messages.success(request, 'Profile updated successfully')
             return redirect('staff_management_app:staff_profile', staff_id=staff_id)
     else:
-        profile_form = StaffRegistrationForm(instance=staff.user)
-    
-    context = {
-        'profile_form': profile_form,
-        'staff': staff
-    }
-    return render(request, 'staff_management_app/complete_profile.html', context)
+        form = StaffRegistrationForm(instance=staff)
+    return render(request, 'staff_management_app/complete_profile.html', {'form': form, 'staff': staff})
