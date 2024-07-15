@@ -82,7 +82,7 @@ def update_staff_profile(request, staff_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Staff profile updated successfully')
-            return redirect('staff_management_app:staff_profile')  # Adjust redirect URL as needed
+            return redirect('staff_management_app:staff_profile', staff_id=staff.id)  # Adjust redirect URL as needed
         else:
             messages.error(request, 'Please correct the errors below')
     else:
