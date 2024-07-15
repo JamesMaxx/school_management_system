@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Student
+from .models import Student, Course, Enrollment
 from datetime import date
+
 
 class StudentRegistrationForm(UserCreationForm):
     email = forms.EmailField(
@@ -33,6 +34,12 @@ class StudentRegistrationForm(UserCreationForm):
         required=True,
         widget=forms.Select(attrs={'class': 'form-control'})
     )
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        required=True,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Select Course"
+    )
     role = forms.ChoiceField(
         choices=[('student', 'Student')],
         widget=forms.Select(attrs={'class': 'form-control'}),
@@ -59,7 +66,8 @@ class StudentRegistrationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
-            self.save_student(user)
+            student = self.save_student(user)
+            self.save_enrollment(student)
         return user
 
     def save_student(self, user):
@@ -71,20 +79,26 @@ class StudentRegistrationForm(UserCreationForm):
             date_of_birth=self.cleaned_data['date_of_birth'],
             gender=self.cleaned_data['gender'],
             admission_number=self.generate_admission_number(),
-            date_admitted=date.today(),  # Use date.today() for current date
+            date_admitted=date.today(),
             address="",  # Add the actual address if available
             guardian_name="",  # Add the actual guardian name if available
             guardian_contact="",  # Add the actual guardian contact if available
             email=user.email,
             active=True,
-            profile_picture=None  # Handle file upload if needed
+            profile_picture=None,  # Handle file upload if needed
         )
         return student
 
+    def save_enrollment(self, student):
+        course = self.cleaned_data['course']
+        Enrollment.objects.create(
+            student=student,
+            course=course,
+            date_enrolled=date.today(),
+            is_active=True
+        )
+
     def generate_admission_number(self):
-        """
-        Generate a unique admission number for the student.
-        """
         latest_student = Student.objects.order_by('-id').first()
         if not latest_student:
             return 'S001'
@@ -93,7 +107,46 @@ class StudentRegistrationForm(UserCreationForm):
         new_admission_number = 'S' + str(new_admission_int).zfill(3)
         return new_admission_number
 
+
 class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['phone', 'date_of_birth', 'gender']
+
+
+class UpdateStudentForm(forms.ModelForm):
+    new_course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+        required=False,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        empty_label="Select New Course"
+    )
+
+    class Meta:
+        model = Student
+        fields = ['first_name', 'last_name', 'date_of_birth', 'gender', 'guardian_name', 'guardian_contact', 'email', 'phone', 'new_course']
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
+            'gender': forms.Select(attrs={'class': 'form-control', 'readonly': True}),
+            'guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'new_course': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.course:
+            self.fields['new_course'].initial = self.instance.course
+
+    def save(self, commit=True):
+        student = super().save(commit=False)
+        new_course = self.cleaned_data.get('new_course')
+        if new_course and new_course != student.course:
+            student.course = new_course
+            if commit:
+                student.save()
+        return student

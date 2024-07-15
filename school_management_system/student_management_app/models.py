@@ -1,7 +1,5 @@
-""" Models for the student_management_app app. """
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
 
 class Student(models.Model):
     """
@@ -23,13 +21,19 @@ class Student(models.Model):
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} {self.user.username}- {self.admission_number}"
+        return f"{self.first_name} {self.last_name} ({self.admission_number})"
 
 class Course(models.Model):
     """
     Model to represent courses offered.
     """
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, choices=[
+        ('Mathematics', 'Mathematics - Course covering algebra, geometry, and calculus'),
+        ('Science', 'Science - Course covering physics, chemistry, and biology'),
+        ('English', 'English - Course covering literature, grammar, and composition'),
+        ('History', 'History - Course covering ancient, medieval, and modern history'),
+        ('Physical Education', 'Physical Education - Course focusing on physical fitness and sports'),
+    ])
     description = models.TextField()
 
     def __str__(self):
@@ -41,7 +45,7 @@ class Enrollment(models.Model):
     """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    date_enrolled = models.DateField()
+    date_enrolled = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -52,19 +56,32 @@ class Attendance(models.Model):
     Model to record student attendance.
     """
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
     date = models.DateField()
-    status = models.CharField(max_length=10)  # 'Present', 'Absent', 'Late', etc.
+    status = models.CharField(max_length=10, choices=[
+        ('Present', 'Present'),
+        ('Absent', 'Absent'),
+        ('Late', 'Late'),
+    ])
 
     def __str__(self):
-        return f"{self.student.first_name} {self.student.last_name} - {self.date}"
+        return f"{self.student.first_name} {self.student.last_name} - {self.course.name}: {self.status}"
 
 class PerformanceRecord(models.Model):
     """
     Model to store student academic performance records.
     """
+    GRADE_CHOICES = [
+        ('A', 'A'),
+        ('B', 'B'),
+        ('C', 'C'),
+        ('D', 'D'),
+        ('Fail', 'Fail'),
+    ]
+
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    grade = models.CharField(max_length=5)
+    grade = models.CharField(max_length=5, choices=GRADE_CHOICES)
 
     def __str__(self):
         return f"{self.student.first_name} {self.student.last_name} - {self.course.name}: {self.grade}"
