@@ -2,28 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 from student_management_app.models import Course, Student  # Import models from student_management_app
 
-# Define choices for departments and roles
-DEPARTMENT_CHOICES = [
-    ('English Department', 'English Department'),
-    ('Mathematics Department', 'Mathematics Department'),
-    ('Science Department', 'Science Department'),
-    ('Social Studies Department', 'Social Studies Department'),
-    ('Foreign Languages Department', 'Foreign Languages Department'),
-    ('Physical Education Department', 'Physical Education Department'),
-    ('Arts Department', 'Arts Department'),
-    ('Administration', 'Administration'),
-    ('Special Education Department', 'Special Education Department'),
-    ('Counseling Department', 'Counseling Department'),
-]
-
+# Define choices for roles
 ROLE_CHOICES = [
     ('Teacher', 'Teacher'),
     ('Assistant Teacher', 'Assistant Teacher'),
     ('Administrator', 'Administrator'),
 ]
 
+class Department(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Staff(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,  null=False, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
@@ -32,18 +25,11 @@ class Staff(models.Model):
     date_of_birth = models.DateField()
     profile_picture = models.ImageField(upload_to='profiles/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    departments = models.ManyToManyField('Department', related_name='staff_members')
+    departments = models.ManyToManyField(Department)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
-
-class Department(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-
-    def __str__(self):
-        return self.name
 
 class StaffLeave(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
@@ -65,7 +51,6 @@ class PerformanceRecord(models.Model):
         ('D', 'D'),
         ('Fail', 'Fail'),
     ]
-
 
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='performance_records_student')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='performance_records_course')

@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Staff, Department, ROLE_CHOICES, StaffLeave, PerformanceRecord
+from .models import Staff, Department, ROLE_CHOICES, StaffLeave
+
 class StaffAdminForm(forms.ModelForm):
     class Meta:
         model = Staff
@@ -17,7 +18,7 @@ class StaffAdminForm(forms.ModelForm):
         }
 
 class StaffRegistrationForm(forms.ModelForm):
-    DEPARTMENT_CHOICES = [
+    DEPARTMENTS = [
         ('English Department', 'English Department'),
         ('Mathematics Department', 'Mathematics Department'),
         ('Science Department', 'Science Department'),
@@ -40,7 +41,7 @@ class StaffRegistrationForm(forms.ModelForm):
     address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-    department = forms.ChoiceField(choices=DEPARTMENT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    department = forms.ChoiceField(choices=DEPARTMENTS, widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
@@ -51,22 +52,27 @@ class StaffRegistrationForm(forms.ModelForm):
         user.set_password(self.cleaned_data['password1'])
         if commit:
             user.save()
-            staff = Staff.objects.create(
-                user=user,
-                first_name=self.cleaned_data['first_name'],
-                last_name=self.cleaned_data['last_name'],
-                email=self.cleaned_data['email'],
-                phone_number=self.cleaned_data['phone_number'],
-                address=self.cleaned_data['address'],
-                date_of_birth=self.cleaned_data['date_of_birth'],
-                role=self.cleaned_data['role']
-            )
-            # Retrieve the department object based on the selected choice
-            department_name = self.cleaned_data['department']
-            department = Department.objects.get(name=department_name)
-            staff.departments.add(department)  # Add department to the staff member
-
+            staff = self.save_staff(user)
+            self.save_department(staff)
         return user
+
+    def save_staff(self, user):
+        staff = Staff.objects.create(
+            user=user,
+            first_name=self.cleaned_data['first_name'],
+            last_name=self.cleaned_data['last_name'],
+            email=self.cleaned_data['email'],
+            phone_number=self.cleaned_data['phone_number'],
+            address=self.cleaned_data['address'],
+            date_of_birth=self.cleaned_data['date_of_birth'],
+            role=self.cleaned_data['role']
+        )
+        return staff
+
+    def save_department(self, staff):
+        department_name = self.cleaned_data['department']
+        department, created = Department.objects.get_or_create(name=department_name)
+        staff.departments.add(department)
 
 class UpdateStaffProfile(forms.ModelForm):
     class Meta:
@@ -100,4 +106,3 @@ class StaffApplyLeaveForm(forms.ModelForm):
     class Meta:
         model = StaffLeave
         fields = ['leave_type', 'start_date', 'end_date', 'reason']
-
