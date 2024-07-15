@@ -15,7 +15,13 @@
                         <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.date_of_birth }}</li>
                         <li class="list-group-item"><strong>Gender:</strong> {{ student.get_gender_display }}</li>
                         <li class="list-group-item"><strong>Admission Number:</strong> {{ student.admission_number }}</li>
-                        <li class="list-group-item"><strong>Course:</strong> {{ student.course }}</li>
+                        <li class="list-group-item"><strong>Courses:</strong>
+                            <ul>
+                                {% for enrollment in student.enrollment_set.all %}
+                                    <li>{{ enrollment.course.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
                     </ul>
                     <div class="mt-4">
                         <a class="btn btn-primary mr-2" href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a>

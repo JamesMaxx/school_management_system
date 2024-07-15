@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from .models import Student, Course, Enrollment
 from datetime import date
 
-
 class StudentRegistrationForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
@@ -107,24 +106,26 @@ class StudentRegistrationForm(UserCreationForm):
         new_admission_number = 'S' + str(new_admission_int).zfill(3)
         return new_admission_number
 
-
 class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['phone', 'date_of_birth', 'gender']
-
+        fields = ['phone', 'date_of_birth', 'gender', 'guardian_name', 'guardian_contact', 'email', 'address', 'profile_picture']
 
 class UpdateStudentForm(forms.ModelForm):
     new_course = forms.ModelChoiceField(
         queryset=Course.objects.all(),
-        required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        empty_label="Select New Course"
+
+        widget=forms.Select(attrs={'class': 'form-control'})
+    ),
+    course = forms.ModelChoiceField(
+        queryset=Course.objects.all(),
+
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'date_of_birth', 'gender', 'guardian_name', 'guardian_contact', 'email', 'phone', 'new_course']
+        fields = ['first_name', 'last_name', 'date_of_birth', 'gender', 'guardian_name', 'guardian_contact', 'email', 'phone', 'course']
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
             'last_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
@@ -134,7 +135,8 @@ class UpdateStudentForm(forms.ModelForm):
             'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'new_course': forms.Select(attrs={'class': 'form-control'}),
+            'course': forms.Select(attrs={'class': 'form-control'}),
+
         }
 
     def __init__(self, *args, **kwargs):
