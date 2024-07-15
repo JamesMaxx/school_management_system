@@ -125,12 +125,9 @@ class UpdateStudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = ['first_name', 'last_name', 'date_of_birth', 'gender', 'guardian_name', 'guardian_contact', 'email', 'phone', 'course']
+        fields = ['guardian_name', 'guardian_contact', 'email', 'phone', 'course']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'readonly': True}),
-            'gender': forms.Select(attrs={'class': 'form-control', 'readonly': True}),
+
             'guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
             'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),

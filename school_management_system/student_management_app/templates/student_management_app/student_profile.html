@@ -22,7 +22,7 @@
                                 {% endfor %}
                             </ul>
                         </li>
-                    </ul>
+
                     <div class="mt-4">
                         <a class="btn btn-primary mr-2" href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a>
                         <a class="btn btn-danger" href="{% url 'student_management_app:delete_student_profile' student.id %}">Delete Profile</a>
