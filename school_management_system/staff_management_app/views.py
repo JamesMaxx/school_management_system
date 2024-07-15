@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from .models import Staff, Department
-from .forms import StaffRegistrationForm
+from .forms import StaffRegistrationForm, UpdateStaffProfileForm
 
 @csrf_protect
 def staff_registration(request):
@@ -73,18 +73,23 @@ def staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     return render(request, 'staff_management_app/staff_profile.html', {'staff': staff})
 
-@login_required
+@csrf_protect
 def update_staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
+
     if request.method == 'POST':
-        form = StaffProfileForm(request.POST, request.FILES, instance=staff)
+        form = UpdateStaffProfileForm(request.POST, request.FILES, instance=staff)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile updated successfully')
-            return redirect('staff_management_app:staff_profile', staff_id=staff.id)
+            messages.success(request, 'Staff profile updated successfully')
+            return redirect('staff_management_app:staff_profile')  # Adjust redirect URL as needed
+        else:
+            messages.error(request, 'Please correct the errors below')
     else:
-        form = StaffProfileForm(instance=staff)
-    return render(request, 'staff_management_app/update_staff_profile.html', {'form': form, 'staff': staff})
+        form = UpdateStaffProfileForm(instance=staff)
+
+    return render(request, 'staff_management_app/update_staff_profile.html', {'form': form})
+
 
 @login_required
 def delete_staff_profile(request, staff_id):

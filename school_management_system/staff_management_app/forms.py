@@ -74,7 +74,7 @@ class StaffRegistrationForm(forms.ModelForm):
         department, created = Department.objects.get_or_create(name=department_name)
         staff.departments.add(department)
 
-class UpdateStaffProfile(forms.ModelForm):
+class UpdateStaffProfileForm(forms.ModelForm):
     class Meta:
         model = Staff
         fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'profile_picture', 'is_active']
