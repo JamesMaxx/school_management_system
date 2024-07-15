@@ -13,27 +13,28 @@ def staff_registration(request):
     if request.method == 'POST':
         form = StaffRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
+            # Save the user object from the form
             user = form.save()
-            staff = Staff.objects.create(
-                user=user,
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
-                email=form.cleaned_data['email'],
-                phone_number=form.cleaned_data['phone_number'],
-                address=form.cleaned_data['address'],
-                date_of_birth=form.cleaned_data['date_of_birth'],
-                profile_picture=form.cleaned_data['profile_picture'],
-                role=form.cleaned_data['role'],
-            )
+
+            # Create staff profile
+            staff = form.save(commit=False)
+            staff.user = user
+            staff.save()
+
+            # Set departments if provided
             departments = form.cleaned_data.get('departments')
             if departments:
-                staff.departments.set(departments)  # Set departments
+                staff.departments.set(departments)
+
+            # Success message and redirect
             messages.success(request, 'Staff registration successful')
-            return redirect('staff_management_app:login')
+            return redirect('staff_management_app:login')  # Replace with your desired redirect URL
         else:
+            # Form validation errors
             messages.error(request, 'Please correct the errors below')
     else:
         form = StaffRegistrationForm()
+
     return render(request, 'staff_management_app/staff_registration.html', {'form': form})
 
 

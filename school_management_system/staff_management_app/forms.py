@@ -13,7 +13,7 @@ class StaffAdminForm(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control-file'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
@@ -38,7 +38,7 @@ class StaffRegistrationForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     phone_number = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
-    address = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}))
+    address = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'rows': 3}))
     date_of_birth = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     role = forms.ChoiceField(choices=ROLE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     department = forms.ChoiceField(choices=DEPARTMENTS, widget=forms.Select(attrs={'class': 'form-control'}))
@@ -85,7 +85,7 @@ class UpdateStaffProfile(forms.ModelForm):
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control-file'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 

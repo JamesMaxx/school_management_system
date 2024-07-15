@@ -1,3 +1,4 @@
+<!-- staaff login html-->
 {% extends 'events_management/base.html' %}
 
 {% block content %}
@@ -11,78 +12,17 @@
                 <div class="card-body">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        <div class="form-group row">
-                            <label for="{{ form.first_name.id_for_label }}" class="col-sm-3 col-form-label">{{ form.first_name.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.first_name }}
-                                {% for error in form.first_name.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
+                        {% for field in form %}
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{{ field.label }}</label>
+                                <div class="col-sm-9">
+                                    {{ field }}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.last_name.id_for_label }}" class="col-sm-3 col-form-label">{{ form.last_name.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.last_name }}
-                                {% for error in form.last_name.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.username.id_for_label }}" class="col-sm-3 col-form-label">{{ form.username.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.username }}
-                                {% for error in form.username.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.email.id_for_label }}" class="col-sm-3 col-form-label">{{ form.email.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.email }}
-                                {% for error in form.email.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.password1.id_for_label }}" class="col-sm-3 col-form-label">{{ form.password1.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.password1 }}
-                                {% for error in form.password1.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.password2.id_for_label }}" class="col-sm-3 col-form-label">{{ form.password2.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.password2 }}
-                                {% for error in form.password2.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.department.id_for_label }}" class="col-sm-3 col-form-label">{{ form.department.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.department }}
-                                {% for error in form.department.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="{{ form.role.id_for_label }}" class="col-sm-3 col-form-label">{{ form.role.label }}</label>
-                            <div class="col-sm-9">
-                                {{ form.role }}
-                                {% for error in form.role.errors %}
-                                    <div class="alert alert-danger">{{ error }}</div>
-                                {% endfor %}
-                            </div>
-                        </div>
+                        {% endfor %}
                         <div class="form-group row">
                             <div class="col-sm-9 offset-sm-3">
                                 <button type="submit" class="btn btn-primary">Register</button>
@@ -95,3 +35,4 @@
     </div>
 </div>
 {% endblock %}
+
