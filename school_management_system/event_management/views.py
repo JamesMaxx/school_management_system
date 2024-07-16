@@ -6,6 +6,7 @@ from .models import Event, Venue
 from .forms import VenueForm, EventForm
 from django.http import HttpResponse, HttpResponseRedirect
 import csv
+from django.urls import reverse
 
 # Import PDF-related modules
 from django.http import FileResponse
@@ -102,20 +103,20 @@ def venue_text(request):
 def delete_venue(request, venue_id):
     venue = Venue.objects.get(pk=venue_id)
     venue.delete()
-    return redirect('lists-venues')
+    return redirect('event_management:list-venues')
 
 
 def delete_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     event.delete()
-    return redirect('lists-events')
+    return redirect('event_management:lists-events')
 
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     form = EventForm(request.POST or None, instance=event)
     if form.is_valid():
         form.save()
-        return redirect('list-events')
+        return redirect('event_management:list-events')
 
     return render(request, 'events_management/update_event.html', {'event': event, 'form':form})
 
@@ -140,7 +141,7 @@ def update_venue(request, venue_id):
     form = VenueForm(request.POST or None, instance=venue)
     if form.is_valid():
         form.save()
-        return redirect('list-venues')
+        return redirect('event_management:list-venues')
 
     return render(request, 'events_management/update_venue.html', {'venue': venue, 'form':form})
 
@@ -175,8 +176,10 @@ def add_venue(request):
     if request.method == "POST":
         form = VenueForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_venue?submitted=True')
+            venue = form.save(commit=False)  # Get form data without saving to DB yet
+            venue.organizer_id = request.user.id  # Assuming organizer is the logged-in user
+            venue.save()  # Now save to DB with organizer_id set
+            return HttpResponseRedirect(reverse('event_management:add_venue') + '?submitted=True')
     else:
         form = VenueForm()
         if 'submitted' in request.GET:
