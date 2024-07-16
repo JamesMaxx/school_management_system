@@ -1,6 +1,78 @@
-<!-- student_management_system/student_management_app/templates/student_management_app/student_dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System - Staff Dashboard</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        .sidebar {
+            height: 100vh;
+            background-color: #343a40;
+            padding-top: 20px;
+        }
+        .sidebar a, .sidebar a:hover {
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            color: #007bff;
+        }
+        .text-danger:hover {
+            color: #dc3545 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar bg-dark">
+            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
+                School Management
+            </div>
+                <a href="{% url 'student_management_app:student_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-user-graduate me-2"></i>Students
+                </a>
+                <a href="{% url 'teacher_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-chalkboard-teacher me-2"></i>Teachers
+                </a>
+                <a href="{% url 'class_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-school me-2"></i>Classes
+                </a>
+                <a href="{% url 'event_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-calendar-alt me-2"></i>Events
+                </a>
+                <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
+                    <i class="fas fa-power-off me-2"></i>Logout
+                </a>
+            </div>
+        </div>
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
+                    <h2 class="fs-2 m-0">Staff Dashboard</h2>
+                </div>
+            </nav>
+            <div class="container-fluid px-4">
+                <!-- Add your dashboard content here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+</body>
+</html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,12 +85,15 @@
             background-color: #343a40;
             padding-top: 20px;
         }
-        .sidebar a {
+        .sidebar a, .sidebar a:hover {
             color: white;
             text-decoration: none;
         }
         .sidebar a:hover {
             color: #007bff;
+        }
+        .text-danger:hover {
+            color: #dc3545 !important;
         }
     </style>
 </head>
@@ -48,6 +123,14 @@
                 <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
                     <i class="fas fa-cogs me-2"></i>Settings
                 </a>
+                <!-- Additional Management View -->
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-book me-2"></i>Courses
+                </a>
+                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
+                    <i class="fas fa-chart-bar me-2"></i>Reports
+                </a>
+                <!-- Logout -->
                 <a href="#" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
                     <i class="fas fa-power-off me-2"></i>Logout
                 </a>
@@ -92,7 +175,7 @@
                                                 <td>
                                                     <a href="{% url 'student_profile' student.id %}" class="btn btn-info btn-sm">View</a>
                                                     <a href="{% url 'update_student_profile' student.id %}" class="btn btn-warning btn-sm">Edit</a>
-                                                    <a href="{% url 'delete_student_profile' student.id %}" class="btn btn-danger btn-sm">Delete</a>
+                                                    <a href="{% url 'delete_student_profile' student. id %}" class="btn btn-danger btn-sm">Delete</a>
                                                 </td>
                                             </tr>
                                             {% endfor %}
@@ -117,80 +200,4 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
 </html>
-
-<!-- school_management_system/staff_management_app/templates/staff_management_app/staff_home.html -->
-{% extends 'staff_management_app/base.html' %}
-
-{% block title %}Staff Home{% endblock %}
-
-{% block content %}
-<div class="container mt-5">
-    <h1 class="mb-4">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h1>
-    
-    <div class="row">
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Personal Information</h5>
-                    <p class="card-text">View and update your personal details.</p>
-                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">My Profile incomplete link</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Attendance</h5>
-                    <p class="card-text">Mark your attendance or view attendance history.</p>
-                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Attendance incomplete</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Leave Management</h5>
-                    <p class="card-text">Apply for leave or check leave status.</p>
-                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Leave incomplete</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Payroll</h5>
-                    <p class="card-text">View your salary details and payslips.</p>
-                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Payroll incomplete</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Performance</h5>
-                    <p class="card-text">Check your performance evaluations.</p>
-                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Performance</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Announcements</h5>
-                    <p class="card-text">View latest announcements and notifications.</p>
-                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">incomplete Announcements</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
 

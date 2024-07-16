@@ -1,4 +1,4 @@
-# staff_management_app/views.py
+# school_management_system\staff_management_app\templates\staff_management_app\base.html
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -16,7 +16,7 @@ def staff_dashboard(request, staff_id):
         'staff_member': staff_member,
         # 'other_context': other_context_data
     }
-    return render(request, 'staff_management_app/staff_home.html', context)
+    return render(request, 'staff_management_app/staff_dashboard.html', context)
 
 @csrf_protect
 def staff_registration(request):
