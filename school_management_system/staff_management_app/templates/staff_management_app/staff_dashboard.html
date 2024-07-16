@@ -117,3 +117,80 @@
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
 </html>
+
+<!-- school_management_system/staff_management_app/templates/staff_management_app/staff_home.html -->
+{% extends 'staff_management_app/base.html' %}
+
+{% block title %}Staff Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Welcome, {{ request.user.first_name }} {{ request.user.last_name }}</h1>
+    
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Information</h5>
+                    <p class="card-text">View and update your personal details.</p>
+                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">My Profile incomplete link</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Attendance</h5>
+                    <p class="card-text">Mark your attendance or view attendance history.</p>
+                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Attendance incomplete</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Leave Management</h5>
+                    <p class="card-text">Apply for leave or check leave status.</p>
+                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Leave incomplete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Payroll</h5>
+                    <p class="card-text">View your salary details and payslips.</p>
+                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Payroll incomplete</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Performance</h5>
+                    <p class="card-text">Check your performance evaluations.</p>
+                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">Performance</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Announcements</h5>
+                    <p class="card-text">View latest announcements and notifications.</p>
+                    <a href="{% url 'staff_management_app:home' %}" class="btn btn-primary">incomplete Announcements</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
