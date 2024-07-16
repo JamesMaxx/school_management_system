@@ -94,6 +94,9 @@ class Assignment(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     due_date = models.DateField()
+    file = models.FileField(upload_to='assignments/')
+    uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.title} - {self.course.name}"

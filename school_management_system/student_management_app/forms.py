@@ -1,8 +1,7 @@
-""" forms.py for student_management_app """
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Student, Course, Enrollment
+from .models import Student, Course, Enrollment, Attendance, Assignment
 from datetime import date
 
 class StudentRegistrationForm(UserCreationForm):
@@ -115,12 +114,10 @@ class StudentProfileForm(forms.ModelForm):
 class UpdateStudentForm(forms.ModelForm):
     new_course = forms.ModelChoiceField(
         queryset=Course.objects.all(),
-
         widget=forms.Select(attrs={'class': 'form-control'})
-    ),
+    )
     course = forms.ModelChoiceField(
         queryset=Course.objects.all(),
-
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
@@ -128,13 +125,11 @@ class UpdateStudentForm(forms.ModelForm):
         model = Student
         fields = ['guardian_name', 'guardian_contact', 'email', 'phone', 'course']
         widgets = {
-
             'guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
             'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'course': forms.Select(attrs={'class': 'form-control'}),
-
         }
 
     def __init__(self, *args, **kwargs):
@@ -150,3 +145,26 @@ class UpdateStudentForm(forms.ModelForm):
             if commit:
                 student.save()
         return student
+
+class AttendanceForm(forms.ModelForm):
+    class Meta:
+        model = Attendance
+        fields = ['course', 'status']  # Include 'course' field in the form
+        widgets = {
+            'status': forms.Select(choices=[
+                ('Present', 'Present'),
+                ('Absent', 'Absent'),
+                ('Late', 'Late'),
+            ], attrs={'class': 'form-control'}),
+            'course': forms.Select(attrs={'class': 'form-control'})  # Widget for course field
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['course'].queryset = Course.objects.all()  # Queryset for 'course' field
+
+
+class AssignmentForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        fields = ['title', 'description', 'due_date']
