@@ -73,7 +73,7 @@ def staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     return render(request, 'staff_management_app/staff_profile.html', {'staff': staff})
 
-@csrf_protect
+@login_required
 def update_staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
 
@@ -82,13 +82,13 @@ def update_staff_profile(request, staff_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Staff profile updated successfully')
-            return redirect('staff_management_app:staff_profile', staff_id=staff.id)  # Adjust redirect URL as needed
+            return redirect('staff_management_app:staff_profile', staff_id=staff.id)
         else:
             messages.error(request, 'Please correct the errors below')
     else:
         form = UpdateStaffProfileForm(instance=staff)
 
-    return render(request, 'staff_management_app/update_staff_profile.html', {'form': form})
+    return render(request, 'staff_management_app/update_staff_profile.html', {'form': form, 'staff': staff})
 
 
 @login_required

@@ -80,12 +80,12 @@ class StudentRegistrationForm(UserCreationForm):
             gender=self.cleaned_data['gender'],
             admission_number=self.generate_admission_number(),
             date_admitted=date.today(),
-            address="",  # Add the actual address if available
-            guardian_name="",  # Add the actual guardian name if available
-            guardian_contact="",  # Add the actual guardian contact if available
+            address="",
+            guardian_name="",
+            guardian_contact="",
             email=user.email,
             active=True,
-            profile_picture=None,  # Handle file upload if needed
+            profile_picture=None,
         )
         return student
 
