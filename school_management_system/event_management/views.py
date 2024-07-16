@@ -116,7 +116,7 @@ def update_event(request, event_id):
     form = EventForm(request.POST or None, instance=event)
     if form.is_valid():
         form.save()
-        return redirect('event_management:list-events')
+        return redirect('event_management:events_list')
 
     return render(request, 'events_management/update_event.html', {'event': event, 'form':form})
 
@@ -126,7 +126,7 @@ def add_event(request):
         form = EventForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/add_event?submitted=True')
+            return HttpResponseRedirect('events_management/add_event?submitted=True')
     else:
         form = EventForm()
         if 'submitted' in request.GET:

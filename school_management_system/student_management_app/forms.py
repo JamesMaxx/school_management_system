@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Student, Course, Enrollment, Attendance
+from .models import Student, Course, Enrollment, Attendance, Assignment
 from datetime import date
 
 class StudentRegistrationForm(UserCreationForm):
@@ -162,3 +162,9 @@ class AttendanceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['course'].queryset = Course.objects.all()  # Queryset for 'course' field
+
+
+class AssignmentForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        fields = ['title', 'description', 'due_date']

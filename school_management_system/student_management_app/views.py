@@ -3,11 +3,37 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm
-from .models import Student, Attendance, Course
+from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm, AssignmentForm
+from .models import Student, Attendance, Course, Assignment
 from .utils import generate_weekday_dates
 from datetime import date, timedelta
 from django.core.paginator import Paginator
+from django.http import HttpResponse
+
+
+
+
+def student_upload_assignment(request):
+    if request.method == 'POST':
+        form = AssignmentForm(request.POST, request.FILES)
+        if form.is_valid():
+            assignment = form.save(commit=False)
+            assignment.uploaded_by = request.user
+            assignment.save()
+            return redirect('student_management_app:student_assignment_list')  # Replace with the URL name for student's assignment list
+    else:
+        form = AssignmentForm()
+    return render(request, 'student_management_app/student_upload_assignment.html', {'form': form})
+
+def student_download_assignment(request, assignment_id):
+    assignment = get_object_or_404(Assignment, pk=assignment_id)
+    file_path = assignment.file.path
+    with open(file_path, 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type="application/octet-stream")
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+        return response
+    raise Http404
+
 
 def student_attendance_calendar(request):
     start_date = date.today()  # Start from today
