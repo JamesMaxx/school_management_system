@@ -14,5 +14,6 @@ urlpatterns = [
     path('student_registration/', views.student_registration, name='student_registration'),
     path('complete_profile/<int:student_id>/', views.complete_profile, name='complete_profile'),
     path('student_dashboard/<int:student_id>', views.student_dashboard, name='student_dashboard'),
+    path('student_list/', views.student_list, name='student_list'),
 
 ]
