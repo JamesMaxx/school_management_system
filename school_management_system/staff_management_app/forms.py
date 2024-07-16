@@ -77,14 +77,12 @@ class StaffRegistrationForm(forms.ModelForm):
 class UpdateStaffProfileForm(forms.ModelForm):
     class Meta:
         model = Staff
-        fields = ['first_name', 'last_name', 'email', 'phone_number', 'address', 'date_of_birth', 'profile_picture', 'is_active']
+        fields = ['email', 'phone_number', 'address', 'profile_picture', 'is_active']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
-            'date_of_birth': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'profile_picture': forms.FileInput(attrs={'class': 'form-control-file'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
