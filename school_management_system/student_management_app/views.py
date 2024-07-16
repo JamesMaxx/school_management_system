@@ -3,8 +3,41 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .forms import StudentRegistrationForm, StudentProfileForm
-from .models import Student
+from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm
+from .models import Student, Attendance, Course
+from .utils import generate_weekday_dates
+from datetime import date, timedelta
+from django.core.paginator import Paginator
+
+def student_attendance_calendar(request):
+    start_date = date.today()  # Start from today
+    end_date = start_date + timedelta(days=1)  # Example: Show next 30 days
+
+    weekday_dates = generate_weekday_dates(start_date, end_date)
+    students = Student.objects.all()  # Get all students, adjust query as needed
+
+    if request.method == 'POST':
+        for student in students:
+            for attendance_date in weekday_dates:
+                form = AttendanceForm(request.POST)
+                if form.is_valid():
+                    attendance = form.save(commit=False)
+                    attendance.student = student
+                    attendance.date = attendance_date
+                    attendance.save()
+
+    context = {
+        'weekday_dates': weekday_dates,
+        'students': students,
+    }
+    return render(request, 'student_management_app/student_attendance_calendar.html', context)
+
+def student_attendance_list(request):
+    attendances = Attendance.objects.all()  # Fetch all attendance records
+    context = {
+        'attendances': attendances,
+    }
+    return render(request, 'student_management_app/student_attendance_list.html', context)
 
 def student_list(request):
     students = Student.objects.all()
