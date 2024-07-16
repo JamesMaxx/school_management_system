@@ -1,10 +1,37 @@
+<!-- school_management_system\student_management_app\templates\student_management_app\login_links.html -->
 {% extends 'events_management/base.html' %}
 
 {% block content %}
-<h1>Login Links</h1>
-    <p>Please select your role or action:</p>
-    <ul>
-        <li><a href="{% url 'staff_management_app:login' %}">Staff Login</a></li>
-        <li><a href="{% url 'staff_management_app:staff_registration' %}">Staff Registration</a></li>
-    </ul>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Login Links</h1>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">For Staff:</h5>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{% url 'staff_management_app:login' %}" class="btn btn-primary btn-block">Staff Login</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'staff_management_app:staff_registration' %}" class="btn btn-secondary btn-block">Staff Registration</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">For Students:</h5>
+            <p class="card-text">Please select your role to login.</p>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{% url 'student_management_app:login' %}" class="btn btn-primary btn-block">Student Login</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'student_management_app:student_registration' %}" class="btn btn-secondary btn-block">Student Registration</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

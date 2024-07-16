@@ -8,6 +8,16 @@ from django.contrib import messages
 from .models import Staff, Department
 from .forms import StaffRegistrationForm, UpdateStaffProfileForm
 
+
+def staff_dashboard(request, staff_id):
+    staff_member = get_object_or_404(Staff, id=staff_id)
+    # Add any additional context data if needed
+    context = {
+        'staff_member': staff_member,
+        # 'other_context': other_context_data
+    }
+    return render(request, 'staff_management_app/staff_dashboard.html', context)
+
 @csrf_protect
 def staff_registration(request):
     if request.method == 'POST':
@@ -56,7 +66,7 @@ def login_view(request):
             login(request, user)
             if hasattr(user, 'staff'):  # Check if the user is associated with a staff profile
                 staff = get_object_or_404(Staff, user=user)
-                return redirect('staff_management_app:staff_profile', staff_id=staff.id)  # Redirect to staff profile
+                return redirect('staff_management_app:staff_dashboard', staff_id=staff.id)  # Redirect to staff profile
             else:
                 messages.error(request, 'Invalid username or password. Please try again.')
                 return redirect('staff_management_app:login')
