@@ -6,6 +6,10 @@ from django.contrib import messages
 from .forms import StudentRegistrationForm, StudentProfileForm
 from .models import Student
 
+def student_list(request):
+    students = Student.objects.all()
+    return render(request, 'student_management_app/student_list.html', {'students': students})
+
 def student_dashboard(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     return render(request, 'student_management_app/student_dashboard.html', {'student': student})
