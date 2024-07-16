@@ -1,0 +1,17 @@
+<!-- Student Assignment List-->
+ {% extends 'events_management/base.html' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h2>Assignment List</h2>
+        <ul class="list-group">
+            {% for assignment in assignments %}
+                <li class="list-group-item">
+                    <a href="{% url 'student_view_assignment' assignment.id %}" class="text-primary">{{ assignment.title }}</a>
+                </li>
+            {% empty %}
+                <li class="list-group-item">No assignments available.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

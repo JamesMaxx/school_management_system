@@ -1,16 +1,19 @@
-<!-- Student Download assignment-->
-
 {% extends 'events_management/base.html' %}
 
 {% block content %}
     <div class="container mt-5">
         <h2>Download Assignment</h2>
-        <ul>
-            {% for assignment in assignments %}
-                <li>
-                    <a href="{{ assignment.file_upload.url }}">{{ assignment.title }}</a>
-                </li>
-            {% endfor %}
+        <ul class="list-group">
+            <!-- Assuming this is part of download_assignment.html -->
+
+{% for assignment in assignments %}
+<li class="list-group-item">
+    <a href="{% url 'student_download_assignment' assignment.id %}" class="text-primary">{{ assignment.title }}</a>
+</li>
+{% empty %}
+<li class="list-group-item">No assignments available.</li>
+{% endfor %}
+
         </ul>
     </div>
 {% endblock %}

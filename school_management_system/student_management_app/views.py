@@ -11,7 +11,10 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 
 
-
+def student_assignment_list(request, student_id):
+    student = get_object_or_404(Student, id=student_id)
+    assignments = Assignment.objects.filter(uploaded_by=student)
+    return render(request, 'student_management_app/student_assignment_list.html', {'assignments': assignments, 'student': student})
 
 def student_upload_assignment(request):
     if request.method == 'POST':
@@ -26,11 +29,14 @@ def student_upload_assignment(request):
     return render(request, 'student_management_app/student_upload_assignment.html', {'form': form})
 
 def student_download_assignment(request, assignment_id):
-    assignment = get_object_or_404(Assignment, pk=assignment_id)
-    file_path = assignment.file.path
-    with open(file_path, 'rb') as fh:
-        response = HttpResponse(fh.read(), content_type="application/octet-stream")
-        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file_path)
+    # Fetch the assignment object based on assignment_id
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+
+    # Assuming you store the file in assignment.file_upload, you can serve it for download
+    file_path = assignment.file_upload.path
+    with open(file_path, 'rb') as f:
+        response = HttpResponse(f.read(), content_type='application/octet-stream')
+        response['Content-Disposition'] = 'attachment; filename=' + assignment.file_upload.name
         return response
     raise Http404
 

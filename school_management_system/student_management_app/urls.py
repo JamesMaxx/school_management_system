@@ -17,8 +17,9 @@ urlpatterns = [
     path('student_list/', views.student_list, name='student_list'),
     path('student_attendance_calendar/', views.student_attendance_calendar, name='student_attendance_calendar'),
     path('student_attendance_list/', views.student_attendance_list, name='student_attendance_list'),
-    path('student_upload_assignment/', views.student_upload_assignment, name='student_upload_assignment'),
-    path('student_download_assignment/', views.student_download_assignment, name='student_download_assignment'),
+    path('student_upload_assignment/<int:student_id>/', views.student_upload_assignment, name='student_upload_assignment'),
+    path('student_download_assignment/<int:assignment_id>/', views.student_download_assignment, name='student_download_assignment'),
+    path('student_assignment_list/<int:student_id>/', views.student_assignment_list, name='student_assignment_list'),
 
 
 ]

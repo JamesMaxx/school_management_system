@@ -1,5 +1,4 @@
 <!-- Student Upload assignment-->
-
 {% extends 'events_management/base.html' %}
 
 {% block content %}
@@ -15,10 +14,12 @@
                 <label for="description">Description:</label>
                 <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
             </div>
+            <br>
             <div class="form-group">
                 <label for="file_upload">File Upload:</label>
                 <input type="file" class="form-control-file" id="file_upload" name="file_upload" required>
             </div>
+            <br>
             <button type="submit" class="btn btn-primary">Upload Assignment</button>
         </form>
     </div>
