@@ -1,4 +1,4 @@
-# staff_management_app/views.py
+# school_management_system\staff_management_app\templates\staff_management_app\base.html
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -82,6 +82,8 @@ def logout_view(request):
 def staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     return render(request, 'staff_management_app/staff_profile.html', {'staff': staff})
+
+
 
 @login_required
 def update_staff_profile(request, staff_id):

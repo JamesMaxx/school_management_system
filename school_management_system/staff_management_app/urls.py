@@ -14,6 +14,7 @@ urlpatterns = [
     path('login_links/', views.login_links, name='login_links'),
     path('staff_registration/', views.staff_registration, name='staff_registration'),
     path('complete_profile/<int:staff_id>/', views.complete_profile, name='complete_profile'),
+  #  path('dashboard/<int:staff_id>/', views.dashboard, name='Welcome to Dashboard'),
     path('staff_dashboard/<int:staff_id>/', views.staff_dashboard, name='staff_dashboard'),
 
 ]
