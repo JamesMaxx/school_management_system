@@ -10,43 +10,48 @@
                     <a class="nav-link" href="{% url 'event_management:events_home' %}">Home</a>
                 </li>
                 {% if request.user.is_authenticated %}
+                    <!-- Profile dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Profile
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if student and student.id%}
+                            <li><a class="dropdown-item" href="{% url 'student_management_app:student_profile' student.id %}">View Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'student_management_app:update_student_profile' student.id %}">Update Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'student_management_app:complete_profile' student.id %}">Complete Profile</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="#">Profile not available</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
 
-                    <!-- Admin specific links -->
+                    <!-- Events dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Events
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'event_management:events_list' %}">Events List</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Venue dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Venue
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'event_management:list-venues' %}">Venues List</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_management:venue-text' %}">Download Venue Text</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_management:venue_csv' %}">Download Venue CSV</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_management:venue_pdf' %}">Download Venue PDF</a></li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'student_management_app:logout' %}">Logout</a>
-                    </li>
-                    {% if request.user.is_superuser %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">replace with Admin Dashboard</a>
-                        </li>
-                    {% endif %}
-                    <!-- Common authenticated user links -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">To fix for Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">To fix for Update Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:events_list' %}">Events</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:add-event' %}">Add Event</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:list-venues' %}">Venues</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:add-venue' %}">Add Venue</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:venue-text' %}">Download Venue Text</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:venue_csv' %}">Download Venue CSV</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'event_management:venue_pdf' %}">Download Venue PDF</a>
                     </li>
                 {% else %}
                     <!-- Links for non-authenticated users -->
