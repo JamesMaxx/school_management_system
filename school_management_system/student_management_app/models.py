@@ -21,6 +21,7 @@ class Student(models.Model):
     phone = models.CharField(max_length=20)
     active = models.BooleanField(default=True)
     profile_picture = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    extra_curricular_activities = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.admission_number})"

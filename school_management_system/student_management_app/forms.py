@@ -28,7 +28,7 @@ class StudentRegistrationForm(UserCreationForm):
     )
     date_of_birth = forms.DateField(
         required=True,
-        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'YYYY-MM-DD'})
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'DD-MM-YYYY'})
     )
     gender = forms.ChoiceField(
         choices=[('M', 'Male'), ('F', 'Female')],
@@ -57,10 +57,14 @@ class StudentRegistrationForm(UserCreationForm):
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'})
     )
+    extra_curricular_activities = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Extra Curricular Activities'})
+    )
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'role']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'role', 'extra_curricular_activities']
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -87,6 +91,7 @@ class StudentRegistrationForm(UserCreationForm):
             email=user.email,
             active=True,
             profile_picture=None,
+            extra_curricular_activities=""
         )
         return student
 
@@ -135,7 +140,7 @@ class UpdateStudentForm(forms.ModelForm):
             'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'profile_picture': forms.FileInput(attrs={'class': 'form-control'})
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
