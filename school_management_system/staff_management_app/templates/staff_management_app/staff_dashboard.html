@@ -6,37 +6,17 @@
 <div class="d-flex" id="wrapper">
     <!-- Sidebar -->
     <div class="staff-sidebar">
-        <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom">
-            School Management
-        </div>
+        <div class="fs-2 m-0">Staff Dashboard</div>
         <div class="list-group list-group-flush my-3">
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active">
-                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-            </a>
-            <a href="{% url 'student_management_app:student_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-calendar-alt me-2"></i>Students
-            </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-chalkboard-teacher me-2"></i>Teachers
-            </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-school me-2"></i>Classes
-            </a>
-            <a href="{% url 'event_management:events_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-calendar-alt me-2"></i>Events
-            </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-cogs me-2"></i>Settings
-            </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-book me-2"></i>Courses
-            </a>
-            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                <i class="fas fa-chart-bar me-2"></i>Reports
-            </a>
-            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
-                <i class="fas fa-power-off me-2"></i>Logout
-            </a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active"><i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+            <a href="{% url 'student_management_app:student_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-calendar-alt me-2"></i>Students</a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-chalkboard-teacher me-2"></i>Teachers</a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-school me-2"></i>Classes</a>
+            <a href="{% url 'event_management:events_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-calendar-alt me-2"></i>Events</a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-cogs me-2"></i>Settings</a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-book me-2"></i>Courses</a>
+            <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold"><i class="fas fa-chart-bar me-2"></i>Reports</a>
+            <a href="{% url 'logout' %}" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold"><i class="fas fa-power-off me-2"></i>Logout</a>
         </div>
     </div>
     <!-- Page Content -->
@@ -44,7 +24,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
             <div class="d-flex align-items-center">
                 <i class="fas fa-align-left primary-text fs-4 me-3" id="menu-toggle"></i>
-                <h2 class="fs-2 m-0">Staff Dashboard</h2>
+                <h2 class="mb-4">Welcome, {{ request.user.get_full_name }}</h2>
             </div>
         </nav>
         <div class="container-fluid px-4">

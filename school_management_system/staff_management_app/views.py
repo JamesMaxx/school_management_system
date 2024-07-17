@@ -1,5 +1,3 @@
-# school_management_system\staff_management_app\templates\staff_management_app\base.html
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -7,14 +5,12 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from .models import Staff, Department
 from .forms import StaffRegistrationForm, UpdateStaffProfileForm
-
+from django.http import HttpResponse
 
 def staff_dashboard(request, staff_id):
     staff_member = get_object_or_404(Staff, id=staff_id)
-    # Add any additional context data if needed
     context = {
         'staff_member': staff_member,
-        # 'other_context': other_context_data
     }
     return render(request, 'staff_management_app/staff_dashboard.html', context)
 
@@ -23,31 +19,18 @@ def staff_registration(request):
     if request.method == 'POST':
         form = StaffRegistrationForm(request.POST, request.FILES)
         if form.is_valid():
-            # Save the user object from the form
             user = form.save()
-
-            # Create staff profile
-            staff = form.save(commit=False)
-            staff.user = user
-            staff.save()
-
-            # Set departments if provided
+            staff = Staff.objects.create(user=user)
             departments = form.cleaned_data.get('departments')
             if departments:
                 staff.departments.set(departments)
-
-            # Success message and redirect
             messages.success(request, 'Staff registration successful')
-            return redirect('staff_management_app:login')  # Replace with your desired redirect URL
+            return redirect('staff_management_app:login')
         else:
-            # Form validation errors
             messages.error(request, 'Please correct the errors below')
     else:
         form = StaffRegistrationForm()
-
     return render(request, 'staff_management_app/staff_registration.html', {'form': form})
-
-
 
 def login_links(request):
     return render(request, 'staff_management_app/login_links.html')
@@ -64,14 +47,14 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if hasattr(user, 'staff'):  # Check if the user is associated with a staff profile
+            if hasattr(user, 'staff'):
                 staff = get_object_or_404(Staff, user=user)
-                return redirect('staff_management_app:staff_dashboard', staff_id=staff.id)  # Redirect to staff profile
+                return redirect('staff_management_app:staff_dashboard', staff_id=staff.id)
             else:
-                messages.error(request, 'Invalid username or password. Please try again.')
-                return redirect('staff_management_app:login')
-    else:
-        return render(request, 'staff_management_app/login.html')
+                messages.error(request, 'User is not associated with a staff profile.')
+        else:
+            messages.error(request, 'Invalid username or password. Please try again.')
+    return render(request, 'staff_management_app/login.html')
 
 @login_required
 def logout_view(request):
@@ -83,12 +66,9 @@ def staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     return render(request, 'staff_management_app/staff_profile.html', {'staff': staff})
 
-
-
 @login_required
 def update_staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
-
     if request.method == 'POST':
         form = UpdateStaffProfileForm(request.POST, request.FILES, instance=staff)
         if form.is_valid():
@@ -99,15 +79,13 @@ def update_staff_profile(request, staff_id):
             messages.error(request, 'Please correct the errors below')
     else:
         form = UpdateStaffProfileForm(instance=staff)
-
     return render(request, 'staff_management_app/update_staff_profile.html', {'form': form, 'staff': staff})
-
 
 @login_required
 def delete_staff_profile(request, staff_id):
     staff = get_object_or_404(Staff, id=staff_id)
     if request.method == 'POST':
-        staff.delete()
+        staff.user.delete()  # Delete the associated user as well
         messages.success(request, 'Staff profile deleted successfully')
         return redirect('staff_management_app:home')
     return render(request, 'staff_management_app/delete_staff_profile.html', {'staff': staff})
