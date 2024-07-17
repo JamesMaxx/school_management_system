@@ -112,41 +112,51 @@ class StudentProfileForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['phone', 'date_of_birth', 'gender', 'guardian_name', 'guardian_contact', 'email', 'address', 'profile_picture']
+        widgets = {
+            'phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control'})
+        }
+
 
 class UpdateStudentForm(forms.ModelForm):
     new_course = forms.ModelChoiceField(
         queryset=Course.objects.all(),
         widget=forms.Select(attrs={'class': 'form-control'})
     )
-    course = forms.ModelChoiceField(
-        queryset=Course.objects.all(),
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
 
     class Meta:
         model = Student
-        fields = ['guardian_name', 'guardian_contact', 'email', 'phone', 'course']
+        fields = ['guardian_name', 'guardian_contact', 'email', 'phone', 'profile_picture']
         widgets = {
             'guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
             'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'course': forms.Select(attrs={'class': 'form-control'}),
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control'})
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if self.instance.course:
-            self.fields['new_course'].initial = self.instance.course
+        student = kwargs.get('instance')
+        if student:
+            enrollment = Enrollment.objects.filter(student=student, is_active=True).first()
+            if enrollment:
+                self.fields['new_course'].initial = enrollment.course
 
     def save(self, commit=True):
         student = super().save(commit=False)
-        new_course = self.cleaned_data.get('new_course')
-        if new_course and new_course != student.course:
-            student.course = new_course
-            if commit:
-                student.save()
+        new_course = self.cleaned_data['new_course']
+        enrollment = Enrollment.objects.filter(student=student, is_active=True).first()
+        if enrollment:
+            enrollment.course = new_course
+            enrollment.save()
         return student
+
+
 
 class AttendanceForm(forms.ModelForm):
     class Meta:

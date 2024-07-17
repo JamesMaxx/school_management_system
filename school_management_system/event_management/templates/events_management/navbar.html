@@ -18,9 +18,8 @@
                         <ul class="dropdown-menu">
                             {% if student and student.id%}
                             <li><a class="dropdown-item" href="{% url 'student_management_app:student_profile' student.id %}">View Profile</a></li>
-                            <li><a class="dropdown-item" href="{% url 'student_management_app:update_student_profile' student.id %}">Update Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{% url 'student_management_app:complete_profile' student.id %}">Complete Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'student_management_app:update_student_profile' student.id %}">Update Profile</a></li>
                             {% else %}
                                 <li><a class="dropdown-item" href="#">Profile not available</a></li>
                             {% endif %}
