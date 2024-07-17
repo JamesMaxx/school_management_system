@@ -9,6 +9,13 @@
                 <div class="card-body">
                     <h1 class="card-title mb-4">Welcome, {{ student.user.first_name }} {{ student.user.last_name }}</h1>
                     <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Profile Picture:</strong>
+                            {% if student.profile_picture %}
+                                <img src="{{ student.profile_picture.url }}" alt="Profile Picture" class="img-fluid">
+                            {% else %}
+                                No profile picture uploaded
+                            {% endif %}
+                        </li>
                         <li class="list-group-item"><strong>Email:</strong> {{ student.user.email }}</li>
                         <li class="list-group-item"><strong>Phone:</strong> {{ student.phone }}</li>
                         <li class="list-group-item"><strong>User ID:</strong> {{ student.user.id }}</li>

@@ -3,14 +3,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm, AssignmentForm
+from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm, AssignmentForm, UpdateStudentForm
 from .models import Student, Attendance, Course, Assignment
 from .utils import generate_weekday_dates
 from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from .models import TimetableEntry
-from .forms import TimetableEntryForm
+
 
 
 def student_assignment_list(request, student_id):
@@ -116,16 +116,18 @@ def student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     return render(request, 'student_management_app/student_profile.html', {'student': student})
 
+
+
 @login_required
 def update_student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     if request.method == 'POST':
-        form = StudentProfileForm(request.POST, request.FILES, instance=student)
+        form = UpdateStudentForm(request.POST, request.FILES, instance=student)
         if form.is_valid():
             form.save()
             return redirect('student_management_app:student_profile', student_id=student.id)
     else:
-        form = StudentProfileForm(instance=student)
+        form = UpdateStudentForm(instance=student)
     return render(request, 'student_management_app/update_student_profile.html', {'form': form, 'student': student})
 
 @login_required
@@ -137,17 +139,16 @@ def delete_student_profile(request, student_id):
     return render(request, 'student_management_app/delete_student_profile.html', {'student': student})
 
 @login_required
-def complete_profile(request, student_id):
+def update_student_profile(request, student_id):
     student = get_object_or_404(Student, id=student_id)
     if request.method == 'POST':
-        form = StudentProfileForm(request.POST, request.FILES, instance=student)
+        form = UpdateStudentForm(request.POST, request.FILES, instance=student)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile updated successfully.')
-            return redirect('student_management_app:home')
+            return redirect('student_management_app:student_profile', student_id=student.id)
     else:
-        form = StudentProfileForm(instance=student)
-    return render(request, 'student_management_app/complete_profile.html', {'form': form, 'student': student})
+        form = UpdateStudentForm(instance=student)
+    return render(request, 'student_management_app/update_student_profile.html', {'form': form, 'student': student})
 
 @csrf_protect
 def student_registration(request):
