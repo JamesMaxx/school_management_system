@@ -1,0 +1,22 @@
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title mb-4">Assignment Detail: {{ assignment.title }}</h1>
+                    <p><strong>Description:</strong> {{ assignment.description }}</p>
+                    <!-- Other assignment details -->
+                    <div class="mt-4">
+                        {% if assignment.pdf_file %}
+                            <a class="btn btn-success" href="{% url 'student_management_app:download_assignment_submission' assignment.id %}">Download Submission PDF</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

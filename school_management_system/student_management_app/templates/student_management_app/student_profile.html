@@ -7,7 +7,7 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <h1 class="card-title mb-4">Welcome, {{ student.user.first_name }} {{ student.user.last_name }}</h1>
+                    <h1 class="card-title mb-4">Welcome, {{ student.user.get_full_name }}</h1> <!-- Changed to use get_full_name -->
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item"><strong>Profile Picture:</strong>
                             {% if student.profile_picture %}
@@ -29,6 +29,7 @@
                                 {% endfor %}
                             </ul>
                         </li>
+                    </ul> <!-- Close the <ul> tag here -->
 
                     <div class="mt-4">
                         <a class="btn btn-primary mr-2" href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a>
