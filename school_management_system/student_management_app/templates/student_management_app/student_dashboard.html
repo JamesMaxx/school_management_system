@@ -87,24 +87,31 @@
                     </div>
 
                     <!-- Academic Information -->
-                    <h5 class="card-title mt-4">Academic Information</h5>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <tbody>
-                                <tr>
-                                    <th>Admission Number</th>
-                                    <td>{{ student.admission_number }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Courses Enrolled</th>
-                                    <td>
-                                        <ul>
-                                            {% for enrollment in student.enrollment_set.all %}
-                                                <li>{{ enrollment.course.name }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    </td>
-                                </tr>
+<h5 class="card-title mt-4">Academic Information</h5>
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <tbody>
+            <tr>
+                <th>Admission Number</th>
+                <td>{{ student.admission_number }}</td>
+            </tr>
+            <tr>
+                <th>Courses Enrolled</th>
+                <td>
+                    <ul>
+                        {% for enrollment in student.enrollment_set.all %}
+                            <li>{{ enrollment.course.name }}</li>
+                        {% empty %}
+                            <li>No courses enrolled.</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            <!-- Add more academic details as needed -->
+        </tbody>
+    </table>
+</div>
+
                                 <!-- Add more academic details as needed -->
                             </tbody>
                         </table>
