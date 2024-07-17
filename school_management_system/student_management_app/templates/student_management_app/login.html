@@ -1,0 +1,65 @@
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<!-- Login Form -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>Login</h2>
+                </div>
+                {% if messages %}
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {% for message in messages %}
+                            <strong>{{ message.tags|title }}!</strong> {{ message }}
+                        {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                            <label class="form-check-label" for="remember_me">Remember me</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary bg-success">Login</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'password_reset' %}">Lost password?</a> | <a href="{% url 'student_management_app:student_registration' %}">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Content for Login Error Handling -->
+{% if form.errors %}
+    <div class="container mt-3">
+        <div class="alert alert-danger">
+            <p>Your username and password didn't match. Please try again.</p>
+        </div>
+    </div>
+{% endif %}
+
+{% if next %}
+    {% if not user.is_authenticated %}
+        <div class="container mt-3">
+            <div class="alert alert-danger">
+                <p>Please login to see this page.</p>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

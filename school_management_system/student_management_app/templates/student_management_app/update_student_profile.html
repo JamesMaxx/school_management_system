@@ -1,0 +1,70 @@
+<!-- student_management_system/student_management_app/templates/student_management_app/update_student_profile.html -->
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h2 class="text-center">Update Profile for {{ student.user.first_name }} {{ student.user.last_name }}</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.first_name.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.last_name.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.email.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.phone.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.phone }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.guardian_name.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.guardian_name }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.guardian_contact.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.guardian_contact }}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">{{ form.profile_picture.label_tag }}</label>
+                            <div class="col-sm-9">
+                                {{ form.profile_picture }}
+                            </div>
+                        </div>
+
+                        <div class="form-group row mt-4">
+                            <div class="col-sm-9 offset-sm-3">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a href="{% url 'student_management_app:student_profile' student.id %}" class="btn btn-secondary ms-2">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

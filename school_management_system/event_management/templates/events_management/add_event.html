@@ -43,6 +43,10 @@
                 {{ form.venue }}
             </div>
             <br>
+            <div class="form-group">
+                <strong><label for="{{ form.organizer.id_for_label }}">Event Organizer</label></strong>
+                {{ form.organizer }}
+            <br>
             <input type="submit" value="Submit" class="btn btn-secondary">
         </form>
     {% endif %}

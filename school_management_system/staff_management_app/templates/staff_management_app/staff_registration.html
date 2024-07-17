@@ -1,0 +1,38 @@
+<!-- school_management_system/staff_management_app/templates/staff_management_app/staff_registration.html -->
+{% extends 'staff_management_app/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="text-center">Staff Registration</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">{{ field.label }}</label>
+                                <div class="col-sm-9">
+                                    {{ field }}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-danger">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="form-group row">
+                            <div class="col-sm-9 offset-sm-3">
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

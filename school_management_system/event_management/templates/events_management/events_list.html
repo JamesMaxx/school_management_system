@@ -1,38 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events</title>
+</head>
+<body>
 {% extends 'events_management/base.html' %}
 
 {% block content %}
-
     <h1>Events</h1>
     <br>
     {% for event in event_list %}
-
-            <div class="card">
-                <div class="card-header">
-                    <strong>{{ event.title }}</strong>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title"><strong>Venue:</strong> {{ event.venue.name }}</h5>
-                    <ul><li class="card-text"><strong>Description:</strong> {{ event.description }}</li>
+        <div class="card">
+            <div class="card-header">
+                <strong>{{ event.title }}</strong>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><strong>Venue:</strong> {{ event.venue.name }}</h5>
+                <ul>
+                    <li class="card-text"><strong>Description:</strong> {{ event.description }}</li>
                     <li><strong>Event Type:</strong> {{ event.event_type }}</li>
                     <li><strong>Date:</strong> {{ event.date }}</li>
-                        <li><strong>Time:</strong> {{ event.start_time }} - {{ event.end_time }}</li>
-                    {% if event.venue.web %}
-                    <li><strong>Website:</strong> <a href="{{ event.venue.web }}">{{ event.venue.web }}</a></li>
-                    {% else %}
-                    <li><strong>Website:</strong> No website
-                    {% endif %}
-                    <li><strong>Organizer:</strong> {{ event.organizer }}<br></li>
-                    {% if event.apply_leave %}
-                    {% endif %}
-                    </ul>
-                </div>
-                <br>
-                <div class="card-footer text-body-secondary">
-                    <td Update align="right"><a href="{% url 'update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Update Event</a></td>
-                  </div>
-
+                    <li><strong>Time:</strong> {{ event.start_time }} - {{ event.end_time }}</li>
+                    <li><strong>Website:</strong>
+                        {% if event.venue.web %}
+                            <a href="{{ event.venue.web }}">{{ event.venue.web }}</a>
+                        {% else %}
+                            No website
+                        {% endif %}
+                    </li>
+                    <li><strong>Organizer:</strong> {{ event.organizer }}</li>
+                </ul>
             </div>
-            <br><br>
+            <div class="card-footer text-body-secondary">
+
+                <a href="{% url 'event_management:update-event' event.id %}" class="btn btn-outline-secondary btn-sm">Update Event</a>
+                <a href="{% url 'event_management:delete-event' event.id %}" class="btn btn-outline-danger btn-sm">Delete Event</a>
+            </div>
+        </div>
+        <br><br>
     {% endfor %}
-    <br>
 {% endblock %}

@@ -4,15 +4,119 @@ from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Event, Venue
 from .forms import VenueForm, EventForm
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
+import csv
+from django.urls import reverse
 
+# Import PDF-related modules
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+
+# Import Paging-related modules
+from django.core.paginator import Paginator
+
+
+""" Generate pdf file venue list"""
+def venue_pdf(request):
+    # Create a file-like buffer to receive PDF data.
+    buf = io.BytesIO()
+    # Create the PDF object, using the buffer as its "file."
+    c = canvas.Canvas(buf, pagesize=letter, bottomup=0)
+
+    # Set up the text object
+    textob = c.beginText()
+    textob.setTextOrigin(inch, inch)
+    textob.setFont('Helvetica', 14)
+
+    # Add header
+    textob.textLine("VENUES")
+    textob.textLine("")
+
+    # Fetch venues from the database
+    venues = Venue.objects.all()
+
+    # Add each venue's details
+    for venue in venues:
+        textob.textLine(f'Name: {venue.name}')
+        textob.textLine(f'Address: {venue.address}')
+        textob.textLine(f'Phone: {venue.phone}')
+        textob.textLine(f'Website: {venue.web}')
+        textob.textLine(f'Email: {venue.email_address}')
+        textob.textLine("")  # Add a blank line for spacing
+
+    # Draw the text on the PDF
+    c.drawText(textob)
+    c.showPage()
+    c.save()
+
+    # Move to the beginning of the StringIO buffer
+    buf.seek(0)
+
+    # Return the PDF response
+    return FileResponse(buf, as_attachment=True, filename='venues.pdf')
+
+
+""" Generate csv file venue list"""
+def venue_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="venues.csv"'
+
+    # Create csv writer
+    writer = csv.writer(response)
+
+    # Designate the model
+    venues = Venue.objects.all()
+
+    # Add column headings to csv
+    writer.writerow(['Name', 'Address', 'Phone', 'Website', 'Email'])
+
+
+    # Loop through data and write to csv
+    for venue in venues:
+        writer.writerow([venue.name, venue.address, venue.phone, venue.web, venue.email_address])
+
+    return response
+
+""" Generate Text Files"""
+def venue_text(request):
+    response = HttpResponse(content_type='text/plain')
+    response['Content-Disposition'] = 'attachment; filename="venues.txt"'
+
+    # Designate the model
+    venues = Venue.objects.all()
+
+    lines = ["VENUES\n\n"]
+
+    for venue in venues:
+        lines.append(f'Name: {venue.name}\n')
+        lines.append(f'Address: {venue.address}\n')
+        lines.append(f'Phone: {venue.phone}\n')
+        lines.append(f'Website: {venue.web}\n')
+        lines.append(f'Email: {venue.email_address}\n\n')
+
+    response.writelines(lines)
+    return response
+
+def delete_venue(request, venue_id):
+    venue = Venue.objects.get(pk=venue_id)
+    venue.delete()
+    return redirect('event_management:list-venues')
+
+
+def delete_event(request, event_id):
+    event = Event.objects.get(pk=event_id)
+    event.delete()
+    return redirect('event_management:lists-events')
 
 def update_event(request, event_id):
     event = Event.objects.get(pk=event_id)
     form = EventForm(request.POST or None, instance=event)
     if form.is_valid():
         form.save()
-        return redirect('list-events')
+        return redirect('event_management:events_list')
 
     return render(request, 'events_management/update_event.html', {'event': event, 'form':form})
 
@@ -22,7 +126,7 @@ def add_event(request):
         form = EventForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/add_event?submitted=True')
+            return HttpResponseRedirect('events_management/add_event?submitted=True')
     else:
         form = EventForm()
         if 'submitted' in request.GET:
@@ -37,7 +141,7 @@ def update_venue(request, venue_id):
     form = VenueForm(request.POST or None, instance=venue)
     if form.is_valid():
         form.save()
-        return redirect('list-venues')
+        return redirect('event_management:list-venues')
 
     return render(request, 'events_management/update_venue.html', {'venue': venue, 'form':form})
 
@@ -59,15 +163,23 @@ def show_venue(request, venue_id):
 
 def list_venues(request):
     venue_list = Venue.objects.all()
-    return render(request, 'events_management/venue.html', {'venue_list': venue_list})
+
+    # Set Up Pagination
+    p = Paginator(Venue.objects.all(), 3)
+    page = request.GET.get('page')
+    venues = p.get_page(page)
+
+    return render(request, 'events_management/venue.html', {'venue_list': venue_list, 'venues': venues})
 
 def add_venue(request):
     submitted = False
     if request.method == "POST":
         form = VenueForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/add_venue?submitted=True')
+            venue = form.save(commit=False)  # Get form data without saving to DB yet
+            venue.organizer_id = request.user.id  # Assuming organizer is the logged-in user
+            venue.save()  # Now save to DB with organizer_id set
+            return HttpResponseRedirect(reverse('event_management:add_venue') + '?submitted=True')
     else:
         form = VenueForm()
         if 'submitted' in request.GET:
@@ -76,12 +188,13 @@ def add_venue(request):
     return render(request, 'events_management/add_venue.html', {'form': form, 'submitted': submitted})
 
 def all_events(request):
-    event_list = Event.objects.all()
-    venue_list = Venue.objects.all()
+    event_list = Event.objects.all().order_by('date')
+    venue_list = Venue.objects.all().order_by('name')
     return render(request, 'events_management/events_list.html', {'event_list': event_list, 'venue_list': venue_list})
 
 
-
+def landingpage(request):
+    return render(request, 'events_management/landingpage.html', {})
 
 def home(request, year=datetime.now().year, month=datetime.now().strftime("%B")):
     first_name = "Elvis"

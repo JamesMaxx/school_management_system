@@ -1,0 +1,10 @@
+{% extends 'staff_management_app/base.html' %}
+
+{% block content %}
+    <h1>Are you sure you want to delete the profile for {{ staff.user.first_name }} {{ staff.user.last_name }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <p><a href="{% url 'staff_management_app:staff_profile' staff.id %}">No, go back</a></p>
+{% endblock %}

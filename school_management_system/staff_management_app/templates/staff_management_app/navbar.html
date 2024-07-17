@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'event_management:landingpage' %}">ABC Group of Schools</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'event_management:events_home' %}">Home</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <!-- Profile dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Profile
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if staff and staff.id%}
+                            <li><a class="dropdown-item" href="{% url 'staff_management_app:staff_profile' staff.id %}">View Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'staff_management_app:update_staff_profile' staff.id %}">Update Profile</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'staff_management_app:complete_profile' staff.id %}">Complete Profile</a></li>
+                            {% else %}
+                                <li><a class="dropdown-item" href="#">Profile not available</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+
+                    <!-- Events dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Events
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'event_management:events_list' %}">Events List</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Venue dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Venue
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'event_management:list-venues' %}">Venues List</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_management:venue-text' %}">Download Venue Text</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_management:venue_csv' %}">Download Venue CSV</a></li>
+                            <li><a class="dropdown-item" href="{% url 'event_management:venue_pdf' %}">Download Venue PDF</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:logout' %}">Logout</a>
+                    </li>
+                {% else %}
+                    <!-- Links for non-authenticated users -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <form class="d-flex" role="search" method="POST" action="{% url 'event_management:search-venues' %}">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search Venues" aria-label="Search" name="searched">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>
