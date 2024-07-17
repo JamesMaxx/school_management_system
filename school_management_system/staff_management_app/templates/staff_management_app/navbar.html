@@ -51,15 +51,15 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management_app:logout' %}">Logout</a>
+                        <a class="nav-link" href="{% url 'staff_management_app:logout' %}">Logout</a>
                     </li>
                 {% else %}
                     <!-- Links for non-authenticated users -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management_app:login' %}">Login</a>
+                        <a class="nav-link" href="{% url 'staff_management_app:login' %}">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'student_management_app:student_registration' %}">Register</a>
+                        <a class="nav-link" href="{% url 'staff_management_app:staff_registration' %}">Register</a>
                     </li>
                 {% endif %}
             </ul>
