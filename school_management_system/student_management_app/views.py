@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm, AssignmentForm
@@ -9,6 +9,8 @@ from .utils import generate_weekday_dates
 from datetime import date, timedelta
 from django.core.paginator import Paginator
 from django.http import HttpResponse
+from .models import TimetableEntry
+from .forms import TimetableEntryForm
 
 
 def student_assignment_list(request, student_id):
@@ -159,3 +161,11 @@ def student_registration(request):
     else:
         form = StudentRegistrationForm()
     return render(request, 'student_management_app/student_registration.html', {'form': form})
+
+
+
+
+@login_required
+def student_timetable(request):
+    timetable_entries = TimetableEntry.objects.all().order_by('day', 'start_time')
+    return render(request, 'student_management_app/student_timetable.html', {'timetable_entries': timetable_entries})

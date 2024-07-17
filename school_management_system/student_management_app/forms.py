@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Student, Course, Enrollment, Attendance, Assignment
 from datetime import date
+from .models import TimetableEntry
+from event_management.models import Event
 
 class StudentRegistrationForm(UserCreationForm):
     email = forms.EmailField(
@@ -168,3 +170,20 @@ class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
         fields = ['title', 'description', 'due_date']
+
+
+class TimetableEntryForm(forms.ModelForm):
+    event = forms.ModelChoiceField(queryset=Event.objects.all(), required=False)
+
+    class Meta:
+        model = TimetableEntry
+        fields = ['day', 'start_time', 'end_time', 'subject', 'teacher', 'location', 'event']
+        widgets = {
+            'day': forms.Select(attrs={'class': 'form-control'}),
+            'start_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+            'end_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
+            'subject': forms.TextInput(attrs={'class': 'form-control'}),
+            'teacher': forms.TextInput(attrs={'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'class': 'form-control'}),
+            'event': forms.Select(attrs={'class': 'form-control'}),
+        }
