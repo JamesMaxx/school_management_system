@@ -34,10 +34,10 @@
                                 <ul class="dropdown-menu" aria-labelledby="assignmentsDropdown">
                                     {% for assignment in assignments %}
                                         <li>
-                                            <a class="dropdown-item" href="{% url 'student_management_app:submit_assignment' assignment.id %}">Submit {{ assignment.title }}</a>
+                                            <a class="dropdown-item" href="{% url 'student_management_app:create_assignment' %}">Submit Assignment</a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item" href="{% url 'student_management_app:download_submission' assignment.id %}">Download {{ assignment.title }}</a>
+                                            <a class="dropdown-item" href="{% url 'student_management_app:view_assignment' assignment.id %}">Download Assignment</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
