@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from event_management.models import Event
 
 class Student(models.Model):
     """
@@ -112,3 +113,23 @@ class Submission(models.Model):
 
     def __str__(self):
         return f"{self.assignment.title} - {self.student.first_name} {self.student.last_name}"
+
+class TimetableEntry(models.Model):
+    DAYS_OF_WEEK = [
+        ('MON', 'Monday'),
+        ('TUE', 'Tuesday'),
+        ('WED', 'Wednesday'),
+        ('THU', 'Thursday'),
+        ('FRI', 'Friday'),
+    ]
+
+    day = models.CharField(max_length=3, choices=DAYS_OF_WEEK)
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    subject = models.CharField(max_length=100)
+    teacher = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    event = models.ForeignKey(Event, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.subject} on {self.day} from {self.start_time} to {self.end_time}"

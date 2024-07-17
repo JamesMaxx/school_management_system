@@ -124,3 +124,5 @@ def complete_profile(request, staff_id):
     else:
         form = StaffProfileForm(instance=staff)
     return render(request, 'staff_management_app/complete_profile.html', {'form': form, 'staff': staff})
+
+

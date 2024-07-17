@@ -1,131 +1,138 @@
 <!-- student_management_system/student_management_app/templates/student_management_app/student_dashboard.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Management System - Student Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-    <style>
-        .sidebar {
-            height: 100vh;
-            background-color: #343a40;
-            padding-top: 20px;
-        }
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            color: #007bff;
-        }
-    </style>
-</head>
-<body>
-    <div class="d-flex" id="wrapper">
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<div class="container-fluid px-4">
+    <div class="row">
         <!-- Sidebar -->
-        <div class="sidebar bg-dark">
-            <div class="sidebar-heading text-center py-4 primary-text fs-4 fw-bold text-uppercase border-bottom bg=white">
-                School Name
-            </div>
-            <div class="list-group list-group-flush my-3">
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text active">
-                    <i class="fas fa-tachometer-alt me-2"></i> Welcome, {{ student.user.first_name }} {{ student.user.last_name }}
-                </a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-book-open me-2"></i> Courses Enrolled
-                {% for enrollment in student.enrollment_set.all %}
-                <li>{{ enrollment.course.name }}</li>
-            {% endfor %}
-                </a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-clipboard-list me-2"></i> Assignments (Finished and Pending)
-                </a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-calendar-alt me-2"></i> Calendar (School Timetable)
-                </a>
-                <a href="{% url 'event_management:events_list' %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-calendar-day me-2"></i> Events
-                </a>
-                <a href="{% url 'student_management_app:student_profile' student.id %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-user-circle me-2"></i> View Profile
-                </a>
-                <a href="{% url 'student_management_app:update_student_profile' student.id %}" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-user-edit me-2"></i> Update Profile
-                </a>
-                <a href="#" class="list-group-item list-group-item-action bg-transparent second-text fw-bold">
-                    <i class="fas fa-running me-2"></i> Extra-curricular Activities
-                </a>
-                <a href="{% url 'student_management_app:logout' %}" class="list-group-item list-group-item-action bg-transparent text-danger fw-bold">
-                    <i class="fas fa-power-off me-2"></i> Logout
-                </a>
-            </div>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid px-4">
-                <div class="container mt-5">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header bg-primary text-white">
-                                    <h4 class="card-title">Student Dashboard</h4>
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title">Personal Information</h5>
-                                    <ul class="list-group">
-                                        <li class="list-group-item"><strong>Full Name:</strong> {{ student.user.first_name }} {{ student.user.last_name }}</li>
-                                        <li class="list-group-item"><strong>Email:</strong> {{ student.user.email }}</li>
-                                        <li class="list-group-item"><strong>Phone Number:</strong> {{ student.phone }}</li>
-                                        <li class="list-group-item"><strong>Date of Birth:</strong> {{ student.date_of_birth }}</li>
-                                        <li class="list-group-item"><strong>Gender:</strong> {{ student.get_gender_display }}</li>
-                                    </ul>
-
-                                    <h5 class="card-title mt-4">Academic Information</h5>
-                                    <ul class="list-group">
-                                        <li class="list-group-item"><strong>Admission Number:</strong> {{ student.admission_number }}</li>
-
-                                        </li>
-                                            <ul>
-                                                {% for enrollment in student.enrollment_set.all %}
-                                                    <li>{{ enrollment.course.name }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </li>
-                                        <!-- Include class schedule, grades, etc. as applicable -->
-                                    </ul>
-
-                                    <h5 class="card-title mt-4">Administrative Information</h5>
-                                    <ul class="list-group">
-                                        <li class="list-group-item"><strong>Student ID:</strong> {{ student.user.id }}</li>
-                                        <!-- Include academic calendar, announcements, etc. as applicable -->
-                                    </ul>
-
-                                    <div class="mt-4">
-                                        <a class="btn btn-primary mr-2" href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a>
-                                        <a class="btn btn-secondary" href="{% url 'student_management_app:logout' %}">Logout</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <div class="col-md-3">
+            <div class="card mb-4 h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="card-title">School Name</h5>
+                </div>
+                <div class="card-body py-4 bg-white">
+                    <div class="list-group list-group-flush">
+                        <a href="#" class="list-group-item list-group-item-action bg-white text-dark active">
+                            <i class="fas fa-tachometer-alt me-2"></i> Welcome, {{ student.user.first_name }} {{ student.user.last_name }}
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-book-open me-2"></i> Courses Enrolled
+                            <ul class="pl-3">
+                                {% for enrollment in student.enrollment_set.all %}
+                                    <li>{{ enrollment.course.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-clipboard-list me-2"></i> Assignments (Finished and Pending)
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-calendar-alt me-2"></i> Calendar (School Timetable)
+                        </a>
+                        <a href="{% url 'event_management:events_list' %}" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-calendar-day me-2"></i> Events
+                        </a>
+                        <a href="{% url 'student_management_app:student_profile' student.id %}" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-user-circle me-2"></i> View Profile
+                        </a>
+                        <a href="{% url 'student_management_app:update_student_profile' student.id %}" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-user-edit me-2"></i> Update Profile
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
+                            <i class="fas fa-running me-2"></i> Extra-curricular Activities
+                        </a>
+                        <a href="{% url 'student_management_app:logout' %}" class="list-group-item list-group-item-action bg-white text-danger fw-bold">
+                            <i class="fas fa-power-off me-2"></i> Logout
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- /#page-content-wrapper -->
-    </div>
-    <!-- /#wrapper -->
+        <!-- End Sidebar -->
 
-    <!-- Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Font Awesome Icons -->
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
-</body>
-</html>
+        <!-- Main Content -->
+        <div class="col-md-9">
+            <div class="card mb-4 h-100">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title">Student Dashboard</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Personal Information -->
+                    <h5 class="card-title">Personal Information</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Full Name</th>
+                                    <td>{{ student.user.first_name }} {{ student.user.last_name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>{{ student.user.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone Number</th>
+                                    <td>{{ student.phone }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Birth</th>
+                                    <td>{{ student.date_of_birth }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Gender</th>
+                                    <td>{{ student.get_gender_display }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Academic Information -->
+                    <h5 class="card-title mt-4">Academic Information</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Admission Number</th>
+                                    <td>{{ student.admission_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Courses Enrolled</th>
+                                    <td>
+                                        <ul>
+                                            {% for enrollment in student.enrollment_set.all %}
+                                                <li>{{ enrollment.course.name }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <!-- Add more academic details as needed -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Administrative Information -->
+                    <h5 class="card-title mt-4">Administrative Information</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Student ID</th>
+                                    <td>{{ student.user.id }}</td>
+                                </tr>
+                                <!-- Include administrative details as applicable -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="mt-4">
+                        <a class="btn btn-primary mr-2" href="{% url 'student_management_app:update_student_profile' student.id %}">Edit Profile</a>
+                        <a class="btn btn-secondary" href="{% url 'student_management_app:logout' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Main Content -->
+    </div>
+</div>
+{% endblock %}
