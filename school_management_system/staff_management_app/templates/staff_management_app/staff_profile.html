@@ -1,0 +1,28 @@
+<!-- staff_management_app/templates/staff_management_app/staff_profile.html -->
+{% extends 'staff_management_app/base.html' %}
+
+{% block title %}Staff Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title">{{ staff.user.first_name }} {{ staff.user.last_name }}</h1>
+            <p class="card-text">User ID: {{ staff.user.id }}</p>
+            <p class="card-text">Email: {{ staff.user.email }}</p>
+            <p class="card-text">Phone: {{ staff.phone_number }}</p>
+            <p class="card-text">Department: {{ staff.department }}</p>
+            <p class="card-text">Role: {{ staff.role }}</p>
+            <p class="card-text">Join Date: {{ staff.join_date }}</p>
+            <p class="card-text">Profile Picture:
+                {% if staff.profile_picture %}
+                    <img src="{{ staff.profile_picture.url }}" class="img-fluid rounded-circle" alt="Profile Picture" style="width: 100px; height: 100px;">
+                {% else %}
+                    <img src="https://via.placeholder.com/100" class="img-fluid rounded-circle" alt="No Profile Picture" style="width: 100px; height: 100px;">
+                {% endif %}
+            </p>
+            <p><a href="{% url 'staff_management_app:update_staff_profile' staff.id %}" class="btn btn-primary">Update Profile</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'staff_management_app/base.html' %}
+{# This template extends the base.html template #}
+
+{% block title %}Complete Profile{% endblock %}
+{# This sets the title of the page to Complete Profile #}
+
+{% block content %}
+<div class="container mt-5">
+    {# The container is used to center the form on the page #}
+    <h2 class="mb-4">Complete Your Profile</h2>
+    {# This is the heading for the form #}
+    <form method="post" enctype="multipart/form-data">
+        {# This is the form that the user will fill out #}
+        {% csrf_token %}
+        {# This is a security token to prevent cross-site request forgery #}
+        <div class="form-group">
+            <label for="first_name">First Name:</label>
+            {# This is the label for the first name field #}
+            <input type="text" class="form-control" id="first_name" name="first_name" required>
+            {# This is the input field for the first name. The required attribute means that the user must fill in this field in order to submit the form #}
+        </div>
+        <div class="form-group">
+            <label for="last_name">Last Name:</label>
+            <input type="text" class="form-control" id="last_name" name="last_name" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="phone_number">Phone Number:</label>
+            <input type="tel" class="form-control" id="phone_number" name="phone_number">
+        </div>
+        <div class="form-group">
+            <label for="department">Department:</label>
+            <input type="text" class="form-control" id="department" name="department">
+        </div>
+        <div class="form-group">
+            <label for="position">Position:</label>
+            <input type="text" class="form-control" id="position" name="position">
+        </div>
+        <div class="form-group">
+            <label for="profile_picture">Profile Picture:</label>
+            <input type="file" class="form-control-file" id="profile_picture" name="profile_picture">
+        </div>
+        <button type="submit" class="btn btn-primary">Complete Profile</button>
+        {# This is the submit button for the form. When clicked, it will send the form data to the server #}
+    </form>
+</div>
+{% endblock %}
+

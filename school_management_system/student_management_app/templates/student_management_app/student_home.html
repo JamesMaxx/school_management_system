@@ -1,0 +1,75 @@
+<!-- student_home.html -->
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Welcome, {{ student.first_name }}</h1>
+            <hr>
+
+            <!-- School Motto -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    School Motto
+                </div>
+                <div class="card-body">
+                    <p class="card-text">"Excellence in Education"</p>
+                </div>
+            </div>
+
+            <!-- Student Rules -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Student Rules
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Respect teachers and fellow students.</li>
+                        <li>Follow the dress code.</li>
+                        <li>Complete assignments on time.</li>
+                        <li>Attend all classes regularly.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Student News -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Student News
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Stay tuned for updates on upcoming events and activities.</p>
+                </div>
+            </div>
+
+            <!-- Student Activities -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Student Activities
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Sports Day - Next Friday, 3 PM</li>
+                        <li>Science Fair - 15th August, 10 AM</li>
+                        <li>Drama Club Auditions - 20th August, 2 PM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Upcoming Activities -->
+            <div class="card">
+                <div class="card-header">
+                    Upcoming Activities
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Field Trip to Science Museum - 25th August</li>
+                        <li>Parent-Teacher Meeting - 30th August, 3 PM</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

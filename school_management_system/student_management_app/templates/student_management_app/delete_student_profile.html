@@ -1,0 +1,11 @@
+<!-- school_management_system/student_management_app/templates/student_management_app/delete_student_profile.html -->
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+    <h1>Are you sure you want to delete the profile for {{ student.user.first_name }} {{ student.user.last_name }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <p><a href="{% url 'student_management:student_profile' student.id %}">No, go back</a></p>
+{% endblock %}
