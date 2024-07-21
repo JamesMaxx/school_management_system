@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
-from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm, AssignmentForm, UpdateStudentForm
+from .forms import StudentRegistrationForm, StudentProfileForm, AttendanceForm, AssignmentSubmissionForm, UpdateStudentForm, AssignmentForm
 from .models import Student, Attendance, Course, Assignment
 from .utils import generate_weekday_dates
 from datetime import date, timedelta
@@ -12,35 +12,65 @@ from django.http import HttpResponse
 from .models import TimetableEntry
 
 
-
-def student_assignment_list(request, student_id):
-    student = get_object_or_404(Student, id=student_id)
-    assignments = Assignment.objects.filter(uploaded_by=student)
-    return render(request, 'student_management_app/student_assignment_list.html', {'assignments': assignments, 'student': student})
-
-def student_upload_assignment(request):
+def create_assignment(request):
     if request.method == 'POST':
         form = AssignmentForm(request.POST, request.FILES)
         if form.is_valid():
+            # Get the student_profile associated with the logged-in user
+            student_profile, created = Student.objects.get_or_create(user=request.user)
+
+            # Create the assignment instance but do not save it yet
             assignment = form.save(commit=False)
+
+            # Assign the user (request.user) directly to the uploaded_by field of the assignment
             assignment.uploaded_by = request.user
+
+            # Save the assignment instance
             assignment.save()
-            return redirect('student_management_app:student_assignment_list')  # Replace with the URL name for student's assignment list
+
+            return redirect('student_management_app:student_assignment_list')  # Redirect to the student's assignment list page
     else:
         form = AssignmentForm()
-    return render(request, 'student_management_app/student_upload_assignment.html', {'form': form})
 
-def student_download_assignment(request, assignment_id):
-    # Fetch the assignment object based on assignment_id
+    return render(request, 'student_management_app/create_assignment.html', {'form': form})
+
+def assignment_list(request):
+    assignments = Assignment.objects.all()
+    return render(request, 'student_management_app/assignment_list.html', {'assignments': assignments})
+
+def view_assignment(request, assignment_id):
+    assignment = Assignment.objects.get(id=assignment_id)
+    return render(request, 'student_management_app/view_assignment.html', {'assignment': assignment})
+
+
+@login_required
+def student_assignment_list(request):
+    student = request.user.student  # Accessing the student profile
+    assignments = Assignment.objects.filter(course__enrollment__student=student)
+    return render(request, 'student_management_app/student_assignment_list.html', {'assignments': assignments})
+
+
+def submit_assignment(request, assignment_id):
     assignment = get_object_or_404(Assignment, id=assignment_id)
+    if request.method == 'POST':
+        form = AssignmentSubmissionForm(request.POST, request.FILES, instance=assignment)
+        if form.is_valid():
+            form.save()
+            return redirect('student_management_app:assignment_detail', assignment_id=assignment.id)
+    else:
+        form = AssignmentSubmissionForm(instance=assignment)
 
-    # Assuming you store the file in assignment.file_upload, you can serve it for download
-    file_path = assignment.file_upload.path
-    with open(file_path, 'rb') as f:
-        response = HttpResponse(f.read(), content_type='application/octet-stream')
-        response['Content-Disposition'] = 'attachment; filename=' + assignment.file_upload.name
+    return render(request, 'student_management_app/assignment_submission.html', {'form': form, 'assignment': assignment})
+
+def download_assignment_submission(request, assignment_id):
+    assignment = get_object_or_404(Assignment, id=assignment_id)
+    pdf_file = assignment.pdf_file
+    if pdf_file:
+        response = HttpResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename="assignment_submission.pdf"'
         return response
-    raise Http404
+    else:
+        return HttpResponse("No PDF file available.")
 
 
 def student_attendance_calendar(request):
@@ -79,7 +109,15 @@ def student_list(request):
 
 def student_dashboard(request, student_id):
     student = get_object_or_404(Student, id=student_id)
-    return render(request, 'student_management_app/student_dashboard.html', {'student': student})
+    # Get the courses the student is enrolled in
+    enrolled_courses = student.enrollment_set.values_list('course', flat=True)
+    # Filter assignments by the courses the student is enrolled in
+    assignments = Assignment.objects.filter(course__in=enrolled_courses)
+    context = {
+        'student': student,
+        'assignments': assignments,
+    }
+    return render(request, 'student_management_app/student_dashboard.html', context)
 
 def login_links(request):
     return render(request, 'student_management_app/login_links.html')

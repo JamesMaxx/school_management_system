@@ -1,4 +1,3 @@
-<!-- student_management_system/student_management_app/templates/student_management_app/student_dashboard.html -->
 {% extends 'events_management/base.html' %}
 
 {% block content %}
@@ -20,12 +19,31 @@
                             <ul class="pl-3">
                                 {% for enrollment in student.enrollment_set.all %}
                                     <li>{{ enrollment.course.name }}</li>
+                                {% empty %}
+                                    <li>No courses enrolled.</li>
                                 {% endfor %}
                             </ul>
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
-                            <i class="fas fa-clipboard-list me-2"></i> Assignments (Finished and Pending)
-                        </a>
+
+                        <!-- Assignments Dropdown -->
+                        <div class="list-group-item bg-white text-dark fw-bold">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle text-dark" href="#" id="assignmentsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-clipboard-list me-2"></i> Assignments
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="assignmentsDropdown">
+                                    {% for assignment in assignments %}
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'student_management_app:create_assignment' %}">Submit Assignment</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'student_management_app:view_assignment' assignment.id %}">Download Assignment</a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
                         <a href="#" class="list-group-item list-group-item-action bg-white text-dark fw-bold">
                             <i class="fas fa-calendar-alt me-2"></i> Calendar (School Timetable)
                         </a>
@@ -87,31 +105,26 @@
                     </div>
 
                     <!-- Academic Information -->
-<h5 class="card-title mt-4">Academic Information</h5>
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <tbody>
-            <tr>
-                <th>Admission Number</th>
-                <td>{{ student.admission_number }}</td>
-            </tr>
-            <tr>
-                <th>Courses Enrolled</th>
-                <td>
-                    <ul>
-                        {% for enrollment in student.enrollment_set.all %}
-                            <li>{{ enrollment.course.name }}</li>
-                        {% empty %}
-                            <li>No courses enrolled.</li>
-                        {% endfor %}
-                    </ul>
-                </td>
-            </tr>
-            <!-- Add more academic details as needed -->
-        </tbody>
-    </table>
-</div>
-
+                    <h5 class="card-title mt-4">Academic Information</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Admission Number</th>
+                                    <td>{{ student.admission_number }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Courses Enrolled</th>
+                                    <td>
+                                        <ul>
+                                            {% for enrollment in student.enrollment_set.all %}
+                                                <li>{{ enrollment.course.name }}</li>
+                                            {% empty %}
+                                                <li>No courses enrolled.</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </td>
+                                </tr>
                                 <!-- Add more academic details as needed -->
                             </tbody>
                         </table>

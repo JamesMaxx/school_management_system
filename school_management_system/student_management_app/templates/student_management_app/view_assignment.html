@@ -1,0 +1,29 @@
+<!-- View Assignment -->
+{% extends 'events_management/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    Assignment Details
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ assignment.title }}</h5>
+                    <p class="card-text">{{ assignment.description }}</p>
+                    <p class="card-text"><strong>Subject:</strong> {{ assignment.course }}</p>
+                    <p class="card-text"><strong>Deadline:</strong> {{ assignment.due_date }}</p>
+                    <p class="card-text"><strong>Uploaded By:</strong> {{ assignment.uploaded_by.get_full_name }}</p>
+                    {% if assignment.file %}
+                    <p class="card-text"><strong>Attached File:</strong> <a href="{{ assignment.file.url }}">{{ assignment.file.name }}</a></p>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted">
+                    File: {{ assignment.pdf_file }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

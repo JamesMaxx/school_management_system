@@ -28,7 +28,7 @@ class StudentRegistrationForm(UserCreationForm):
     )
     date_of_birth = forms.DateField(
         required=True,
-        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'YYYY-MM-DD'})
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'DD-MM-YYYY'})
     )
     gender = forms.ChoiceField(
         choices=[('M', 'Male'), ('F', 'Female')],
@@ -57,10 +57,14 @@ class StudentRegistrationForm(UserCreationForm):
         label="Confirm Password",
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm Password'})
     )
+    extra_curricular_activities = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Extra Curricular Activities'})
+    )
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'role']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'role', 'extra_curricular_activities']
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -87,6 +91,7 @@ class StudentRegistrationForm(UserCreationForm):
             email=user.email,
             active=True,
             profile_picture=None,
+            extra_curricular_activities=""
         )
         return student
 
@@ -121,7 +126,6 @@ class StudentProfileForm(forms.ModelForm):
             'profile_picture': forms.FileInput(attrs={'class': 'form-control'})
         }
 
-
 class UpdateStudentForm(forms.ModelForm):
     new_course = forms.ModelChoiceField(
         queryset=Course.objects.all(),
@@ -136,7 +140,7 @@ class UpdateStudentForm(forms.ModelForm):
             'guardian_contact': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'profile_picture': forms.FileInput(attrs={'class': 'form-control'})
+            'profile_picture': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -157,7 +161,6 @@ class UpdateStudentForm(forms.ModelForm):
         return student
 
 
-
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attendance
@@ -176,24 +179,28 @@ class AttendanceForm(forms.ModelForm):
         self.fields['course'].queryset = Course.objects.all()  # Queryset for 'course' field
 
 
+class AssignmentSubmissionForm(forms.ModelForm):
+    class Meta:
+        model = Assignment
+        fields = ['pdf_file']
+
+    def clean_pdf_file(self):
+        pdf_file = self.cleaned_data['pdf_file']
+        # Ensure only PDF files are uploaded
+        if not pdf_file.name.endswith('.pdf'):
+            raise forms.ValidationError('Only PDF files are allowed.')
+        return pdf_file
+
 class AssignmentForm(forms.ModelForm):
     class Meta:
         model = Assignment
-        fields = ['title', 'description', 'due_date']
-
-
-class TimetableEntryForm(forms.ModelForm):
-    event = forms.ModelChoiceField(queryset=Event.objects.all(), required=False)
-
-    class Meta:
-        model = TimetableEntry
-        fields = ['day', 'start_time', 'end_time', 'subject', 'teacher', 'location', 'event']
+        fields = ['course', 'title', 'description', 'due_date', 'pdf_file', 'uploaded_by']
         widgets = {
-            'day': forms.Select(attrs={'class': 'form-control'}),
-            'start_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
-            'end_time': forms.TimeInput(attrs={'class': 'form-control', 'type': 'time'}),
-            'subject': forms.TextInput(attrs={'class': 'form-control'}),
-            'teacher': forms.TextInput(attrs={'class': 'form-control'}),
-            'location': forms.TextInput(attrs={'class': 'form-control'}),
-            'event': forms.Select(attrs={'class': 'form-control'}),
+            'course': forms.Select(attrs={'class': 'form-control'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'due_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'pdf_file': forms.FileInput(attrs={'class': 'form-control-file'}),
+            'uploaded_by': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+
         }
